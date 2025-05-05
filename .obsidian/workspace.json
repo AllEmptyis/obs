@@ -13,12 +13,12 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "cloud/QEMU.md",
+                "file": "cloud/KVM.md",
                 "mode": "source",
                 "source": false
               },
               "icon": "lucide-file",
-              "title": "QEMU"
+              "title": "KVM"
             }
           }
         ]
@@ -153,13 +153,13 @@
             "state": {
               "type": "outline",
               "state": {
-                "file": "cloud/QEMU.md",
+                "file": "cloud/KVM.md",
                 "followCursor": false,
                 "showSearch": false,
                 "searchQuery": ""
               },
               "icon": "lucide-list",
-              "title": "Outline of QEMU"
+              "title": "Outline of KVM"
             }
           },
           {
@@ -224,6 +224,7 @@
   },
   "active": "568fea0cced94a49",
   "lastOpenFiles": [
+    "cloud/QEMU.md",
     "cloud/KVM.md",
     "test.md",
     "obs 활용/git.md",
@@ -233,7 +234,6 @@
     "cloud/cloud.md",
     "hi.md",
     "to do/2025-W18.md",
-    "cloud/QEMU.md",
     "Tags",
     "cloud/libvirt.md",
     "Vault.md",
