@@ -28,3 +28,9 @@ git push         # GitHub에 파일 올리기
 git remote -v # 연결된 원격 주소 보기
 git branch -vv # 현재 브랜치가 어떤 원격 브랜치에 연결 되어 있는지
 git remote remove origin
+
+
+### 옵시디언 git 설정
+- 플러그인 git 설치
+- 원격 레포지토리 public 상태로 두기
+- 만일 push가 안 될 시 환경 변수 문제일 가능성이 있으니 bash에서 git config 다시 해주기 (--global 사용x)
