@@ -1,0 +1,12 @@
+{
+  "theme": "obsidian",
+  "baseFontSize": 14,
+  "enabledCssSnippets": [
+    "font"
+  ],
+  "cssTheme": "GitHub Theme",
+  "accentColor": "#6084be",
+  "interfaceFontFamily": "Noto Sans KR",
+  "textFontFamily": "Noto Sans KR",
+  "monospaceFontFamily": "Noto Sans KR"
+}
