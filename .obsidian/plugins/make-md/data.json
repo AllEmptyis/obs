@@ -40,10 +40,10 @@
   "expandedSpaces": [
     "//cloud/obs 활용",
     "//obs 활용",
-    "//Tags",
     "//to do",
     "/",
-    "//cloud"
+    "//cloud",
+    "//Tags"
   ],
   "expandFolderOnClick": true,
   "spacesFolder": "Tags",
