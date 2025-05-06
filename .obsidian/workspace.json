@@ -193,7 +193,7 @@
             }
           }
         ],
-        "currentTab": 4
+        "currentTab": 3
       }
     ],
     "direction": "horizontal",
@@ -212,12 +212,12 @@
       "periodic-notes:Open this week": false
     }
   },
-  "active": "02e0c848f038160e",
+  "active": "659da2eb5e72b0f8",
   "lastOpenFiles": [
-    "cloud/virtio.md",
-    "cloud/QEMU.md",
-    "cloud/openstack.md",
     "cloud/KVM.md",
+    "cloud/QEMU.md",
+    "cloud/virtio.md",
+    "cloud/openstack.md",
     "test.md",
     "obs 활용/git.md",
     "obs 활용/옵시디언 사용 방법 정리.md",

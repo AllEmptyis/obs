@@ -24,3 +24,6 @@
 
 <kvm 구조>
 ![[Pasted image 20250429180735.png|300]]
+
+## 아키텍처
+[[QEMU#KVM/QEMU 아키텍처]]
