@@ -173,16 +173,6 @@
             }
           },
           {
-            "id": "c274ad6340c0a88f",
-            "type": "leaf",
-            "state": {
-              "type": "custom-frames-youtube",
-              "state": {},
-              "icon": "documents",
-              "title": "youtube"
-            }
-          },
-          {
             "id": "f08da995e18ff313",
             "type": "leaf",
             "state": {
@@ -203,11 +193,11 @@
             }
           }
         ],
-        "currentTab": 7
+        "currentTab": 3
       }
     ],
     "direction": "horizontal",
-    "width": 463.5
+    "width": 530.5
   },
   "left-ribbon": {
     "hiddenItems": {
