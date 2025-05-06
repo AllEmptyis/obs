@@ -53,52 +53,23 @@
 - KVM/QEMU 가상화 환경
 ![[Pasted image 20250430103010.png|500]]
 - KVM guest
-	- file system and block devices: 디스크에 접근하려는 동작
+	- file system and block devices
 	- drivers: virtio 드라이버 or 에뮬레이트 된 장치 드라이버
 	- vcpu0 - vcpu n: 게스트의 가상 cpu / 실제 호스트 cpu와 매핑 됨
 - QEMU
-	- 게스트가 보낸 I/O요청을 받아서 처리 or 실제 호스트 자원에 전달
+	- 게스트가 보낸 I/O요청을 받아서 처리, 실제 호스트 자원에 전달
 
-- iothread란?
+- iothread
 	- QEMU에서 디스크, 네트워크 등의<u> I/O 작업을 하도록 하는 스레드</u>
 
 - virtio 장치란?
 	- qemu가 내부에 게스트 os가 실제 하드웨어처럼 인식하게 하기 위해 제공하는  장치
 	- virtio-blk, virtio-net, virtio-scsi 등 
 	- QEMU 내부에 C코드로 구현되어 있다
-- virtio 기본 구조
-```text
-[게스트 OS]
-  └─ VirtIO 드라이버 (virtio-blk, virtio-net 등)
-        ↓
-[QEMU 사용자 공간]
-  └─ VirtIO 장치 모델 (virtio-blk-device.c 등)
-        ↓
-[호스트 자원]
-  └─ 실제 파일, 네트워크 인터페이스 등
-```
-
-- 게스트 입장에서는 virtio 디스크, 네트워크 장치를 실제 장치처럼 인식하지만, 사실 내부적으로는 virtio 드라이버 임
-- 게스트가 보내는 요청은 VirtQueue라는 공유 메모리 큐에 전달
-- 해당 메모리 큐를 qemu가 감지하고, 실제 하드웨어 장치로 처리
-
-```
-게스트 OS
-┌────────────┐
-│ VirtIO 드라이버 │◀─ I/O 요청 (virtqueue)
-└────────────┘
-        ↓ 공유 메모리
-QEMU
-┌────────────┐
-│ VirtIO 장치 모델 │─▶ 실제 호스트 자원 접근
-└────────────┘
-```
+- [[cloud/virtio.md|virtio]] 기본 구조
 
 
-
-
-
-- libvirt > qemu > kvm 통신 구조
+### libvirt > qemu > kvm 통신 구조
 > [!NOTE] 통신 구조
 > [사용자]
   ↓
