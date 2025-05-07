@@ -11,10 +11,14 @@
             "id": "84607c9f1f1125f6",
             "type": "leaf",
             "state": {
-              "type": "empty",
-              "state": {},
+              "type": "markdown",
+              "state": {
+                "file": "cloud/네트워크 가상화.md",
+                "mode": "source",
+                "source": false
+              },
               "icon": "lucide-file",
-              "title": "New tab"
+              "title": "네트워크 가상화"
             }
           }
         ]
@@ -149,12 +153,13 @@
             "state": {
               "type": "outline",
               "state": {
+                "file": "cloud/네트워크 가상화.md",
                 "followCursor": false,
                 "showSearch": false,
                 "searchQuery": ""
               },
               "icon": "lucide-list",
-              "title": "Outline"
+              "title": "Outline of 네트워크 가상화"
             }
           },
           {
@@ -188,7 +193,7 @@
             }
           }
         ],
-        "currentTab": 3
+        "currentTab": 6
       }
     ],
     "direction": "horizontal",
@@ -207,15 +212,20 @@
       "periodic-notes:Open this week": false
     }
   },
-  "active": "84607c9f1f1125f6",
+  "active": "4770c888ff7ad9b5",
   "lastOpenFiles": [
+    "cloud/리눅스 메모리 공간.md",
+    "obs 활용/옵시디언 사용 방법 정리.md",
+    "to do/2025-W19.md",
+    "to do/todo-25-04.md",
+    "cloud/네트워크 가상화.md",
+    "cloud/OpenVSwitch.md",
     "cloud/QEMU.md",
     "cloud/KVM.md",
     "cloud/virtio.md",
     "cloud/openstack.md",
     "test.md",
     "obs 활용/git.md",
-    "obs 활용/옵시디언 사용 방법 정리.md",
     "test.md",
     "obs 활용/단축키.md",
     "cloud/cloud.md",
@@ -225,7 +235,6 @@
     "cloud/libvirt.md",
     "Vault.md",
     "to do/2025-05-01.md",
-    "to do/todo-25-04.md",
     "to do/to do.md",
     "첨부파일/Pasted image 20250430104724.png",
     "첨부파일/Pasted image 20250430102557.png",
@@ -245,10 +254,7 @@
     "BtmTaFYvuefjXSPAM2OqzQ",
     "rhuw3bFa0VzZk7ACW6_9OQ/FZD5sLFxH1BWKba5lixBXg",
     "rhuw3bFa0VzZk7ACW6_9OQ",
-    "Welcome.md",
     "KVM",
-    "cloud",
-    "vault/second.md",
-    "vault/hihi.md"
+    "cloud"
   ]
 }
