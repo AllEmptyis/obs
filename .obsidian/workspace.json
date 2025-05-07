@@ -193,7 +193,7 @@
             }
           }
         ],
-        "currentTab": 4
+        "currentTab": 6
       }
     ],
     "direction": "horizontal",
@@ -212,7 +212,7 @@
       "periodic-notes:Open this week": false
     }
   },
-  "active": "84607c9f1f1125f6",
+  "active": "4770c888ff7ad9b5",
   "lastOpenFiles": [
     "cloud/리눅스 메모리 공간.md",
     "cloud/네트워크 가상화.md",
