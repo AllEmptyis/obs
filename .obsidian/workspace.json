@@ -13,12 +13,12 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "cloud/libvirt.md",
+                "file": "cloud/네트워크 가상화.md",
                 "mode": "source",
                 "source": false
               },
               "icon": "lucide-file",
-              "title": "libvirt"
+              "title": "네트워크 가상화"
             }
           }
         ]
@@ -153,13 +153,13 @@
             "state": {
               "type": "outline",
               "state": {
-                "file": "cloud/libvirt.md",
+                "file": "cloud/네트워크 가상화.md",
                 "followCursor": false,
                 "showSearch": false,
                 "searchQuery": ""
               },
               "icon": "lucide-list",
-              "title": "Outline of libvirt"
+              "title": "Outline of 네트워크 가상화"
             }
           },
           {
@@ -212,15 +212,16 @@
       "periodic-notes:Open this week": false
     }
   },
-  "active": "02e0c848f038160e",
+  "active": "84607c9f1f1125f6",
   "lastOpenFiles": [
-    "cloud/네트워크 가상화.md",
     "cloud/리눅스 메모리 공간.md",
+    "cloud/네트워크 가상화.md",
+    "cloud/OpenVSwitch.md",
+    "cloud/libvirt.md",
+    "cloud/QEMU.md",
     "obs 활용/옵시디언 사용 방법 정리.md",
     "to do/2025-W19.md",
     "to do/todo-25-04.md",
-    "cloud/OpenVSwitch.md",
-    "cloud/QEMU.md",
     "cloud/KVM.md",
     "cloud/virtio.md",
     "cloud/openstack.md",
@@ -232,7 +233,6 @@
     "hi.md",
     "to do/2025-W18.md",
     "Tags",
-    "cloud/libvirt.md",
     "Vault.md",
     "to do/2025-05-01.md",
     "to do/to do.md",
