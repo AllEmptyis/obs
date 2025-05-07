@@ -4,21 +4,17 @@
     "type": "split",
     "children": [
       {
-        "id": "12f97cfa32de368f",
+        "id": "f72f2813a7e74b6b",
         "type": "tabs",
         "children": [
           {
-            "id": "568fea0cced94a49",
+            "id": "84607c9f1f1125f6",
             "type": "leaf",
             "state": {
-              "type": "markdown",
-              "state": {
-                "file": "cloud/QEMU.md",
-                "mode": "source",
-                "source": false
-              },
+              "type": "empty",
+              "state": {},
               "icon": "lucide-file",
-              "title": "QEMU"
+              "title": "New tab"
             }
           }
         ]
@@ -75,7 +71,7 @@
             }
           },
           {
-            "id": "9add03453b6c32f9",
+            "id": "c8a2292737298d44",
             "type": "leaf",
             "state": {
               "type": "mk-path-view",
@@ -153,13 +149,12 @@
             "state": {
               "type": "outline",
               "state": {
-                "file": "cloud/QEMU.md",
                 "followCursor": false,
                 "showSearch": false,
                 "searchQuery": ""
               },
               "icon": "lucide-list",
-              "title": "Outline of QEMU"
+              "title": "Outline"
             }
           },
           {
@@ -212,10 +207,10 @@
       "periodic-notes:Open this week": false
     }
   },
-  "active": "659da2eb5e72b0f8",
+  "active": "84607c9f1f1125f6",
   "lastOpenFiles": [
-    "cloud/KVM.md",
     "cloud/QEMU.md",
+    "cloud/KVM.md",
     "cloud/virtio.md",
     "cloud/openstack.md",
     "test.md",
