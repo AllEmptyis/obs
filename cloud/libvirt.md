@@ -18,6 +18,11 @@
 > - KVM에서는 위의 virt-manager 같은 libvert 제어도구, KVM_QEMU를 제어 함 (물론 libvert없이도 사용 가능하지만 그러면 매우 불편)
 > - libvert를 사용할 수 있게 해주는 app / libvert는 내부에서 KVM과 같은 하이퍼바이저를 제어
 
+## 구성
+- libvirt API
+- libvirtd
+- virsh
+- virt0
 ## 원격 하이퍼바이저 제어
 - 여러 대의 노드에서 다수의 vm을 관리할 때 libvirt가 주로 사용 됨
 - 아래는 libvirt와 libvirt 데몬을 이용한 원격 하이퍼바이저 제어
