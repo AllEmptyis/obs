@@ -13,12 +13,12 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "to do/2025-W19.md",
+                "file": "cloud/OpenVSwitch.md",
                 "mode": "source",
                 "source": false
               },
               "icon": "lucide-file",
-              "title": "2025-W19"
+              "title": "OpenVSwitch"
             }
           }
         ]
@@ -214,17 +214,17 @@
   },
   "active": "84607c9f1f1125f6",
   "lastOpenFiles": [
-    "test.md",
-    "cloud/네트워크 가상화.md",
-    "cloud/리눅스 메모리 공간.md",
-    "cloud/OpenVSwitch.md",
     "cloud/libvirt.md",
     "cloud/QEMU.md",
-    "obs 활용/옵시디언 사용 방법 정리.md",
-    "to do/2025-W19.md",
-    "to do/todo-25-04.md",
     "cloud/KVM.md",
     "cloud/virtio.md",
+    "cloud/리눅스 메모리 공간.md",
+    "to do/2025-W19.md",
+    "test.md",
+    "cloud/네트워크 가상화.md",
+    "cloud/OpenVSwitch.md",
+    "obs 활용/옵시디언 사용 방법 정리.md",
+    "to do/todo-25-04.md",
     "cloud/openstack.md",
     "obs 활용/git.md",
     "obs 활용/단축키.md",
