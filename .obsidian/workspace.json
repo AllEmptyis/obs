@@ -75,7 +75,7 @@
             }
           },
           {
-            "id": "c8a2292737298d44",
+            "id": "6c06a7f1ba7c4875",
             "type": "leaf",
             "state": {
               "type": "mk-path-view",
@@ -208,8 +208,7 @@
       "templates:Insert template": false,
       "command-palette:Open command palette": false,
       "remotely-save:Remotely Save": false,
-      "obsidian-git:Open Git source control": false,
-      "periodic-notes:Open this week": false
+      "obsidian-git:Open Git source control": false
     }
   },
   "active": "4770c888ff7ad9b5",
