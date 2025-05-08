@@ -13,12 +13,12 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "cloud/네트워크 가상화.md",
+                "file": "to do/2025-W19.md",
                 "mode": "source",
                 "source": false
               },
               "icon": "lucide-file",
-              "title": "네트워크 가상화"
+              "title": "2025-W19"
             }
           }
         ]
@@ -208,13 +208,15 @@
       "templates:Insert template": false,
       "command-palette:Open command palette": false,
       "remotely-save:Remotely Save": false,
-      "obsidian-git:Open Git source control": false
+      "obsidian-git:Open Git source control": false,
+      "periodic-notes:Open this week": false
     }
   },
-  "active": "4770c888ff7ad9b5",
+  "active": "84607c9f1f1125f6",
   "lastOpenFiles": [
-    "cloud/리눅스 메모리 공간.md",
+    "test.md",
     "cloud/네트워크 가상화.md",
+    "cloud/리눅스 메모리 공간.md",
     "cloud/OpenVSwitch.md",
     "cloud/libvirt.md",
     "cloud/QEMU.md",
@@ -224,9 +226,7 @@
     "cloud/KVM.md",
     "cloud/virtio.md",
     "cloud/openstack.md",
-    "test.md",
     "obs 활용/git.md",
-    "test.md",
     "obs 활용/단축키.md",
     "cloud/cloud.md",
     "hi.md",
