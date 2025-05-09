@@ -13,12 +13,12 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "신규기능/IP Tunnel DSR.md",
+                "file": "cloud/KVM.md",
                 "mode": "source",
                 "source": false
               },
               "icon": "lucide-file",
-              "title": "IP Tunnel DSR"
+              "title": "KVM"
             }
           }
         ]
@@ -214,10 +214,10 @@
   },
   "active": "84607c9f1f1125f6",
   "lastOpenFiles": [
+    "신규기능/IP Tunnel DSR.md",
     "to do/2025-W19.md",
     "PAS-K/글로벌 서버 부하분산.md",
     "cloud/OpenVSwitch.md",
-    "신규기능/IP Tunnel DSR.md",
     "신규기능",
     "PAS-K",
     "cloud/libvirt.md",
