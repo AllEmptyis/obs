@@ -43,7 +43,9 @@
     "//to do",
     "/",
     "//cloud",
-    "//Tags"
+    "//Tags",
+    "//PAS-K",
+    "//신규기능"
   ],
   "expandFolderOnClick": true,
   "spacesFolder": "Tags",

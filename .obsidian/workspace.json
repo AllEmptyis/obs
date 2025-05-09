@@ -13,12 +13,12 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "cloud/OpenVSwitch.md",
+                "file": "신규기능/IP Tunnel DSR.md",
                 "mode": "source",
                 "source": false
               },
               "icon": "lucide-file",
-              "title": "OpenVSwitch"
+              "title": "IP Tunnel DSR"
             }
           }
         ]
@@ -214,15 +214,19 @@
   },
   "active": "84607c9f1f1125f6",
   "lastOpenFiles": [
+    "to do/2025-W19.md",
+    "PAS-K/글로벌 서버 부하분산.md",
+    "cloud/OpenVSwitch.md",
+    "신규기능/IP Tunnel DSR.md",
+    "신규기능",
+    "PAS-K",
     "cloud/libvirt.md",
     "cloud/QEMU.md",
     "cloud/KVM.md",
     "cloud/virtio.md",
     "cloud/리눅스 메모리 공간.md",
-    "to do/2025-W19.md",
     "test.md",
     "cloud/네트워크 가상화.md",
-    "cloud/OpenVSwitch.md",
     "obs 활용/옵시디언 사용 방법 정리.md",
     "to do/todo-25-04.md",
     "cloud/openstack.md",
@@ -248,12 +252,9 @@
     "obs 활용/to do.md",
     "to do",
     "obs 활용",
-    "hihihi.md",
     "rhuw3bFa0VzZk7ACW6_9OQ/QqFguH4eXxXUhJqhJFCdxw",
     "BtmTaFYvuefjXSPAM2OqzQ",
     "rhuw3bFa0VzZk7ACW6_9OQ/FZD5sLFxH1BWKba5lixBXg",
-    "rhuw3bFa0VzZk7ACW6_9OQ",
-    "KVM",
-    "cloud"
+    "rhuw3bFa0VzZk7ACW6_9OQ"
   ]
 }
