@@ -13,12 +13,12 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "cloud/KVM.md",
+                "file": "신규기능/IP Tunnel DSR.md",
                 "mode": "source",
                 "source": false
               },
               "icon": "lucide-file",
-              "title": "KVM"
+              "title": "IP Tunnel DSR"
             }
           }
         ]
@@ -75,7 +75,7 @@
             }
           },
           {
-            "id": "568e44417fc99a7b",
+            "id": "95047e647743f56a",
             "type": "leaf",
             "state": {
               "type": "mk-path-view",
@@ -214,15 +214,17 @@
   },
   "active": "84607c9f1f1125f6",
   "lastOpenFiles": [
+    "명령어",
+    "Bass",
+    "PAS-K/글로벌 서버 부하분산.md",
+    "cloud/KVM.md",
     "신규기능/IP Tunnel DSR.md",
     "to do/2025-W19.md",
-    "PAS-K/글로벌 서버 부하분산.md",
     "cloud/OpenVSwitch.md",
     "신규기능",
     "PAS-K",
     "cloud/libvirt.md",
     "cloud/QEMU.md",
-    "cloud/KVM.md",
     "cloud/virtio.md",
     "cloud/리눅스 메모리 공간.md",
     "test.md",
@@ -249,12 +251,10 @@
     "첨부파일/Pasted image 20250430110533.png",
     "첨부파일/Pasted image 20250430103010.png",
     "첨부파일/Pasted image 20250430110904.png",
-    "obs 활용/to do.md",
     "to do",
     "obs 활용",
     "rhuw3bFa0VzZk7ACW6_9OQ/QqFguH4eXxXUhJqhJFCdxw",
     "BtmTaFYvuefjXSPAM2OqzQ",
-    "rhuw3bFa0VzZk7ACW6_9OQ/FZD5sLFxH1BWKba5lixBXg",
-    "rhuw3bFa0VzZk7ACW6_9OQ"
+    "rhuw3bFa0VzZk7ACW6_9OQ/FZD5sLFxH1BWKba5lixBXg"
   ]
 }
