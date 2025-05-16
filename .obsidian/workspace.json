@@ -212,8 +212,20 @@
       "periodic-notes:Open this week": false
     }
   },
-  "active": "84607c9f1f1125f6",
+  "active": "4770c888ff7ad9b5",
   "lastOpenFiles": [
+    "리눅스 커널 기능.md",
+    "명령어/윈도우.md",
+    "실습 과정.md",
+    "Bass/test.md",
+    "명령어/PAS-K 명령어.md",
+    "to do/2025-W20.md",
+    "Loopback 인터페이스.md",
+    "PAS-K/PAS-K 서버 부하 분산 NAT 모드.md",
+    "명령어/Ubuntu 명령어.md",
+    "Pasted image 20250515173108.png",
+    "Pasted image 20250515172853.png",
+    "PAS-K/글로벌 서버 부하 분산.md",
     "명령어",
     "Bass",
     "PAS-K/글로벌 서버 부하분산.md",
@@ -234,19 +246,10 @@
     "cloud/openstack.md",
     "obs 활용/git.md",
     "obs 활용/단축키.md",
-    "cloud/cloud.md",
-    "hi.md",
-    "to do/2025-W18.md",
     "Tags",
-    "Vault.md",
-    "to do/2025-05-01.md",
-    "to do/to do.md",
     "첨부파일/Pasted image 20250430104724.png",
     "첨부파일/Pasted image 20250430102557.png",
     "첨부파일/Pasted image 20250429180735.png",
-    "obs 활용/css 폰트 명령어.md",
-    "obs 활용/옵시디언  사용 방법 정리.md",
-    "chatgpt.md",
     "첨부파일",
     "첨부파일/Pasted image 20250430110533.png",
     "첨부파일/Pasted image 20250430103010.png",
@@ -254,7 +257,6 @@
     "to do",
     "obs 활용",
     "rhuw3bFa0VzZk7ACW6_9OQ/QqFguH4eXxXUhJqhJFCdxw",
-    "BtmTaFYvuefjXSPAM2OqzQ",
-    "rhuw3bFa0VzZk7ACW6_9OQ/FZD5sLFxH1BWKba5lixBXg"
+    "BtmTaFYvuefjXSPAM2OqzQ"
   ]
 }
