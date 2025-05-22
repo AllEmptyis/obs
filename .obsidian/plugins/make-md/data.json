@@ -40,11 +40,11 @@
   "expandedSpaces": [
     "//cloud/obs 활용",
     "//to do",
-    "/",
     "//Tags",
     "//PAS-K",
     "//신규기능",
-    "//명령어"
+    "//명령어",
+    "/"
   ],
   "expandFolderOnClick": true,
   "spacesFolder": "Tags",

@@ -1,7 +1,5 @@
 ---
-aliases:
-  - IP Tunnel DSR_H/C 실습
-  - IP Tunnel DSR_H/C 실습
+aliases: []
 ---
 ## 실습 단계
 - [x] PLOS 업데이트
@@ -163,8 +161,9 @@ aliases:
 	    inet 192.168.193.50/32 scope global lo
 	       valid_lft forever preferred_lft forever
 	```
-- vip 에 대해 arp 응답 하지 않도록 설정
+- vip 에 대해 [[Linux/리눅스 커널 기능.md|arp 응답 하지 않도록 설정]]
 	- lo인터페이스는 arp 응답을 하지는 않지만 전체 ip에 있으면 커널이 arp 응답을 할 수도 있기 때문에 설정
+	- L3 구성에서는 설정 필요 없음
 	```
 	root@exam:/# sysctl -w net.ipv4.conf.all.arp_ignore=1
 	net.ipv4.conf.all.arp_ignore = 1
