@@ -27,16 +27,15 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "obs 활용/옵시디언 사용 방법 정리.md",
+                "file": "신규기능/IP Tunnel DSR_HC 실습.md",
                 "mode": "source",
                 "source": false
               },
               "icon": "lucide-file",
-              "title": "옵시디언 사용 방법 정리"
+              "title": "IP Tunnel DSR_HC 실습"
             }
           }
-        ],
-        "currentTab": 1
+        ]
       }
     ],
     "direction": "vertical"
@@ -167,13 +166,13 @@
             "state": {
               "type": "outline",
               "state": {
-                "file": "obs 활용/옵시디언 사용 방법 정리.md",
+                "file": "Linux/리눅스 커널 기능.md",
                 "followCursor": false,
                 "showSearch": false,
                 "searchQuery": ""
               },
               "icon": "lucide-list",
-              "title": "Outline of 옵시디언 사용 방법 정리"
+              "title": "Outline of 리눅스 커널 기능"
             }
           },
           {
@@ -226,12 +225,12 @@
       "periodic-notes:Open this week": false
     }
   },
-  "active": "69f6228f8ae7db51",
+  "active": "84607c9f1f1125f6",
   "lastOpenFiles": [
+    "신규기능/IP Tunnel DSR_HC 실습.md",
     "Linux/리눅스 커널 기능.md",
     "obs 활용/옵시디언 사용 방법 정리.md",
     "obs 활용/단축키.md",
-    "신규기능/IP Tunnel DSR_HC 실습.md",
     "Loopback 인터페이스.md",
     "to do/2025-W21.md",
     "to do/to do.md",
