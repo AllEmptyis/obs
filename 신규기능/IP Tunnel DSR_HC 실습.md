@@ -1,6 +1,7 @@
 ---
 aliases:
   - IP Tunnel DSR_H/C 실습
+  - IP Tunnel DSR_H/C 실습
 ---
 ## 실습 단계
 - [x] PLOS 업데이트

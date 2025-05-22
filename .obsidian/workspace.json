@@ -193,7 +193,7 @@
             }
           }
         ],
-        "currentTab": 3
+        "currentTab": 6
       }
     ],
     "direction": "horizontal",
@@ -212,7 +212,7 @@
       "periodic-notes:Open this week": false
     }
   },
-  "active": "84607c9f1f1125f6",
+  "active": "4770c888ff7ad9b5",
   "lastOpenFiles": [
     "신규기능/IP Tunnel DSR.md",
     "신규기능/IP Tunnel DSR_HC 실습.md",
