@@ -13,12 +13,12 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "실습 과정.md",
+                "file": "to do/2025-W20.md",
                 "mode": "source",
                 "source": false
               },
               "icon": "lucide-file",
-              "title": "실습 과정"
+              "title": "2025-W20"
             }
           }
         ]
@@ -75,7 +75,7 @@
             }
           },
           {
-            "id": "95047e647743f56a",
+            "id": "8b026c7ae6d0a15a",
             "type": "leaf",
             "state": {
               "type": "mk-path-view",
@@ -153,13 +153,13 @@
             "state": {
               "type": "outline",
               "state": {
-                "file": "실습 과정.md",
+                "file": "to do/2025-W20.md",
                 "followCursor": false,
                 "showSearch": false,
                 "searchQuery": ""
               },
               "icon": "lucide-list",
-              "title": "Outline of 실습 과정"
+              "title": "Outline of 2025-W20"
             }
           },
           {
@@ -193,7 +193,7 @@
             }
           }
         ],
-        "currentTab": 6
+        "currentTab": 5
       }
     ],
     "direction": "horizontal",
@@ -212,12 +212,13 @@
       "periodic-notes:Open this week": false
     }
   },
-  "active": "4770c888ff7ad9b5",
+  "active": "f08da995e18ff313",
   "lastOpenFiles": [
+    "Tags",
+    "실습 과정.md",
     "신규기능/IP Tunnel DSR.md",
     "리눅스 커널 기능.md",
     "명령어/윈도우.md",
-    "실습 과정.md",
     "Bass/test.md",
     "명령어/PAS-K 명령어.md",
     "to do/2025-W20.md",
@@ -245,8 +246,6 @@
     "to do/todo-25-04.md",
     "cloud/openstack.md",
     "obs 활용/git.md",
-    "obs 활용/단축키.md",
-    "Tags",
     "첨부파일/Pasted image 20250430104724.png",
     "첨부파일/Pasted image 20250430102557.png",
     "첨부파일/Pasted image 20250429180735.png",
