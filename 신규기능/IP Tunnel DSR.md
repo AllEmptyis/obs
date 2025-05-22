@@ -91,7 +91,7 @@
 	- 192.168.211.150
 - client
 	- 192.168.212.225
-- [[실습 과정]]
+- [[IP Tunnel DSR_HC 실습]]
 
 ------------
 https://redmine.piolink.com/issues/165787

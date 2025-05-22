@@ -39,13 +39,12 @@
   "deleteFileOption": "trash",
   "expandedSpaces": [
     "//cloud/obs 활용",
-    "//obs 활용",
     "//to do",
     "/",
-    "//cloud",
     "//Tags",
     "//PAS-K",
-    "//신규기능"
+    "//신규기능",
+    "//명령어"
   ],
   "expandFolderOnClick": true,
   "spacesFolder": "Tags",
