@@ -28,18 +28,21 @@
 - VXLAN
 #### 동작 방식
 1) 클라이언트는 vip:vport로 요청을 전송
-2) L4가 리얼서버에서 vip로 캡슐화 하여 mac만 리얼서버의 mac으로 전달 
-3) 리얼서버는 vip가 [[Loopback 인터페이스 | Loopback]] 인터페이스에 설정 되어 있어 해당 패킷을 받음
-	- 이 때, vip에 대해 arp 응답 방지 설정을 하지 않으면 클라이언트가 vip로 응답할 때 리얼서버가 응답할 수 있다
-4) 패킷을 디캡슐레이션 하여 리얼서버가 직접 클라이언트에게 **vip로 응답** 
-	- **따라서 L3 구간인 경우 리얼서버의 mac, ip 모두 노출되지 않는다**
+	- 서버에서 vip에 대해 arp 응답하지 않도록 설정 필요 (클라이언트가 vip로 요청 시 서버가 응답 방지)
+2) L4가 받아서 적절한 서버로 LB
+3) 선택 된 서버로 패킷을 ipip해서 전달 (실제 outer ip로 라우팅 된다)
+	- outer: src(slb tunnel ip) / dst(server tunnel ip, 보통 rip)
+	- inner: src(client ip) / dst(slb vip)
+	- **이 때, 서버의 [[Loopback 인터페이스]]에 vip가 바인딩 되어 있어야 디캡 후 서버가 받을 수 있다**
+4) 서버가 패킷을 받은 후 디캡하여 클라이언트로 직접 패킷 전송
+	- src: vip / dst: 클라이언트 ip (inner ip에 있던 정보로 알게 됨)
 #### H/C 동작
-- L4는 리얼서버의 mac을 헬스체크를 통해 알아 옴
-- HC 패킷을 IPIP 하여 서버에게 전달, 서버의 응답을 통해 mac 주소를 알게 된다.
 - icmp 방식
-	- 리얼서버에게 vip로 ping 하여 확인
+	- 리얼서버에게 rip(vip)로 ping 하여 확인
+	- outer: rip / inner: vip
+	- 디캡했을 때 vip에 대해 응답하는지 확인 (vip로 응답)
 - tcp 방식
-	- 리얼서버의 리스팅 포트(rport)로 syn 던져서 확인
+	- 리얼서버의 rip:rport(vip:vport)로 syn 던져서 확인
 
 -------------------
 # 신규 기능 
@@ -56,7 +59,7 @@
 		- outer: 리얼서버의 rip
 		- inner: 확인 할 실제 vip
 ##### 용어
-- **Inner TIP**: 실제 목적지 ip를 캡슐화 할 ip / 보통 SLB의 vip
+- **Inner TIP**: 캡슐화 되는 ip의 목적지 ip (inner dip) / 보통 SLB의 vip
 ##### 동작 원리
 - icmp와 동일하게 확인 할 vip를 캡슐화 하여 real ip로 syn을 보내어 H/C
 - 만일 해당 포트에 대하여 Reset이 오면 포트가 닫혀있는 것
@@ -73,21 +76,19 @@
 ### 실습 구성
 - pas-k
 	```
-	vlan 인터페이스 - default(vlan 1), test (vlan10)
-	default: 10.10.10.1
+	vlan 인터페이스 - default(vlan 1), test (vlan193)
 	test: 192.168.193.181/24
 
 	slb: 
-	rip - 10.10.10.10
+	rip - 192.168.211.150 (server)
 	vip - 192.168.193.50
 	```
 - L2
 	```
 	vlan 211 에 L4 연결 포트 (xg4)
-	10.10.10.0 대역에 대해서 라우팅 설정
 	```
 - real server
-	- 10.10.10.10
+	- 192.168.211.150
 - client
 	- 192.168.212.225
 - [[실습 과정]]

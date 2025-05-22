@@ -13,12 +13,12 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "to do/2025-W20.md",
+                "file": "to do/todo-25-04.md",
                 "mode": "source",
                 "source": false
               },
               "icon": "lucide-file",
-              "title": "2025-W20"
+              "title": "todo-25-04"
             }
           }
         ]
@@ -153,13 +153,13 @@
             "state": {
               "type": "outline",
               "state": {
-                "file": "to do/2025-W20.md",
+                "file": "to do/todo-25-04.md",
                 "followCursor": false,
                 "showSearch": false,
                 "searchQuery": ""
               },
               "icon": "lucide-list",
-              "title": "Outline of 2025-W20"
+              "title": "Outline of todo-25-04"
             }
           },
           {
@@ -193,11 +193,11 @@
             }
           }
         ],
-        "currentTab": 5
+        "currentTab": 6
       }
     ],
     "direction": "horizontal",
-    "width": 600.5
+    "width": 475.5
   },
   "left-ribbon": {
     "hiddenItems": {
@@ -212,8 +212,11 @@
       "periodic-notes:Open this week": false
     }
   },
-  "active": "f08da995e18ff313",
+  "active": "4770c888ff7ad9b5",
   "lastOpenFiles": [
+    "Ubuntu DNS 설정.md",
+    "to do/2025-W21.md",
+    "to do/2025-W20.md",
     "Tags",
     "실습 과정.md",
     "신규기능/IP Tunnel DSR.md",
@@ -221,7 +224,6 @@
     "명령어/윈도우.md",
     "Bass/test.md",
     "명령어/PAS-K 명령어.md",
-    "to do/2025-W20.md",
     "Loopback 인터페이스.md",
     "PAS-K/PAS-K 서버 부하 분산 NAT 모드.md",
     "명령어/Ubuntu 명령어.md",
@@ -245,7 +247,6 @@
     "obs 활용/옵시디언 사용 방법 정리.md",
     "to do/todo-25-04.md",
     "cloud/openstack.md",
-    "obs 활용/git.md",
     "첨부파일/Pasted image 20250430104724.png",
     "첨부파일/Pasted image 20250430102557.png",
     "첨부파일/Pasted image 20250429180735.png",

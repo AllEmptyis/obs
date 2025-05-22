@@ -7,6 +7,7 @@
 # 기본 네트워크 설정
 ## IP 주소/라우팅 설정
 - interface `<NAME>` ip `<add>`
+	- no interface `<NAME>` ip `<ip>`
 - route default-gateway `<Gateway>` 
 - route network `<Dest>`  {gateway `<gateway>` interface `<int>`}: 고정 경로 추가 
 - local ip
