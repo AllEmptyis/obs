@@ -13,15 +13,28 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "to do/todo-25-04.md",
+                "file": "신규기능/IP Tunnel DSR.md",
                 "mode": "source",
                 "source": false
               },
               "icon": "lucide-file",
-              "title": "todo-25-04"
+              "title": "IP Tunnel DSR"
+            }
+          },
+          {
+            "id": "72a47087bcf74072",
+            "type": "leaf",
+            "state": {
+              "type": "mk-space",
+              "state": {
+                "path": "첨부파일"
+              },
+              "icon": "lucide-file",
+              "title": "첨부파일"
             }
           }
-        ]
+        ],
+        "currentTab": 1
       }
     ],
     "direction": "vertical"
@@ -153,13 +166,12 @@
             "state": {
               "type": "outline",
               "state": {
-                "file": "to do/todo-25-04.md",
                 "followCursor": false,
                 "showSearch": false,
                 "searchQuery": ""
               },
               "icon": "lucide-list",
-              "title": "Outline of todo-25-04"
+              "title": "Outline"
             }
           },
           {
@@ -193,11 +205,11 @@
             }
           }
         ],
-        "currentTab": 6
+        "currentTab": 3
       }
     ],
     "direction": "horizontal",
-    "width": 475.5
+    "width": 432.5
   },
   "left-ribbon": {
     "hiddenItems": {
@@ -212,29 +224,31 @@
       "periodic-notes:Open this week": false
     }
   },
-  "active": "4770c888ff7ad9b5",
+  "active": "72a47087bcf74072",
   "lastOpenFiles": [
-    "Ubuntu DNS 설정.md",
-    "to do/2025-W21.md",
-    "to do/2025-W20.md",
-    "Tags",
+    "첨부파일/Pasted image 20250515173108.png",
+    "Loopback 인터페이스.md",
+    "Vault.md",
     "실습 과정.md",
     "신규기능/IP Tunnel DSR.md",
+    "PAS-K/PAS-K 서버 부하 분산 NAT 모드.md",
+    "PAS-K/글로벌 서버 부하 분산.md",
+    "to do/2025-W21.md",
+    "to do/2025-W18.md",
+    "to do/2025-W19.md",
+    "Ubuntu DNS 설정.md",
+    "to do/2025-W20.md",
+    "Tags",
     "리눅스 커널 기능.md",
     "명령어/윈도우.md",
     "Bass/test.md",
     "명령어/PAS-K 명령어.md",
-    "Loopback 인터페이스.md",
-    "PAS-K/PAS-K 서버 부하 분산 NAT 모드.md",
     "명령어/Ubuntu 명령어.md",
-    "Pasted image 20250515173108.png",
-    "Pasted image 20250515172853.png",
-    "PAS-K/글로벌 서버 부하 분산.md",
+    "첨부파일/Pasted image 20250515172853.png",
     "명령어",
     "Bass",
     "PAS-K/글로벌 서버 부하분산.md",
     "cloud/KVM.md",
-    "to do/2025-W19.md",
     "cloud/OpenVSwitch.md",
     "신규기능",
     "PAS-K",
@@ -244,9 +258,6 @@
     "cloud/리눅스 메모리 공간.md",
     "test.md",
     "cloud/네트워크 가상화.md",
-    "obs 활용/옵시디언 사용 방법 정리.md",
-    "to do/todo-25-04.md",
-    "cloud/openstack.md",
     "첨부파일/Pasted image 20250430104724.png",
     "첨부파일/Pasted image 20250430102557.png",
     "첨부파일/Pasted image 20250429180735.png",
