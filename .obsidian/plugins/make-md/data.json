@@ -44,7 +44,8 @@
     "//PAS-K",
     "//신규기능",
     "//명령어",
-    "/"
+    "/",
+    "//obs 활용"
   ],
   "expandFolderOnClick": true,
   "spacesFolder": "Tags",

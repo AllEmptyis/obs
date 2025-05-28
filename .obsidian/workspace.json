@@ -27,12 +27,12 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "신규기능/IP Tunnel DSR_HC 실습.md",
+                "file": "obs 활용/옵시디언 사용 방법 정리.md",
                 "mode": "source",
                 "source": false
               },
               "icon": "lucide-file",
-              "title": "IP Tunnel DSR_HC 실습"
+              "title": "옵시디언 사용 방법 정리"
             }
           }
         ],
@@ -120,7 +120,7 @@
             "state": {
               "type": "backlink",
               "state": {
-                "file": "신규기능/IP Tunnel DSR_HC 실습.md",
+                "file": "obs 활용/옵시디언 사용 방법 정리.md",
                 "collapseAll": false,
                 "extraContext": false,
                 "sortOrder": "alphabetical",
@@ -130,7 +130,7 @@
                 "unlinkedCollapsed": true
               },
               "icon": "links-coming-in",
-              "title": "Backlinks for IP Tunnel DSR_HC 실습"
+              "title": "Backlinks for 옵시디언 사용 방법 정리"
             }
           },
           {
@@ -139,12 +139,12 @@
             "state": {
               "type": "outgoing-link",
               "state": {
-                "file": "신규기능/IP Tunnel DSR_HC 실습.md",
+                "file": "obs 활용/옵시디언 사용 방법 정리.md",
                 "linksCollapsed": false,
                 "unlinkedCollapsed": true
               },
               "icon": "links-going-out",
-              "title": "Outgoing links from IP Tunnel DSR_HC 실습"
+              "title": "Outgoing links from 옵시디언 사용 방법 정리"
             }
           },
           {
@@ -168,13 +168,13 @@
             "state": {
               "type": "outline",
               "state": {
-                "file": "신규기능/IP Tunnel DSR_HC 실습.md",
+                "file": "obs 활용/옵시디언 사용 방법 정리.md",
                 "followCursor": false,
                 "showSearch": false,
                 "searchQuery": ""
               },
               "icon": "lucide-list",
-              "title": "Outline of IP Tunnel DSR_HC 실습"
+              "title": "Outline of 옵시디언 사용 방법 정리"
             }
           },
           {
@@ -212,7 +212,7 @@
       }
     ],
     "direction": "horizontal",
-    "width": 432.5
+    "width": 200
   },
   "left-ribbon": {
     "hiddenItems": {
@@ -227,22 +227,23 @@
       "periodic-notes:Open this week": false
     }
   },
-  "active": "4770c888ff7ad9b5",
+  "active": "69f6228f8ae7db51",
   "lastOpenFiles": [
+    "obs 활용/css 폰트 명령어.md",
+    "obs 활용/옵시디언 사용 방법 정리.md",
+    "to do/2025-W22.md",
+    "ZeroTrust ZT.md",
+    "파티션.md",
+    "신규기능/IP Tunnel DSR_HC 실습.md",
     "가상 디스크 이미지.md",
     "IODD를 사용한 OS 설치.md",
     "Linux/리눅스 커널 기능.md",
-    "파티션.md",
-    "ZeroTrust ZT.md",
     "QCOW2.md",
     "가상화 방식.md",
     "파일 시스템.md",
-    "to do/2025-W22.md",
     "PAS-K/Port Boundary.md",
     "Linux/리눅스 메모리 공간.md",
     "Linux/Ubuntu DNS 설정.md",
-    "신규기능/IP Tunnel DSR_HC 실습.md",
-    "obs 활용/옵시디언 사용 방법 정리.md",
     "obs 활용/단축키.md",
     "Loopback 인터페이스.md",
     "to do/2025-W21.md",
@@ -256,7 +257,6 @@
     "첨부파일/Pasted image 20250515173108.png",
     "PAS-K/PAS-K 서버 부하 분산 NAT 모드.md",
     "PAS-K/글로벌 서버 부하 분산.md",
-    "to do/2025-W18.md",
     "Tags",
     "첨부파일/Pasted image 20250515172853.png",
     "명령어",
