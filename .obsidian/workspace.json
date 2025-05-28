@@ -27,12 +27,12 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "obs 활용/옵시디언 사용 방법 정리.md",
+                "file": "obs 활용/css 폰트 명령어.md",
                 "mode": "source",
                 "source": false
               },
               "icon": "lucide-file",
-              "title": "옵시디언 사용 방법 정리"
+              "title": "css 폰트 명령어"
             }
           }
         ],
@@ -120,7 +120,7 @@
             "state": {
               "type": "backlink",
               "state": {
-                "file": "obs 활용/옵시디언 사용 방법 정리.md",
+                "file": "obs 활용/css 폰트 명령어.md",
                 "collapseAll": false,
                 "extraContext": false,
                 "sortOrder": "alphabetical",
@@ -130,7 +130,7 @@
                 "unlinkedCollapsed": true
               },
               "icon": "links-coming-in",
-              "title": "Backlinks for 옵시디언 사용 방법 정리"
+              "title": "Backlinks for css 폰트 명령어"
             }
           },
           {
@@ -139,12 +139,12 @@
             "state": {
               "type": "outgoing-link",
               "state": {
-                "file": "obs 활용/옵시디언 사용 방법 정리.md",
+                "file": "obs 활용/css 폰트 명령어.md",
                 "linksCollapsed": false,
                 "unlinkedCollapsed": true
               },
               "icon": "links-going-out",
-              "title": "Outgoing links from 옵시디언 사용 방법 정리"
+              "title": "Outgoing links from css 폰트 명령어"
             }
           },
           {
@@ -168,13 +168,13 @@
             "state": {
               "type": "outline",
               "state": {
-                "file": "obs 활용/옵시디언 사용 방법 정리.md",
+                "file": "obs 활용/css 폰트 명령어.md",
                 "followCursor": false,
                 "showSearch": false,
                 "searchQuery": ""
               },
               "icon": "lucide-list",
-              "title": "Outline of 옵시디언 사용 방법 정리"
+              "title": "Outline of css 폰트 명령어"
             }
           },
           {
@@ -229,8 +229,8 @@
   },
   "active": "69f6228f8ae7db51",
   "lastOpenFiles": [
-    "obs 활용/css 폰트 명령어.md",
     "obs 활용/옵시디언 사용 방법 정리.md",
+    "obs 활용/css 폰트 명령어.md",
     "to do/2025-W22.md",
     "ZeroTrust ZT.md",
     "파티션.md",
