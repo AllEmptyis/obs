@@ -28,13 +28,26 @@
 - 포트 모드 변경
 	- port  `1` sfp-mode copper
 -------------------
-# L4 부하 분산 설정
+# [[Port Boundary]] 설정
+- 최대 16개 포트 바운더리 설정 가능
 ## Port-Boundary 설정
 사용할 포트에 대해 포트 바운더리 설정이 필요
-- port-boundary 1
+- `no` port-boundary `<id>`
+- status `[enable / disable]`
+- type `[exclude / include]` : 포트 바운더리 유형 설정
+	- exclude: 조건과 일치-> L2 스위칭 수행
+	- include(기본): 조건과 일치-> L4-7 스위칭 수행
+- boundary `[all / client / server]`
 - port `설정할 포트`
-- promisc off
+- promisc `[on / off]`
+- vid `<vid>` : 특정 vlan의 패킷만 적용 시키도록 설정 (단, 포트가 tagged 인 경우)
+- protocol `선택` : 특정 프토토콜의 패킷에만 포트바운더리 적용
+- sip `<sip>` : 포트 바운더리 적용 할 패킷의  source ip 대역 지정
+- dip `<dip` : 포트 바운더리 적용 할 패킷의 dip 대역 지정
 - apply
+
+-------------------
+# L4 부하 분산 설정
 ## real server 설정
 - real `<id>`
 - name `<name>`
