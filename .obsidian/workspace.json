@@ -27,12 +27,12 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "obs 활용/css 폰트 명령어.md",
+                "file": "obs 활용/git.md",
                 "mode": "source",
                 "source": false
               },
               "icon": "lucide-file",
-              "title": "css 폰트 명령어"
+              "title": "git"
             }
           }
         ],
@@ -229,8 +229,8 @@
   },
   "active": "69f6228f8ae7db51",
   "lastOpenFiles": [
-    "obs 활용/옵시디언 사용 방법 정리.md",
     "obs 활용/css 폰트 명령어.md",
+    "obs 활용/옵시디언 사용 방법 정리.md",
     "to do/2025-W22.md",
     "ZeroTrust ZT.md",
     "파티션.md",
