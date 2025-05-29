@@ -20,23 +20,8 @@
               "icon": "lucide-file",
               "title": "가상 디스크 이미지"
             }
-          },
-          {
-            "id": "69f6228f8ae7db51",
-            "type": "leaf",
-            "state": {
-              "type": "markdown",
-              "state": {
-                "file": "to do/2025-W22.md",
-                "mode": "source",
-                "source": false
-              },
-              "icon": "lucide-file",
-              "title": "2025-W22"
-            }
           }
-        ],
-        "currentTab": 1
+        ]
       }
     ],
     "direction": "vertical"
@@ -90,7 +75,7 @@
             }
           },
           {
-            "id": "2abbaea1c726344f",
+            "id": "0eb09a0ae9e22b69",
             "type": "leaf",
             "state": {
               "type": "mk-path-view",
@@ -168,13 +153,13 @@
             "state": {
               "type": "outline",
               "state": {
-                "file": "obs 활용/css 폰트 명령어.md",
+                "file": "가상 디스크 이미지.md",
                 "followCursor": false,
                 "showSearch": false,
                 "searchQuery": ""
               },
               "icon": "lucide-list",
-              "title": "Outline of css 폰트 명령어"
+              "title": "Outline of 가상 디스크 이미지"
             }
           },
           {
@@ -208,7 +193,7 @@
             }
           }
         ],
-        "currentTab": 6
+        "currentTab": 3
       }
     ],
     "direction": "horizontal",
@@ -227,10 +212,10 @@
       "periodic-notes:Open this week": false
     }
   },
-  "active": "69f6228f8ae7db51",
+  "active": "84607c9f1f1125f6",
   "lastOpenFiles": [
-    "IODD를 사용한 OS 설치.md",
     "to do/2025-W22.md",
+    "IODD를 사용한 OS 설치.md",
     "obs 활용/git.md",
     "obs 활용/css 폰트 명령어.md",
     "obs 활용/옵시디언 사용 방법 정리.md",
