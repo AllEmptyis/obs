@@ -22,8 +22,9 @@
 - `F2` : sytem setup
 	- 바이오스 setup, 부트모드 등 변경
 - `F10` : system service
-	- Lifecycle Controller 진입 (델서버 내장 시스템 통합 관리 인터페이스)
-	- Raid 구성 / OS 배포 / 펌웨어 업데이트 등
+	- Lifecycle Controller 진입 
+		- 델서버 내장 시스템 통합 관리 인터페이스
+		- Raid 구성 / OS 배포 / 펌웨어 업데이트 등
 - `F11` : boot manager
 	- 부팅 순서 변경
 - `F12` : PXE boot
@@ -48,7 +49,7 @@
 - https://forums.rockylinux.org/t/mpt3sas-does-not-work-with-rockylinux-9/6935
 - 설치 대상 서버(Dell)의 raid controller SAS2008는 mpt2sas 모듈과 호환 됨 
 - Rocky에서는 mpt3sas 모듈만 지원
-	- 구형 하드웨어를 인식하지 못하는 문제 발생
+	- 구형 하드웨어를 인식하지 못하는 문제인 것으로 추정
 #### 모듈 확인
 - modinfo mpt2sas
 	- 커널이 해당 모듈을 지원하는지 확인
