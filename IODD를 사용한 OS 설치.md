@@ -39,7 +39,10 @@
 - [x] vm으로  ubuntu 설치
 	- 설치 잘 됨 확인
 - [ ] centos7 설치
-### DUD 사용하여 설치 시도
+- [ ] centos6.8 설치
+- [x] Rocky linux8.4 설치 - 실패
+	- [ ] 사용 모듈 확인
+##### DUD 사용하여 설치 시도
 - [x] 부트모드 UEFI / iso 라벨로 설정하여 설치 시도 (실패)
 	- 부트모드 BIOS로 해야 함
 	- 라벨로 설정하면 인식은 하지만 dud iso가 sas2008을 거부함. (에러 메시지 확인)
@@ -73,12 +76,11 @@ dnf install -y https://www.elrepo.org/elrepo-release-9.el9.elrepo.noarch.rpm
 # 현재 커널에 맞는 kmod-mpt2sas 설치
 dnf --enablerepo=elrepo install -y kmod-mpt2sas
 ```
-
-grub 로딩 중 e
+#### DUD 사용하여 설치 시도
+##### 생성 방법
 inst.dd=hd:LABEL=DD_MPT2SAS
 or
 init.dd=hd:/dev/sdb:/dd-mpt3sas-43.100.00.00-1.el9_5.iso
-
-
-https://elrepo.org/linux/elrepo/el9/x86_64/RPMS/
-kmod-mpt3sas-43.100.00.00-6.el9_5.elrepo.x86_64.rpm
+##### DUD 파일
+- https://elrepo.org/linux/elrepo/el9/x86_64/RPMS/
+- kmod-mpt3sas-43.100.00.00-6.el9_5.elrepo.x86_64.rpm
