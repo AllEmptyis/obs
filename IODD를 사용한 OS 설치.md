@@ -38,7 +38,8 @@
 	- mpt3sas 모듈 사용 중
 - [x] vm으로  ubuntu 설치
 	- 설치 잘 됨 확인
-- [ ] centos7 설치
+- [x] centos7 설치
+	- 성공 / mpt2sas 모듈 있음. (수동 로드x)
 - [ ] centos6.8 설치
 - [x] Rocky linux8.4 설치 - 실패
 	- [ ] 사용 모듈 확인
