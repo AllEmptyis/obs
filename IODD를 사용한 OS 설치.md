@@ -84,3 +84,22 @@ init.dd=hd:/dev/sdb:/dd-mpt3sas-43.100.00.00-1.el9_5.iso
 ##### DUD 파일
 - https://elrepo.org/linux/elrepo/el9/x86_64/RPMS/
 - kmod-mpt3sas-43.100.00.00-6.el9_5.elrepo.x86_64.rpm
+## 기타 확인 방법
+#### ISO에 모듈 포함 여부 확인 방법
+```
+#ISO 마운트
+mkdir /mnt/iso
+sudo mount -o loop CentOS-7-XXX.iso /mnt/iso
+cd /mnt/iso/isolinux
+
+#modules.cgz 압축 해제
+mkdir /tmp/initrd
+cd /tmp/initrd
+zcat /mnt/iso/isolinux/initrd.img | cpio -idmv
+
+#모듈 확인
+find . -name 'mpt2sas.ko'
+```
+## 대안
+#### IT 모드 전환 방법
+- PERC200 
