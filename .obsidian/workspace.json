@@ -193,11 +193,11 @@
             }
           }
         ],
-        "currentTab": 6
+        "currentTab": 4
       }
     ],
     "direction": "horizontal",
-    "width": 505.5
+    "width": 382.5
   },
   "left-ribbon": {
     "hiddenItems": {
@@ -212,7 +212,7 @@
       "periodic-notes:Open this week": false
     }
   },
-  "active": "4770c888ff7ad9b5",
+  "active": "02e0c848f038160e",
   "lastOpenFiles": [
     "conflict-files-obsidian-git.md",
     "IODD를 사용한 OS 설치.md",
