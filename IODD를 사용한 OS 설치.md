@@ -110,6 +110,17 @@ zstdcat initrd.img | cpio -idmv
 #모듈 확인
 find . -name 'mpt2sas.ko'
 ```
+##### 결과
+- rockylinux 8.4
+	- mpt2sas, mpt3sas 모듈 없음
+- CentOS 7
+	- mpt2sas, mpt3sas 모듈 없음
+- CentOS 6.8
+	- mpt3sas 모듈 포함
+		```
+		[root@localhost initrd]# find . -name 'mpt3sas'
+		./modules/2.6.32-642.el6.x86_64/kernel/drivers/scsi/mpt3sas
+		```
 ## 대안
 #### IT 모드 전환 방법
 - PERC200 
