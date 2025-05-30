@@ -86,6 +86,8 @@ init.dd=hd:/dev/sdb:/dd-mpt3sas-43.100.00.00-1.el9_5.iso
 - kmod-mpt3sas-43.100.00.00-6.el9_5.elrepo.x86_64.rpm
 ## 기타 확인 방법
 #### ISO에 모듈 포함 여부 확인 방법
+- VM에서 ISO 마운트 하여 확인 방법
+- VM 종료 상태에서 확인 할 iso image 연결 후 부팅 -> `/dev/sr0` 으로 마운트
 ```
 #ISO 마운트
 mkdir /mnt/iso
