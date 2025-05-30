@@ -13,12 +13,12 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "가상 디스크 이미지.md",
+                "file": "Linux/리눅스 메모리 공간.md",
                 "mode": "source",
                 "source": false
               },
               "icon": "lucide-file",
-              "title": "가상 디스크 이미지"
+              "title": "리눅스 메모리 공간"
             }
           }
         ]
@@ -75,7 +75,7 @@
             }
           },
           {
-            "id": "0eb09a0ae9e22b69",
+            "id": "7ca2d7c2a94852f0",
             "type": "leaf",
             "state": {
               "type": "mk-path-view",
@@ -153,13 +153,13 @@
             "state": {
               "type": "outline",
               "state": {
-                "file": "가상 디스크 이미지.md",
+                "file": "Linux/리눅스 메모리 공간.md",
                 "followCursor": false,
                 "showSearch": false,
                 "searchQuery": ""
               },
               "icon": "lucide-list",
-              "title": "Outline of 가상 디스크 이미지"
+              "title": "Outline of 리눅스 메모리 공간"
             }
           },
           {
@@ -214,34 +214,34 @@
   },
   "active": "84607c9f1f1125f6",
   "lastOpenFiles": [
+    "Linux/Ubuntu DNS 설정.md",
+    "PAS-K/PAS-K 서버 부하 분산 NAT 모드.md",
+    "신규기능/IP Tunnel DSR_HC 실습.md",
+    "신규기능/IP Tunnel DSR.md",
     "to do/2025-W22.md",
+    "가상 디스크 이미지.md",
     "IODD를 사용한 OS 설치.md",
     "obs 활용/git.md",
     "obs 활용/css 폰트 명령어.md",
     "obs 활용/옵시디언 사용 방법 정리.md",
     "ZeroTrust ZT.md",
     "파티션.md",
-    "신규기능/IP Tunnel DSR_HC 실습.md",
-    "가상 디스크 이미지.md",
     "Linux/리눅스 커널 기능.md",
     "QCOW2.md",
     "가상화 방식.md",
     "파일 시스템.md",
     "PAS-K/Port Boundary.md",
     "Linux/리눅스 메모리 공간.md",
-    "Linux/Ubuntu DNS 설정.md",
     "obs 활용/단축키.md",
     "Loopback 인터페이스.md",
     "to do/2025-W21.md",
     "to do/to do.md",
     "Vault.md",
     "Linux",
-    "신규기능/IP Tunnel DSR.md",
     "명령어/PAS-K 명령어.md",
     "명령어/윈도우.md",
     "Bass/test.md",
     "첨부파일/Pasted image 20250515173108.png",
-    "PAS-K/PAS-K 서버 부하 분산 NAT 모드.md",
     "Tags",
     "첨부파일/Pasted image 20250515172853.png",
     "명령어",
