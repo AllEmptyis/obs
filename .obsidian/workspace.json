@@ -233,7 +233,7 @@
             }
           }
         ],
-        "currentTab": 4
+        "currentTab": 3
       }
     ],
     "direction": "horizontal",
@@ -252,7 +252,7 @@
       "periodic-notes:Open this week": false
     }
   },
-  "active": "23d2ebee43a1f920",
+  "active": "d3664286e9858d0b",
   "lastOpenFiles": [
     "obs 활용/git.md",
     "cloud/libvirt.md",
