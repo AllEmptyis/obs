@@ -1,8 +1,14 @@
 {
+<<<<<<< HEAD
   "showLineNumber": false,
   "userIgnoreFilters": [
     "첨부파일/"
   ],
   "attachmentFolderPath": "첨부파일",
   "alwaysUpdateLinks": true
+=======
+  "promptDelete": false,
+  "showLineNumber": true,
+  "readableLineLength": false
+>>>>>>> 0afb85c (command)
 }

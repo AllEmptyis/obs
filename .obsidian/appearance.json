@@ -1,6 +1,7 @@
 {
   "theme": "obsidian",
   "baseFontSize": 14,
+<<<<<<< HEAD
   "enabledCssSnippets": [
     "font"
   ],
@@ -9,4 +10,10 @@
   "interfaceFontFamily": "Noto Sans KR",
   "textFontFamily": "Noto Sans KR",
   "monospaceFontFamily": "Noto Sans KR"
+=======
+  "baseFontSizeAction": true,
+  "textFontFamily": "나눔고딕",
+  "interfaceFontFamily": "나눔고딕",
+  "cssTheme": "Obsidian Nord"
+>>>>>>> 0afb85c (command)
 }
