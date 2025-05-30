@@ -91,8 +91,7 @@
               "title": "가상화 방식"
             }
           }
-        ],
-        "currentTab": 1
+        ]
       }
     ],
     "direction": "vertical"
@@ -213,13 +212,13 @@
             "state": {
               "type": "outline",
               "state": {
-                "file": "to do/2025-W22.md",
+                "file": "IODD를 사용한 OS 설치.md",
                 "followCursor": false,
                 "showSearch": false,
                 "searchQuery": ""
               },
               "icon": "lucide-list",
-              "title": "2025-W22 의 개요"
+              "title": "IODD를 사용한 OS 설치 의 개요"
             }
           },
           {
@@ -252,13 +251,13 @@
       "periodic-notes:Open this week": false
     }
   },
-  "active": "d3664286e9858d0b",
+  "active": "272835b870bdb8ff",
   "lastOpenFiles": [
+    "to do/2025-W22.md",
     "obs 활용/git.md",
     "cloud/libvirt.md",
     "IODD를 사용한 OS 설치.md",
     "conflict-files-obsidian-git.md",
-    "to do/2025-W22.md",
     "가상 디스크 이미지.md",
     "QCOW2.md",
     "obs 활용/옵시디언 사용 방법 정리.md",
