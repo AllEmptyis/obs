@@ -87,16 +87,20 @@ init.dd=hd:/dev/sdb:/dd-mpt3sas-43.100.00.00-1.el9_5.iso
 ## 기타 확인 방법
 #### ISO에 모듈 포함 여부 확인 방법
 - VM에서 ISO 마운트 하여 확인 방법
-- VM 종료 상태에서 확인 할 iso image 연결 후 부팅 -> `/dev/sr0` 으로 마운트
+- VM 종료 상태에서 확인 할 iso image 연결 후 부팅 -> `/dev/sr0` 으로 자동 마운트
+	- initrd.img: centos 설치 시 부팅에 사용되는 초기 RAM  디스크 이미지
+	- 내부에 커널 모듈 포함 되어 있음
 ```
 #ISO 마운트
 mkdir /mnt/iso
-sudo mount -o loop CentOS-7-XXX.iso /mnt/iso
+mount /dev/sr0 /mnt/iso
 cd /mnt/iso/isolinux
 
-#modules.cgz 압축 해제
+#initrd.img 압축 풀기 위한 디렉 생성
 mkdir /tmp/initrd
 cd /tmp/initrd
+
+#압축 해제 - 이미지 포맷 확인 필요
 zcat /mnt/iso/isolinux/initrd.img | cpio -idmv
 
 #모듈 확인
