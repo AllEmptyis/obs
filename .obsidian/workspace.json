@@ -153,13 +153,13 @@
             "state": {
               "type": "outline",
               "state": {
-                "file": "conflict-files-obsidian-git.md",
+                "file": "IODD를 사용한 OS 설치.md",
                 "followCursor": false,
                 "showSearch": false,
                 "searchQuery": ""
               },
               "icon": "lucide-list",
-              "title": "Outline of conflict-files-obsidian-git"
+              "title": "Outline of IODD를 사용한 OS 설치"
             }
           },
           {
@@ -193,7 +193,7 @@
             }
           }
         ],
-        "currentTab": 4
+        "currentTab": 6
       }
     ],
     "direction": "horizontal",
@@ -212,10 +212,10 @@
       "periodic-notes:Open this week": false
     }
   },
-  "active": "7ca2d7c2a94852f0",
+  "active": "4770c888ff7ad9b5",
   "lastOpenFiles": [
-    "IODD를 사용한 OS 설치.md",
     "conflict-files-obsidian-git.md",
+    "IODD를 사용한 OS 설치.md",
     "to do/2025-W22.md",
     "PAS-K/PAS-K 서버 부하 분산 NAT 모드.md",
     "Linux/리눅스 메모리 공간.md",
