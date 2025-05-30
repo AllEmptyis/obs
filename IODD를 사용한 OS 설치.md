@@ -38,11 +38,17 @@
 	- mpt3sas 모듈 사용 중
 - [x] vm으로  ubuntu 설치
 	- 설치 잘 됨 확인
-- [ ] centos7 설치
-### DUD 사용하여 설치 시도
+- [x] centos7 설치
+	- 성공 / mpt2sas 모듈 있음. (수동 로드x)
+- [ ] centos6.8 설치
+- [x] Rocky linux8.4 설치 - 실패
+	- [x] 사용 모듈 확인 (mpt2sas 모듈 없음)
+##### DUD 사용하여 설치 시도
 - [x] 부트모드 UEFI / iso 라벨로 설정하여 설치 시도 (실패)
 	- 부트모드 BIOS로 해야 함
 	- 라벨로 설정하면 인식은 하지만 dud iso가 sas2008을 거부함. (에러 메시지 확인)
+
+
 ## 오류
 ### mpt3sas 모듈에서 SAS2008 컨트롤러 인식 불가
 #### 문제 원인
@@ -73,12 +79,50 @@ dnf install -y https://www.elrepo.org/elrepo-release-9.el9.elrepo.noarch.rpm
 # 현재 커널에 맞는 kmod-mpt2sas 설치
 dnf --enablerepo=elrepo install -y kmod-mpt2sas
 ```
-
-grub 로딩 중 e
+#### DUD 사용하여 설치 시도
+##### 생성 방법
 inst.dd=hd:LABEL=DD_MPT2SAS
 or
 init.dd=hd:/dev/sdb:/dd-mpt3sas-43.100.00.00-1.el9_5.iso
+##### DUD 파일
+- https://elrepo.org/linux/elrepo/el9/x86_64/RPMS/
+- kmod-mpt3sas-43.100.00.00-6.el9_5.elrepo.x86_64.rpm
+## 기타 확인
+#### ISO에 모듈 포함 여부 확인
+- **해당 방법은 initrd.img에  모듈이 포함되어 있는지만 확인**
+	- .rpm에서 수동으로 로드 가능하면 설치 성공
+- VM에서 ISO 마운트 하여 확인 방법
+- VM 종료 상태에서 확인 할 iso image 연결 후 부팅 -> `/dev/sr0` 으로 자동 마운트
+	- initrd.img: 리눅스 설치 시 부팅에 사용되는 초기 RAM 디스크 이미지
+	- 내부에 커널 모듈 포함 되어 있음
+```
+#ISO 마운트
+mkdir /mnt/iso
+mount /dev/sr0 /mnt/iso
+cd /mnt/iso/isolinux
 
+#initrd.img 압축 풀기 위한 디렉 생성
+mkdir /tmp/initrd
+cd /tmp/initrd
+cp /mnt/iso/images/pxeboot/initrd.img .
 
-https://elrepo.org/linux/elrepo/el9/x86_64/RPMS/
-kmod-mpt3sas-43.100.00.00-6.el9_5.elrepo.x86_64.rpm
+#압축 해제 - 이미지 포맷 확인 필요 (ztd -> cpio 해제)
+zstdcat initrd.img | cpio -idmv
+
+#모듈 확인
+find . -name 'mpt2sas.ko'
+```
+##### 결과
+- rockylinux 8.4
+	- mpt2sas, mpt3sas 모듈 없음
+- CentOS 7
+	- mpt2sas, mpt3sas 모듈 없음
+- CentOS 6.8
+	- mpt3sas 모듈 포함
+		```
+		[root@localhost initrd]# find . -name 'mpt3sas'
+		./modules/2.6.32-642.el6.x86_64/kernel/drivers/scsi/mpt3sas
+		```
+## 대안
+#### IT 모드 전환 방법
+- PERC200 

@@ -7,7 +7,7 @@ git config user.email "parkda2000@gmail.com"
 -  로컬 repository 지정, 해당 폴더로 이동 후
 
 git init //git 초기화
-gist remote add origin  https://github.com/AllEmptyis/obs.git // 원격 저장소 연결
+git remote add origin  https://github.com/AllEmptyis/obs.git // 원격 저장소 연결
 git status // 상태 확인
 git add . //파일 추가
 git commit -m "command"

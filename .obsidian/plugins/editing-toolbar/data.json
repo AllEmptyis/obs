@@ -1,6 +1,10 @@
 {
   "lastVersion": "3.1.13",
+<<<<<<< HEAD
   "aestheticStyle": "tiny",
+=======
+  "aestheticStyle": "default",
+>>>>>>> 0afb85c (command)
   "positionStyle": "top",
   "menuCommands": [
     {
@@ -302,7 +306,11 @@
   "cMenuBottomValue": 4.25,
   "cMenuNumRows": 12,
   "cMenuWidth": 610,
+<<<<<<< HEAD
   "cMenuFontColor": "#ffffff",
+=======
+  "cMenuFontColor": "#4f6128",
+>>>>>>> 0afb85c (command)
   "cMenuBackgroundColor": "#d3f8b6",
   "autohide": true,
   "custom_bg1": "#FFB78B8C",
@@ -321,7 +329,12 @@
   "formatBrushes": {},
   "customCommands": [],
   "viewTypeSettings": {},
+<<<<<<< HEAD
   "toolbarBackgroundColor": "#2D3033",
   "toolbarIconColor": "#E2E8F0",
+=======
+  "toolbarBackgroundColor": "rgba(var(--background-secondary-rgb), 0.7)",
+  "toolbarIconColor": "var(--text-normal)",
+>>>>>>> 0afb85c (command)
   "toolbarIconSize": 18
 }
