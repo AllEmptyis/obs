@@ -119,8 +119,7 @@
               "title": "가상화 방식"
             }
           }
-        ],
-        "currentTab": 3
+        ]
       }
     ],
     "direction": "vertical"
@@ -280,11 +279,11 @@
       "periodic-notes:Open this week": false
     }
   },
-  "active": "02071c4eb4d31fb2",
+  "active": "272835b870bdb8ff",
   "lastOpenFiles": [
+    "conflict-files-obsidian-git.md",
     "obs 활용/git.md",
     "IODD를 사용한 OS 설치.md",
-    "conflict-files-obsidian-git.md",
     "to do/2025-W22.md",
     "가상 디스크 이미지.md",
     "QCOW2.md",
