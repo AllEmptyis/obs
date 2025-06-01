@@ -91,7 +91,8 @@
               "title": "가상화 방식"
             }
           }
-        ]
+        ],
+        "currentTab": 1
       }
     ],
     "direction": "vertical"
@@ -212,13 +213,13 @@
             "state": {
               "type": "outline",
               "state": {
-                "file": "IODD를 사용한 OS 설치.md",
+                "file": "to do/2025-W22.md",
                 "followCursor": false,
                 "showSearch": false,
                 "searchQuery": ""
               },
               "icon": "lucide-list",
-              "title": "IODD를 사용한 OS 설치 의 개요"
+              "title": "2025-W22 의 개요"
             }
           },
           {
@@ -227,8 +228,18 @@
             "state": {
               "type": "git-view",
               "state": {},
-              "icon": "git-pull-request",
-              "title": "Source Control"
+              "icon": "lucide-file",
+              "title": "플러그인이 더 이상 활성화돼있지 않음"
+            }
+          },
+          {
+            "id": "81ac5dca35b602fa",
+            "type": "leaf",
+            "state": {
+              "type": "calendar",
+              "state": {},
+              "icon": "calendar-with-checkmark",
+              "title": "Calendar"
             }
           }
         ],
@@ -245,10 +256,7 @@
       "canvas:새 캔버스 만들기": false,
       "daily-notes:오늘의 일일 노트 열기": false,
       "templates:템플릿 삽입": false,
-      "command-palette:명령어 팔레트 열기": false,
-      "remotely-save:Remotely Save": false,
-      "obsidian-git:Open Git source control": false,
-      "periodic-notes:Open this week": false
+      "command-palette:명령어 팔레트 열기": false
     }
   },
   "active": "23d2ebee43a1f920",
