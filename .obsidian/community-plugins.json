@@ -1,7 +1,9 @@
 [
   "calendar",
   "obsidian-custom-frames",
-  "editing-toolbar",
   "obsidian-git",
-  "obsidian-hover-editor"
+  "obsidian-hover-editor",
+  "periodic-notes",
+  "remotely-save",
+  "obsidian-plugin-toc"
 ]
