@@ -40,41 +40,24 @@
 - [ ] centos6.8 설치
 - [x] Rocky linux8.4 설치 - 실패
 	- [x] 사용 모듈 확인 (mpt2sas 모듈 없음)
-##### DUD 사용하여 설치 시도
-- [x] 부트모드 UEFI / iso 라벨로 설정하여 설치 시도 (실패)
-	- 부트모드 BIOS로 해야 함
-	- 라벨로 설정하면 인식은 하지만 dud iso가 sas2008을 거부함. (에러 메시지 확인)
+- DUD 사용하여 설치 시도
+	- [x] 부트모드 UEFI / iso 라벨로 설정하여 설치 시도 (실패)
+		- 부트모드 BIOS로 해야 함
+		- 라벨로 설정하면 인식은 하지만 dud iso가 sas2008을 거부함. (에러 메시지 확인)
 ## 오류
 ### mpt3sas 모듈에서 SAS2008 컨트롤러 인식 불가
 #### 문제 원인
 - https://forums.rockylinux.org/t/mpt3sas-does-not-work-with-rockylinux-9/6935
-- 설치 대상 서버(Dell)의 raid controller SAS2008는 mpt2sas 모듈과 호환 됨 
+- 설치 대상 서버(Dell)의 raid controller SAS2008는 mpt2sas 모듈과 호환
 - RHEL8 이상부터는 mpt2sas 모듈 미지원
 	- 구형 하드웨어를 인식하지 못하는 문제
-	- RedHat계열 리눅스 OS는 설치 불가
-#### 모듈 확인
-- modinfo mpt2sas
-	- 커널이 해당 모듈을 지원하는지 확인
-- lsmod | grep mpt2sas
-	- 현재 해당 모듈이 로드 되어 있는지
-- modprobe mpt2sas
-	- 수동으로 모듈 로드
-#### 현재 커널 버전 확인
-- uname -r
-#### 모듈 다운로드
-- dnf -y install
-	```
-	https://dl.rockylinux.org/vault/rocky/9.2/BaseOS/x86_64/kickstart/Packages/k/kernel-5.14.0-284.11.1.el9_2.x86_64.rpm
-	https://dl.rockylinux.org/vault/rocky/9.2/BaseOS/x86_64/kickstart/Packages/k/kernel-modules-extra-5.14.0-284.11.1.el9_2.x86_64.rpm
-	https://dl.rockylinux.org/vault/rocky/9.2/BaseOS/x86_64/kickstart/Packages/k/kernel-modules-5.14.0-284.11.1.el9_2.x86_64.rpm
-	```
-```
-# ELRepo 설치 (한 번만)
-dnf install -y https://www.elrepo.org/elrepo-release-9.el9.elrepo.noarch.rpm
-
-# 현재 커널에 맞는 kmod-mpt2sas 설치
-dnf --enablerepo=elrepo install -y kmod-mpt2sas
-```
+	- RedHat계열 리눅스 OS 설치 불가
+#### 해결 방법
+- Elrepo에서도 RHEL8 이상부터는 mpt2sas 모듈 지원x
+	- mpt3sas 모듈에서 pci id 지원하는 패키지도 없는 것으로 확인
+- mpt3sas.ko 모듈에 pci id 수동 설정
+- it 모드 (raid 컨트롤러 삭제)
+- 
 #### DUD 사용하여 설치 시도
 ##### 생성 방법
 inst.dd=hd:LABEL=DD_MPT2SAS
@@ -121,3 +104,16 @@ find . -name 'mpt2sas.ko'
 ## 대안
 #### IT 모드 전환 방법
 - PERC200 
+## 명령어
+#### 모듈 확인
+- modinfo mpt2sas
+	- 커널이 해당 모듈을 지원하는지 확인
+- lsmod | grep mpt2sas
+	- 현재 해당 모듈이 로드 되어 있는지
+- modprobe mpt2sas
+	- 수동으로 모듈 로드
+#### 현재 커널 버전 확인
+- uname -r
+#### 특정 모듈 위치 찾기
+- find /lib/modules/$(uname -r) -name 'mpt3sas.ko'
+
