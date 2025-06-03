@@ -1,7 +1,8 @@
 ## 방법
 - sas2008이 mpt3sas 모듈을 인식하지 못하는 문제로 인해 elrepo에서 호환되는 드라이버 사용 필요
 - 그러나 해당 드라이버도 sas2008을 인식하지 못하는 것으로 확인
-	- rocky9.6에서 문제 해결 (https://elrepo.org/bugs/view.php?id=1530&utm_source=chatgpt.com)
+	- ~~rocky9.6에서 문제 해결 (https://elrepo.org/bugs/view.php?id=1530&utm_source=chatgpt.com)~~
+	- <u>위의 링크는 RHEL9.6 버전에서 "mpt3sas" 모듈이 인식되지 않는다는 내용</u>
 - 아래의 패키지에서 mpt3sas.ko 모듈 추출
 	- `kmod-mpt3sas-48.100.00.00-1.el9_6.elrepo.x86_64.rpm`
 - 설치 방법

@@ -28,9 +28,6 @@
 - `F11` : boot manager
 	- 부팅 순서 변경
 - `F12` : PXE boot
-### OS 정보
-
-
 ## 해결 시도
 - [x] 서버에 기존 ubuntu 설치 (v22.04)
 	- 그냥 설치하면 화면 안나옴 / graphical mode로 진입했음 (이유? 모름)
@@ -47,15 +44,14 @@
 - [x] 부트모드 UEFI / iso 라벨로 설정하여 설치 시도 (실패)
 	- 부트모드 BIOS로 해야 함
 	- 라벨로 설정하면 인식은 하지만 dud iso가 sas2008을 거부함. (에러 메시지 확인)
-
-
 ## 오류
 ### mpt3sas 모듈에서 SAS2008 컨트롤러 인식 불가
 #### 문제 원인
 - https://forums.rockylinux.org/t/mpt3sas-does-not-work-with-rockylinux-9/6935
 - 설치 대상 서버(Dell)의 raid controller SAS2008는 mpt2sas 모듈과 호환 됨 
-- Rocky에서는 mpt3sas 모듈만 지원
-	- 구형 하드웨어를 인식하지 못하는 문제인 것으로 추정
+- RHEL8 이상부터는 mpt2sas 모듈 미지원
+	- 구형 하드웨어를 인식하지 못하는 문제
+	- RedHat계열 리눅스 OS는 설치 불가
 #### 모듈 확인
 - modinfo mpt2sas
 	- 커널이 해당 모듈을 지원하는지 확인
