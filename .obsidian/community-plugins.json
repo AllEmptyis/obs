@@ -1,15 +1,7 @@
 [
-  "remotely-save",
-<<<<<<< HEAD
-  "make-md",
-  "editing-toolbar",
-  "obsidian-hover-editor",
-  "obsidian-custom-frames",
   "calendar",
-=======
-  "obsidian-plugin-toc",
+  "obsidian-custom-frames",
   "editing-toolbar",
->>>>>>> 0afb85c (command)
-  "periodic-notes",
-  "obsidian-git"
+  "obsidian-git",
+  "obsidian-hover-editor"
 ]
