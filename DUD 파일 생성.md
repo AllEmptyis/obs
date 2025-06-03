@@ -95,4 +95,6 @@ Writing to 'stdio:dd-mpt3sas-48.100-el9_6.iso' completed successfully.
 			5.14.0-xxx.el9_* : 특정 스트림 전용
 			```
 	- `kmod-mpt3sas-48.100.00.00-1.el9_6.elrepo.x86_64.rpm` 커널 9.6에서만 호환
-### 해결 방법
+### 요약
+- elrepo에서 RHEL 9.6 버전에서 제공하는 mpt3sas 모듈로 dud 만들기 시도
+- 해당 패키지에서도 호환 안 됨
