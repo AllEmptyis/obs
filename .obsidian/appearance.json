@@ -1,7 +1,7 @@
 {
   "theme": "obsidian",
   "interfaceFontFamily": "Noto Sans KR",
-  "textFontFamily": "나눔고딕",
+  "textFontFamily": "Noto Sans KR,나눔고딕",
   "baseFontSize": 14,
   "cssTheme": "GitHub Theme"
 }

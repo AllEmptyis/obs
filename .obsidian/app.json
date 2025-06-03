@@ -1,4 +1,4 @@
 {
-  "showLineNumber": true,
-  "readableLineLength": false
+  "showLineNumber": false,
+  "readableLineLength": true
 }
