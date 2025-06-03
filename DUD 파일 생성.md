@@ -89,7 +89,7 @@ Writing to 'stdio:dd-mpt3sas-48.100-el9_6.iso' completed successfully.
 	```
 ## 실패1
 ### 원인
-- usb에 들어 있는 iso를 자동으로 인식하지 못함
+- usb에 들어 있는 iso 자동 마운트 안 됨
 - 수동으로 mpt3sas.ko 모듈 인식
 	- 설치하려 한 ko 모듈의 vermagic(어떤 커널에서 빌드 되었는지)이 다르기 때문에 적용 안 됨
 		- invalid module format
@@ -98,26 +98,5 @@ Writing to 'stdio:dd-mpt3sas-48.100-el9_6.iso' completed successfully.
 			vermagic: 5.14.0 SMP mod_unload modversions
 			5.14.0-xxx.el9_* : 특정 스트림 전용
 			```
-	- 내가 설치한 패키지는 9.6 커널 버전대에서만 호환 됨.
+	- `kmod-mpt3sas-48.100.00.00-1.el9_6.elrepo.x86_64.rpm` 커널 9.6에서만 호환
 ### 해결 방법
-- `kmod-mpt3sas-48.100.00.00-1.el9.elrepo.x86_64.rpm` 로 설치
-#### 파일 설치
-```
-[root@localhost dud]# dnf install -y https://www.elrepo.org/elrepo-release-9.el9.elrepo.noarch.rpm
-dnf download --enablerepo=elrepo-testing kmod-mpt3sas-48.100.00.00-1.el9_6.elrepo.x86_64
-
-[root@localhost dud]# rpm2cpio kmod-mpt3sas-48.100*.rpm | cpio -ivd
-./etc/depmod.d/kmod-mpt3sas.conf
-./lib/modules/5.14.0-570.12.1.el9_6.x86_64
-./lib/modules/5.14.0-570.12.1.el9_6.x86_64/extra
-./lib/modules/5.14.0-570.12.1.el9_6.x86_64/extra/mpt3sas
-./lib/modules/5.14.0-570.12.1.el9_6.x86_64/extra/mpt3sas/mpt3sas.ko
-./usr/share/doc/kmod-mpt3sas-48.100.00.00
-./usr/share/doc/kmod-mpt3sas-48.100.00.00/GPL-v2.0.txt
-./usr/share/doc/kmod-mpt3sas-48.100.00.00/greylist.txt
-2324 blocks
-
-[root@localhost dud]# modinfo ./lib/modules/5.14.0-570.12.1.el9_6.x86_64/extra/mpt3sas/mpt3sas.ko | grep vermagic
-vermagic:       5.14.0-570.12.1.el9_6.x86_64 SMP preempt mod_unload modversions
-->버전 맞음
-```
