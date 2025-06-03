@@ -81,8 +81,7 @@ inst.dd=hd:LABEL=DD_MPT2SAS
 or
 init.dd=hd:/dev/sdb:/dd-mpt3sas-43.100.00.00-1.el9_5.iso
 ##### DUD 파일
-- https://elrepo.org/linux/elrepo/el9/x86_64/RPMS/
-- kmod-mpt3sas-43.100.00.00-6.el9_5.elrepo.x86_64.rpm
+- https://elrepo.org/linux/elrepo/el9/x86_64/RPMS/kmod-mpt3sas-43.100.00.00-6.el9_5.elrepo.x86_64.rpm
 ## 기타 확인
 #### ISO에 모듈 포함 여부 확인
 - **해당 방법은 initrd.img에  모듈이 포함되어 있는지만 확인**
