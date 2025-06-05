@@ -54,7 +54,7 @@ anaconda-ks.cfg  etc  kmod-mpt3sas-48.100.00.00-1.el9_6.elrepo.x86_64.rpm  lib  
 boot  etc  ks-modules  lib
 ```
 #### DUD 생성 및 ISO 패키징
-- 실제 서버에 설치 할 커널 버전이 다르기 때문에 폴더명을 커널 버전에 맞도록 변경
+- 실제 서버에 설치 할 커널 버전이 다르기 때문에 폴더명을 커널 버전에 맞도록 변경 (하면 안 됨)
 	- /dud/ks-modules/x86_64/5.14.0-284.11.1.el9_2.x86_64
 ```
 ## ko를 DUD 디렉에 복사
@@ -97,4 +97,5 @@ Writing to 'stdio:dd-mpt3sas-48.100-el9_6.iso' completed successfully.
 	- `kmod-mpt3sas-48.100.00.00-1.el9_6.elrepo.x86_64.rpm` 커널 9.6에서만 호환
 ### 요약
 - elrepo에서 RHEL 9.6 버전에서 제공하는 mpt3sas 모듈로 dud 만들기 시도
-- 해당 패키지에서도 호환 안 됨
+	- 해당 rpm 9.6 버전에서만 호환
+- 애초에 해당 rpm이 sas2008 지원하지 않았던 것으로 확인. 

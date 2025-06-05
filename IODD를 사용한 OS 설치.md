@@ -117,3 +117,9 @@ find . -name 'mpt2sas.ko'
 #### 특정 모듈 위치 찾기
 - find /lib/modules/$(uname -r) -name 'mpt3sas.ko'
 
+- modinfo mpt3sas | grep filename
+- 시스템 하드웨어 pci id 확인
+	- lspci -nn
+- cat /etc/redhat-release
+- nmcli device reapply <인터페이스명>
+
