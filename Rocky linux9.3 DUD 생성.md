@@ -2,6 +2,7 @@
 - sas2008 pci id를 지원하는 mpt3sas 모듈을 iso 파일로 만들어서 부팅 할 때 해당 드라이버를 사용하도록 하는 방법
 - 조건
 	- 설치하려는 iso와 kmod mpt3sas가 빌드 된 커널 버전이 같아야 함
+	- kmod rpm에 pci id`1000:0072` 지원하는지 미리 확인
 - 사용 rpm
 	- [kmod-mpt3sas-43.100.00.00-3.el9_3.elrepo.x86_64.rpm](https://elrepo.org/linux/elrepo/el9/x86_64/RPMS/kmod-mpt3sas-43.100.00.00-3.el9_3.elrepo.x86_64.rpm)
 	- dnf download 
@@ -10,7 +11,7 @@
 - rpm 다운로드  후 ko 모듈 위치
 	- /lib/modules/`version`/extra/mpt3sas/mpt3sas.ko
 - 해당 ko 모듈을 iso 파일 만들 곳으로 복사 후 iso 파일로 생성
-	- [[무제#올바른 iso 구조|파일 구조 참조]]
+	- [[Rocky linux9.3 DUD 생성#올바른 iso 구조|파일 구조 참조]]
 ### dud 디렉토리 생성
 ```
 [root@localhost dud]# KVER="5.14.0-362.8.1.el9_3.x86_64"

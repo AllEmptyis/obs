@@ -25,6 +25,9 @@
 - `F11` : boot manager
 - `F12` : PXE boot
 ## 해결 시도
+- [[Rocky linux9.3 DUD 생성]] 
+	- 성공
+- [[DUD 파일 생성]]
 - [x] 서버에 기존 ubuntu 설치 (v22.04)
 	- 그냥 설치하면 화면 안나옴 / graphical mode로 진입했음 (이유? 모름)
 	- lsblk 확인 -> sda 가상디스크 잡힘
@@ -48,19 +51,6 @@
 - RHEL8 이상부터는 mpt2sas 모듈 미지원
 	- 구형 하드웨어를 인식하지 못하는 문제
 	- RedHat계열 리눅스 OS 설치 불가
-#### 해결 방법
-- Elrepo에서도 RHEL8 이상부터는 mpt2sas 모듈 지원x
-	- mpt3sas 모듈에서 pci id 지원하는 패키지도 없는 것으로 확인
-- mpt3sas.ko 모듈에 pci id(`1000:0072`) 수동 설정
-- it 모드 (raid 컨트롤러 삭제)
-- 레드헷 외 다른 OS 설치
-#### DUD 사용하여 설치 시도
-##### 생성 방법
-inst.dd=hd:LABEL=DD_MPT2SAS
-or
-init.dd=hd:/dev/sdb:/dd-mpt3sas-43.100.00.00-1.el9_5.iso
-##### DUD 파일
-- https://elrepo.org/linux/elrepo/el9/x86_64/RPMS/kmod-mpt3sas-43.100.00.00-6.el9_5.elrepo.x86_64.rpm
 ## 기타 확인
 #### ISO에 모듈 포함 여부 확인
 - **해당 방법은 initrd.img에  모듈이 포함되어 있는지만 확인**
