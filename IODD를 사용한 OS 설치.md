@@ -4,13 +4,10 @@
 - iodd_iso E: 파티션 > `_ISO` 폴더에 설치 할 iso 파일 업로드
 - usb2.0
 ## 설치 순서
-1. BIOS / 
-2. raid 구성 모드 진입 (`F10`)
-	- **iodd mode ODD mode로 변경** (dual mode로 설정 시 iodd기기의 디스크도 인식)
-	- raid 구성
-3. OS 부팅 / 설치
-	- iodd에서 설치 할 iso 파일 마운트 후 설치 진행
-4. 완료
+1. 구성 모드 진입 (`F10`)
+	- raid 구성 (필요 시)
+	- OS deployment - iodd로 iso 마운트 후 OS 설치
+2. OS 부팅 / 설치
 ## 서버/OS 버전 및 정보
 ### 서버 정보
 - 모델명
@@ -26,7 +23,6 @@
 		- 델서버 내장 시스템 통합 관리 인터페이스
 		- Raid 구성 / OS 배포 / 펌웨어 업데이트 등
 - `F11` : boot manager
-	- 부팅 순서 변경
 - `F12` : PXE boot
 ## 해결 시도
 - [x] 서버에 기존 ubuntu 설치 (v22.04)
