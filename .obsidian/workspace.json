@@ -206,8 +206,8 @@
             "state": {
               "type": "calendar",
               "state": {},
-              "icon": "lucide-file",
-              "title": "Plugin no longer active"
+              "icon": "calendar-with-checkmark",
+              "title": "Calendar"
             }
           },
           {
@@ -225,8 +225,7 @@
       }
     ],
     "direction": "horizontal",
-    "width": 376.5,
-    "collapsed": true
+    "width": 376.5
   },
   "left-ribbon": {
     "hiddenItems": {
@@ -240,7 +239,7 @@
       "remotely-save:Remotely Save": false
     }
   },
-  "active": "236318581c482313",
+  "active": "659da2eb5e72b0f8",
   "lastOpenFiles": [
     "DUD 파일 생성.md",
     "IODD를 사용한 OS 설치.md",
