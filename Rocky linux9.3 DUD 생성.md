@@ -59,7 +59,31 @@ dd-mpt3sas-43.100-el9_3.iso  ks-modules  rhdd3
 - `tab`키로 grub 모드 진입
 - inst.dd 입력
 - iso 파일을 옮긴 usb를 마운트 -> 생성한 kmod mpt3sas iso를 선택
+## 확인
+- 설치 후 파일 위치
+	```
+	[root@localhost /]# modinfo mpt3sas
+	filename:       /lib/modules/5.14.0-362.8.1.el9_3.x86_64/extra/mpt3sas/mpt3sas.ko
 
+	//extra에 있으면 외부 모듈이라는 뜻
+	```
+- dracut -f
+- 이후 커널 업데이트 / OS 버전 업데이트 시에는 해당 버전에 맞는 kmod 를 사용해야 한다
+	- **dnf update 시 커널도 같이 업데이트 되기 때문에 주의**
+#### 조치
+- dnf install -y dnf-plugins-core
+  dnf install -y "dnf-command(versionlock)"
+- dnf versionlock add kernel\*
+	```
+	[root@localhost network-scripts]# dnf versionlock list
+	마지막 메타자료 만료확인(1:38:51 이전): 2025년 06월 09일 (월) 오전 09시 54분 32초.
+	kernel-modules-core-0:5.14.0-362.8.1.el9_3.*
+	kernel-0:5.14.0-362.8.1.el9_3.*
+	kernel-tools-0:5.14.0-362.8.1.el9_3.*
+	kernel-modules-0:5.14.0-362.8.1.el9_3.*
+	kernel-tools-libs-0:5.14.0-362.8.1.el9_3.*
+	kernel-core-0:5.14.0-362.8.1.el9_3.*
+	```
 ## 버전 확인
 - https://elrepo.org/linux/elrepo/el9/x86_64/RPMS/kmod-mpt3sas-43.100.00.00-6.el9_5.elrepo.x86_64.rpm
 	- 위의 패키지는 sas2008 pci id 지원 확인

@@ -1,0 +1,63 @@
+## libvirt 기반 CLI 툴
+- virt-install (주로 설치 시 사용)
+	- ISO 등으로 VM 생성
+	- xml 사용하지 않고도 간편 생성 가능 (명령어 사용 시 내부적으로 xml 파일 생성)
+- **virsh**
+	- VM 관리 (시작/종료/삭제/스토리지 등 제어)
+	- xml 기반 관리 시 사용
+- virt-clone
+	- VM 복제
+- virt-convert
+	- vm 포맷 변환
+- virt-manager
+	- GUI 기반
+- virt-viewer
+	- vm 원격 접속
+### virt-install
+- --name `vm 이름`
+- --memory `2048`
+- --vcpu `num`
+- --cdrom `로컬 iso 경로`
+- --location `설치 트리 url`
+	- 설치 트리란: 네트워크 설치용으로 구성 된 리눅스 배포 파일 구조 (images, repodata, packages 등 있음)
+	- ex) `https://dl.rockylinux.org/pub/rocky/9/BaseOS/x86_64/os/`
+	  `https://dl.rockylinux.org/pub/rocky/9/AppStream/x86_64/os/`
+	- 보통 full dvd 로 설치 됨
+- --network `network=default` 
+  --network `bridge=br0`
+	- NAT, 브릿지 등 네트워크 구성 설정
+- --os-variant `rocky9`
+	- OS 종류에 따라 최적화 된 방식으로 설치
+	- 지원 OS 확인
+		- `osinfo-query os`
+- --graphics
+	- vnc, none 등 그래픽 설정
+- --no autoconsole
+	- 자동으로 virt-viewer 띄우지 않고 설치만 진행
+- --disk `디스크 경로,크기 지정`
+	- path=`/var/lib/rocky9.qcow2`,size=`20`
+	- 경로 지정하여 생성 시 자동으로 설정한 경로에 qcow2 생성 됨
+- --extra-args""
+### virsh
+- 기본 구조
+	- virsh `명령어` `VM name or id` `option`
+- virsh list `--all`
+	- VM 목록 / 상태 조회
+- virsh `명령어` `name`
+	- start: 시작
+	- shutdown: 정상 종료
+	- destroy: 강제 종료
+	- reboot: 재부팅
+	- undefine: vm 정의 삭제
+- virsh define `vm.xml`
+	- xml로 vm 정의 (등록)
+- virsh create `vm.xml`
+	- xml로 vm 생성+시작
+- virsh dumpxml `name` > `vm.xml`
+- virsh console testvm
+	- --graphics none인 경우에만 가능 / cli 접속
+- virsh domblklist `name`
+	- vm의 디스크 확인
+- virsh domiflish `name`
+	- vm의 nic 확인
+- virsh dominfo `name` : vm  현재 상태 정보 확인
