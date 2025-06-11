@@ -10,7 +10,7 @@
 - virt-convert
 	- vm 포맷 변환
 - virt-manager
-	- GUI 기반
+	- KVM GUI 관리 접속
 - virt-viewer
 	- vm 원격 접속
 ### virt-install
@@ -61,3 +61,6 @@
 - virsh domiflish `name`
 	- vm의 nic 확인
 - virsh dominfo `name` : vm  현재 상태 정보 확인
+- virsh vncdisplay `name`
+- virsh net-dumpxml default
+	- libvirt NAT 네트워크 설정 xml 확인
