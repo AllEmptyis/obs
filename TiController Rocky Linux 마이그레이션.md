@@ -26,7 +26,9 @@
 ## CentOS7.9 minimal TiController 설치 (1.1.3.5.7)
 - rpm 다운로드 링크
 	- [https://piolink.dooray.com/share/drive-files/by7tvsjx6qqi.E_eocwxtQg-wg-2aETwXFg](https://piolink.dooray.com/share/drive-files/by7tvsjx6qqi.E_eocwxtQg-wg-2aETwXFg)
+	-  [https://piolink.dooray.com/share/drive-files/by7tvsjx6qqi.IR2c7q7mQiijKJwdhJEHIg](https://piolink.dooray.com/share/drive-files/by7tvsjx6qqi.IR2c7q7mQiijKJwdhJEHIg)
 - EOL로 인해 레포지토리 사용 불가 / usb로 옮김
 ## Rocky Linux9.2 minimal 설치 (1.1.4.5.7)
 - rpm 다운로드 링크
-	- [https://piolink.dooray.com/share/drive-files/by7tvsjx6qqi.IR2c7q7mQiijKJwdhJEHIg](https://piolink.dooray.com/share/drive-files/by7tvsjx6qqi.IR2c7q7mQiijKJwdhJEHIg)
+	- [https://piolink.dooray.com/share/drive-files/by7tvsjx6qqi.zTOEXZB4QiWndhR4BbhgWA](https://piolink.dooray.com/share/drive-files/by7tvsjx6qqi.zTOEXZB4QiWndhR4BbhgWA)
+	- [https://piolink.dooray.com/share/drive-files/by7tvsjx6qqi.JXGDaeCVQl6kPjJVv4pTsA](https://piolink.dooray.com/share/drive-files/by7tvsjx6qqi.JXGDaeCVQl6kPjJVv4pTsA) (rpm)

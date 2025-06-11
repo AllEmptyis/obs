@@ -50,7 +50,7 @@
             }
           }
         ],
-        "currentTab": 1
+        "currentTab": 2
       }
     ],
     "direction": "vertical"
@@ -181,13 +181,13 @@
             "state": {
               "type": "outline",
               "state": {
-                "file": "서버 원격 접속.md",
+                "file": "TiController Rocky Linux 마이그레이션.md",
                 "followCursor": false,
                 "showSearch": false,
                 "searchQuery": ""
               },
               "icon": "lucide-list",
-              "title": "Outline of 서버 원격 접속"
+              "title": "Outline of TiController Rocky Linux 마이그레이션"
             }
           },
           {
@@ -239,8 +239,9 @@
       "remotely-save:Remotely Save": false
     }
   },
-  "active": "236318581c482313",
+  "active": "8f3886311c91ddeb",
   "lastOpenFiles": [
+    "서버 원격 접속.md",
     "TiController Rocky Linux 마이그레이션.md",
     "to do/2025-W24.md",
     "cloud/libvirt 명령어.md",
@@ -248,7 +249,6 @@
     "Pasted image 20250610103420.png",
     "cloud/libvirt.md",
     "Rocky linux9.3 DUD 생성.md",
-    "서버 원격 접속.md",
     "KVM 실습.md",
     "Loopback 인터페이스.md",
     "Pasted image 20250609173724.png",
