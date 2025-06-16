@@ -7,6 +7,7 @@
 	- xml 기반 관리 시 사용
 - virt-clone
 	- VM 복제
+	- `--original <기존 vm이름> --name <새 vm 이름> --file <새 디스크 경로>`
 - virt-convert
 	- vm 포맷 변환
 - virt-manager
@@ -24,9 +25,8 @@
 	  `https://dl.rockylinux.org/pub/rocky/9/AppStream/x86_64/os/`
 	- 보통 full dvd 로 설치 됨
 - --network `network=default` 
-  --network `bridge=br0`
 	- NAT, 브릿지 등 네트워크 구성 설정
-- --os-variant `rocky9`
+- --os-variant `generic`
 	- OS 종류에 따라 최적화 된 방식으로 설치
 	- 지원 OS 확인
 		- `osinfo-query os`
@@ -64,3 +64,5 @@
 - virsh vncdisplay `name`
 - virsh net-dumpxml default
 	- libvirt NAT 네트워크 설정 xml 확인
+- virsh net-list --all
+	-  NAT 네트워크 확인

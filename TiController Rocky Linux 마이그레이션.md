@@ -114,28 +114,28 @@
 	- `python run.py`
 - 의존성 문제 발생 (오류)
 	- subprocess.CalledProcessError: Command 'dnf -y install /root/ticontroller/local_rpm/base_tools/pciutils_3.7.0/*.rpm --disablerepo=*' returned non-zero exit status 1.
-```
-Traceback (most recent call last):
-  File "/root/ticontroller/operator/run.py", line 115, in <module>
-    main()
-  File "/root/ticontroller/operator/run.py", line 111, in main
-    select_feature()
-  File "/root/ticontroller/operator/run.py", line 86, in select_feature
-    f_ticon.run()
-  File "/root/ticontroller/operator/src/ticontroller/feature_ticon.py", line 66, in run
-    ti_inst.install()
-  File "/root/ticontroller/operator/src/ticontroller/install.py", line 315, in install
-    self.install_base_tools()
-  File "/root/ticontroller/operator/src/ticontroller/install.py", line 255, in install_base_tools
-    self.sc.dnf_install(tool_dir, ssh)
-  File "/root/ticontroller/operator/src/common/system_call.py", line 122, in dnf_install
-    self.run_cmd(cmd, ssh)
-  File "/root/ticontroller/operator/src/common/system_call.py", line 68, in run_cmd
-    ret = self.local_run_cmd(cmd, mute)
-  File "/root/ticontroller/operator/src/common/system_call.py", line 55, in local_run_cmd
-    raise subprocess.CalledProcessError(r_code, cmd)
-subprocess.CalledProcessError: Command 'dnf -y install /root/ticontroller/local_rpm/base_tools/pciutils_3.7.0/*.rpm --disablerepo=*' returned non-zero exit status 1.
-```
+		```
+		Traceback (most recent call last):
+		  File "/root/ticontroller/operator/run.py", line 115, in <module>
+		    main()
+		  File "/root/ticontroller/operator/run.py", line 111, in main
+		    select_feature()
+		  File "/root/ticontroller/operator/run.py", line 86, in select_feature
+		    f_ticon.run()
+		  File "/root/ticontroller/operator/src/ticontroller/feature_ticon.py", line 66, in run
+		    ti_inst.install()
+		  File "/root/ticontroller/operator/src/ticontroller/install.py", line 315, in install
+		    self.install_base_tools()
+		  File "/root/ticontroller/operator/src/ticontroller/install.py", line 255, in install_base_tools
+		    self.sc.dnf_install(tool_dir, ssh)
+		  File "/root/ticontroller/operator/src/common/system_call.py", line 122, in dnf_install
+		    self.run_cmd(cmd, ssh)
+		  File "/root/ticontroller/operator/src/common/system_call.py", line 68, in run_cmd
+		    ret = self.local_run_cmd(cmd, mute)
+		  File "/root/ticontroller/operator/src/common/system_call.py", line 55, in local_run_cmd
+		    raise subprocess.CalledProcessError(r_code, cmd)
+		subprocess.CalledProcessError: Command 'dnf -y install /root/ticontroller/local_rpm/base_tools/pciutils_3.7.0/*.rpm --disablerepo=*' returned non-zero exit status 1.
+		```
 - 해결
 	- 엔지니어 포털에 있는 ISO 사용
 	- dnf update X

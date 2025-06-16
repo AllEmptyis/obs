@@ -16,9 +16,11 @@
 - NAT (default)
 	- 기본 네트워크 (virbr0)
 		- 기본 IP: 192.168.122.0/24
+		- 기본 MAC: `52:54:00:xx:xx:xx`
 	- 내부 사설 IP를 가지고 있으며, 외부와 통신하기 위해서는 Source NAT 수행
 		- iptables의 **POSTROUTING 체인**에서 수행
 	- vm은 외부로 통신 가능 / 외부에서 vm으로 접근 불가
+	- 기본적으로 virbr0 기반으로 하나의 서브넷을 가지며, dnsmasq가 관리하기 때문에 하나의 대역만 가짐  
 - Bridge
 	- L2스위치처럼 동작하는 가상 인터페이스(br0)에 여러 인터페이스 연결하는 방식
 	- 해당 br0은 물리 nic과 연결되어 있음
@@ -26,6 +28,9 @@
 	- 브리지를 직접 생성해야 함
 - isolated
 	- vm간 통신만 가능 / 외부 통신 불가
+- routed
+	- 호스트가 게이트웨이 역할을 하면서 ...??
+	- xml 정의 필요
 - macvtap
 	- VM을  호스트 NIC에 직접 연결
 	- 호스트와는 통신 불가
@@ -42,7 +47,16 @@
 		- virbr0에 연결 된 내부 ip 할당
 			- dnsmasq 프로세스가 dhcp역할
 	- 외부 네트워크: 외부에서 직접 접근은 불가
+		- 외부 접속 위해서는 포트포워딩 필요
 		![[Pasted image 20250610103420.png|700|683x393]]
+	- 동작 순서
+		1. libvirt가 virbr0 브리지와 NAT 네트워크 자동 생성 (`기본 192.168.122.0/24`)
+		2. dnsmasq가 virbr0에서 DHCP 서버로 동작
+			- vm에게 ip  대역 할당
+		3. vm 외부 통신
+			- vm -> virbr0 -> 호스트로 전달
+			- 호스트의 iptables 규칙에 따라 SNAT 수행 (가상머신의 ip를 호스트 ip로 nat)
+			- 호스트에서 vm으로 응답패킷 도착
 - bridge
 ```
    [ VM1 ]    [ VM2 ]
@@ -59,6 +73,7 @@
 ```
 ## 네트워크 구성에 따른 Libvirt 동작
 - virbr0, dnsmasq 프로세스는 nat 모드일 때만 자동 실행 된다
+- [[Libvirt 동작 방식]]
 ### NAT 모드
 - viribr0 브릿지 자동 생성
 - vm에게 dhcp 역할을 해주는 `dnsmasq 프로세스` 자동 실행
@@ -71,25 +86,216 @@
 		- vm과 외부 통신 할 수 있도록 허용 (vm->외부로 트래픽이 나갈 수 있도록)
 	- INPUT 필터링
 		- 가상머신이 dnsmasq로부터 dhcp 요청을 받을 수 있도록 허용
-#### dnsmasq 역할
+#### dnsmasq
+- libvirt가 자동 실행하는 프로세스
 - DHCP 서버 기능
 	- virbr0 인터페이스에서 dhcp 범위를 열어서 vm에게 할당 (defualt.xml 파일 참조)
 	- 할당 기록
-		- `/var/lib/libvirt/dnsmasq/default.leases` 에 저장
+		- `/var/lib/libvirt/dnsmasq/default.addn-hosts` 에 저장
+		- 리스 사라지면 파일 삭제 됨
 - 내부 DNS 서버 기능 (호스트명 - ip)
 	- vm name으로 ping 가능
-	- DHCP와 연동되어 자동 등록 됨
+		- /etc/hosts에 host 명 등록 필요
 	- 수동 등록
 		- `/var/lib/libvirt/dnsmasq/default.hostsfile`
 - DNS forwarding 기능 (외부 이름 해석)
 	- 가상머신이 외부 dns 요청 시 (ex.`google.com`) 호스트 DNS 설정(`/etc/resolv.conf`)으로 라우팅 해주는 역할
 		- xml에서 별도의 dns 지정도 가능
-- 리스 관리
-	- `default.leases`파일에서 확인 가능
-	- vm이 어떤 mac, ip를 받았는지 확인
+- 리스 관리 
 - 고정 IP 설정 기능
 	- MAC 주소 기반으로 특정 vm에 원하는 ip 할당
 - PXE 부팅 지원 (자주 사용x)
-#### xml 파일 생성
+#### xml 파일
 - libvirt 설치, 실행 시 자동으로 default.xml 파일이 생성 된다. (`/etc/libvirt/qemu/networks/default.xml`)
 	- 기본 NAT 설정 관련하여 수정하고 싶을 때 사용
+### Bridge 모드
+- [[KVM-Bridge 모드]]
+## 동작 확인
+### NAT 모드 iptables 확인
+- 네트워크 관리를 위해서 libvirt가 iptabels 체인 자동 추가
+	- 기본 흐름은 같고, 기본 체인에서 libvirt체인을 참조하는 구조로 삽입
+```
+[root@localhost ~]# iptables -L -n -v
+Chain INPUT (policy ACCEPT 0 packets, 0 bytes)
+ pkts bytes target     prot opt in     out     source               destination         
+ 604K  538M LIBVIRT_INP  all  --  *      *       0.0.0.0/0            0.0.0.0/0           
+
+Chain FORWARD (policy ACCEPT 0 packets, 0 bytes)
+ pkts bytes target     prot opt in     out     source               destination         
+2085K 3433M LIBVIRT_FWX  all  --  *      *       0.0.0.0/0            0.0.0.0/0           
+2085K 3433M LIBVIRT_FWI  all  --  *      *       0.0.0.0/0            0.0.0.0/0           
+ 741K   38M LIBVIRT_FWO  all  --  *      *       0.0.0.0/0            0.0.0.0/0           
+
+Chain OUTPUT (policy ACCEPT 0 packets, 0 bytes)
+ pkts bytes target     prot opt in     out     source               destination         
+ 902K 1358M LIBVIRT_OUT  all  --  *      *       0.0.0.0/0            0.0.0.0/0           
+
+Chain LIBVIRT_FWI (1 references)
+ pkts bytes target     prot opt in     out     source               destination         
+1344K 3395M ACCEPT     all  --  *      virbr0  0.0.0.0/0            192.168.122.0/24     ctstate RELATED,ESTABLISHED #생성된 연결에 속한 패킷만 허용
+    0     0 REJECT     all  --  *      virbr0  0.0.0.0/0            0.0.0.0/0            reject-with icmp-port-unreachable
+
+Chain LIBVIRT_FWO (1 references)
+ pkts bytes target     prot opt in     out     source               destination         
+ 741K   38M ACCEPT     all  --  virbr0 *       192.168.122.0/24     0.0.0.0/0           
+    0     0 REJECT     all  --  virbr0 *       0.0.0.0/0            0.0.0.0/0            reject-with icmp-port-unreachable #reject 할 때 icmp 메시지 전송
+
+Chain LIBVIRT_FWX (1 references)
+ pkts bytes target     prot opt in     out     source               destination         
+    0     0 ACCEPT     all  --  virbr0 virbr0  0.0.0.0/0            0.0.0.0/0           
+
+Chain LIBVIRT_INP (1 references)
+ pkts bytes target     prot opt in     out     source               destination         
+ 1623  140K ACCEPT     udp  --  virbr0 *       0.0.0.0/0            0.0.0.0/0            udp dpt:53
+    0     0 ACCEPT     tcp  --  virbr0 *       0.0.0.0/0            0.0.0.0/0            tcp dpt:53
+  202 64676 ACCEPT     udp  --  virbr0 *       0.0.0.0/0            0.0.0.0/0            udp dpt:67
+    0     0 ACCEPT     tcp  --  virbr0 *       0.0.0.0/0            0.0.0.0/0            tcp dpt:67
+
+Chain LIBVIRT_OUT (1 references)
+ pkts bytes target     prot opt in     out     source               destination         
+    0     0 ACCEPT     udp  --  *      virbr0  0.0.0.0/0            0.0.0.0/0            udp dpt:53
+    0     0 ACCEPT     tcp  --  *      virbr0  0.0.0.0/0            0.0.0.0/0            tcp dpt:53
+  202 66256 ACCEPT     udp  --  *      virbr0  0.0.0.0/0            0.0.0.0/0            udp dpt:68
+    0     0 ACCEPT     tcp  --  *      virbr0  0.0.0.0/0            0.0.0.0/0            tcp dpt:68
+```
+- NAT 테이블 조회
+	- POSTROUTING target LIBVIRT_PRT: 나가는 패킷에 대해 전부 snat
+	- Return 규칙
+		- 멀티캐스트, 브로드캐스트로 가는 패킷은 return(상위 체인인 postrouting으로 다시 돌아감)
+	- MASQUEADE 규칙
+		- 마스커레이드: 출발지 ip를 호스트 ip로 nat 해주는 규칙
+			- NAT 테이블에서 사용하는 taget 이름
+		- 출발지: 192.168.122.0/24 목적지: !192.168.122.0/24(해당 ip가 아닌 것, 즉 외부 ip)
+			- 즉 목적지가 외부일 때 nat
+```
+[root@localhost ~]# iptables -t nat -L -n -v
+Chain PREROUTING (policy ACCEPT 0 packets, 0 bytes)
+ pkts bytes target     prot opt in     out     source               destination         
+
+Chain INPUT (policy ACCEPT 0 packets, 0 bytes)
+ pkts bytes target     prot opt in     out     source               destination         
+
+Chain OUTPUT (policy ACCEPT 0 packets, 0 bytes)
+ pkts bytes target     prot opt in     out     source               destination         
+
+Chain POSTROUTING (policy ACCEPT 0 packets, 0 bytes)
+ pkts bytes target     prot opt in     out     source               destination         
+ 3416  260K LIBVIRT_PRT  all  --  *      *       0.0.0.0/0            0.0.0.0/0           
+
+Chain LIBVIRT_PRT (1 references)
+ pkts bytes target     prot opt in     out     source               destination         
+    2   167 RETURN     all  --  *      *       192.168.122.0/24     224.0.0.0/24        #멀티캐스트 or 브로드캐스트 주소로 가는 패킷은 NAT X
+    0     0 RETURN     all  --  *      *       192.168.122.0/24     255.255.255.255     
+  334 20040 MASQUERADE  tcp  --  *      *       192.168.122.0/24    !192.168.122.0/24     masq ports: 1024-65535  #외부로 나갈 땐 masquerade
+ 1458  111K MASQUERADE  udp  --  *      *       192.168.122.0/24    !192.168.122.0/24     masq ports: 1024-65535
+    3   252 MASQUERADE  all  --  *      *       192.168.122.0/24    !192.168.122.0/24    #나머지 프로토콜도 nat 수행
+```
+- iptables-save
+```
+[root@localhost ~]# iptables-save
+# Generated by iptables-save v1.8.8 (nf_tables) on Fri Jun 13 13:47:28 2025
+
+*nat
+:PREROUTING ACCEPT [0:0]
+:INPUT ACCEPT [0:0]
+:OUTPUT ACCEPT [0:0]
+:POSTROUTING ACCEPT [0:0]
+:LIBVIRT_PRT - [0:0]
+-A POSTROUTING -j LIBVIRT_PRT
+-A LIBVIRT_PRT -s 192.168.122.0/24 -d 224.0.0.0/24 -j RETURN
+-A LIBVIRT_PRT -s 192.168.122.0/24 -d 255.255.255.255/32 -j RETURN
+-A LIBVIRT_PRT -s 192.168.122.0/24 ! -d 192.168.122.0/24 -p tcp -j MASQUERADE --to-ports 1024-65535
+-A LIBVIRT_PRT -s 192.168.122.0/24 ! -d 192.168.122.0/24 -p udp -j MASQUERADE --to-ports 1024-65535
+-A LIBVIRT_PRT -s 192.168.122.0/24 ! -d 192.168.122.0/24 -j MASQUERADE
+COMMIT
+```
+### dnsmasq 파일 확인
+- `/var/lib/libvirt/dnsmasq`  파일 확인
+	- 가상 네트워크 관리를 위한 설정 파일
+	```
+	[root@localhost dnsmasq]# ls
+	default.addnhosts  default.conf  default.hostsfile  virbr0.macs  virbr0.status
+	```
+- default.conf
+	- dnsmasq 설정 파일
+		```
+		[root@localhost dnsmasq]# cat default.conf
+		##WARNING:  THIS IS AN AUTO-GENERATED FILE. CHANGES TO IT ARE LIKELY TO BE
+		##OVERWRITTEN AND LOST.  Changes to this configuration should be made using:
+		##    virsh net-edit default
+		## or other application using the libvirt API.
+		##
+		## dnsmasq conf file created by libvirt
+		strict-order
+		pid-file=/run/libvirt/network/default.pid
+		except-interface=lo
+		bind-dynamic
+		interface=virbr0
+		dhcp-range=192.168.122.2,192.168.122.254,255.255.255.0
+		dhcp-no-override
+		dhcp-authoritative
+		dhcp-lease-max=253
+		dhcp-hostsfile=/var/lib/libvirt/dnsmasq/default.hostsfile
+		addn-hosts=/var/lib/libvirt/dnsmasq/default.addnhosts
+		```
+- default.addhosts
+	- dnsmasq에 추가할 수 있는 수동 호스트 정보 파일
+- virbr0.status
+	- 현재 활성화 된 VM들의 ip/mac/네트워크 상태 정보 (실시간)
+	- MAC, IP, 인터페이스 상태 등이 json으로 기록
+		```
+		[root@localhost dnsmasq]# cat virbr0.status 
+		[
+		  {
+		    "ip-address": "192.168.122.155",
+		    "mac-address": "52:54:00:be:28:d3",
+		    "client-id": "01:52:54:00:be:28:d3",
+		    "expiry-time": 1750036642
+		  },
+		  {
+		    "ip-address": "192.168.122.167",
+		    "mac-address": "52:54:00:80:84:3c",
+		    "client-id": "01:52:54:00:80:84:3c",
+		    "expiry-time": 1750037861
+		  }
+		]
+		```
+#### host 등록
+- hostname 변경
+	- hostnamectl set-hostname `name`
+- `/etc/hosts` 등록
+	```
+	192.168.122.155         test1
+	
+	[root@localhost ~]# ping test1
+	PING test1 (192.168.122.155) 56(84) bytes of data.
+	64 bytes from test1 (192.168.122.155): icmp_seq=1 ttl=64 time=0.477 ms
+	64 bytes from test1 (192.168.122.155): icmp_seq=2 ttl=64 time=0.501 ms
+	```
+### xml 파일 조회
+- /etc/libvirt/qemu/networks/default.xml
+	- libvirt가 관리하는 네트워크 정의 파일
+	- 네트워크 설정을 바꾸려고 한다면 해당 파일에서 설정해야 함
+		- libvirt가 나머지 파일(dnsmasq)를 재구성하여 자동 반영
+	```
+	[root@localhost networks]# cat default.xml 
+	<!--
+	WARNING: THIS IS AN AUTO-GENERATED FILE. CHANGES TO IT ARE LIKELY TO BE
+	OVERWRITTEN AND LOST. Changes to this xml configuration should be made using:
+	  virsh net-edit default
+	or other application using the libvirt API.
+	-->
+	
+	<network>
+	  <name>default</name>
+	  <uuid>0462c429-f9f1-470d-b76c-85a632adc5a8</uuid>
+	  <forward mode='nat'/>
+	  <bridge name='virbr0' stp='on' delay='0'/>
+	  <mac address='52:54:00:f8:ab:33'/>
+	  <ip address='192.168.122.1' netmask='255.255.255.0'>
+	    <dhcp>
+	      <range start='192.168.122.2' end='192.168.122.254'/>
+	    </dhcp>
+	  </ip>
+	</network>
+	```

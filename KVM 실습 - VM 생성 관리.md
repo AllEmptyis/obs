@@ -2,11 +2,15 @@
 - [x] KVM 기본 설정 및 패키지 확인
 - [ ] VM생성
 	- [x] vm SSH 원격 접속
-	- minimal 방식으로 설치
-- xml 사용
+	- [x] virt-install 방식으로 설치
+		- [ ] KVM 환경 클라우드 전용 이미지로 설치
+		- [x] minimal iso 설치
+		- [x] VM 복제
+- 네트워크 - NAT 모드
+	- [ ] 포트포워딩 설정하여 외부와 통신 (DNAT)
+	- [ ] 서로 다른 NAT 네트워크 대역 생성
 - qcow2
-- 네트워크
-	- NAT 기본 ip 변경
+	- cow 실습
 ## 기본 설정
 - 모듈 확인
 - 바이오스에서 VT-x 활성화 되어 있으면 자동으로 kvm 관련 모듈 로드
@@ -54,14 +58,39 @@
 	        TX packets 1141144  bytes 3038141365 (2.8 GiB)
 	        TX errors 0  dropped 0 overruns 0  carrier 0  collisions 0
 	```
-- 기본 NAT 모드 / qcow2 자동 생성 / location으로 로키 9.5 설치트리 지정 
+##### 네트워크 방식으로 설치
+- 기본 NAT 모드 / qcow2 자동 생성 / location으로 로키 9.5 설치트리 지정
+	- 해당 방법으로 설치하게 되면 full dvd 로 설치 됨 / minimal 설치 시 --extra-args 옵션으로 수동설치 필요
 ```
 [root@localhost lib]# virt-install --name test1 --memory 2048 --vcpu 2 --location https://dl.rockylinux.org/pub/rocky/9/BaseOS/x86_64/os/ --network network=default --os-variant rocky9 --disk /qcow2/test1_rocky9.5.qcow2,size=20
 ```
-- 결과
-```
-
-```
+##### 로컬 iso 사용하여 설치
+- 설치 할 iso 파일 다운로드
+	- wget `https://download.rockylinux.org/pub/rocky/9/isos/x86_64/Rocky-9.6-x86_64-minimal.iso`
+	- `virt-install --name test2 --memory 2048 --vcpu 2 --cdrom /iso/Rocky-9.6-x86_64-minimal.iso --network network=default --os-variant generic --disk /qcow2/test2_minimal,size=20`
+### VM 복제 (virt-clone)
+- virt-clone 사용
+	- `--original <기존 vm이름> --name <새 vm 이름> --file <새 디스크 경로>`
+	- 동일한 id/pw로 접속 확인
+		```
+		[root@localhost dnsmasq]# virt-clone --original test2 --name test3_copy --file /qcow2/copy
+		
+		[root@localhost dnsmasq]# ls /qcow2/
+		copy  test1_rocky9.5.qcow2  test2_minimal
+		
+		[root@localhost dnsmasq]# virsh list --all
+		 Id   이름         상태
+		----------------------------
+		 2    test1        실행 중
+		 -    test2        종료
+		 -    test3_copy   종료
+		
+		[root@localhost dnsmasq]# ssh root@192.168.122.155
+		root@192.168.122.155's password: 
+		Activate the web console with: systemctl enable --now cockpit.socket
+		
+		Last login: Tue Jun 10 09:51:57 2025
+		```
 ### VM 정보 확인
 - 지정 경로에 자동으로 디스크 생성
 ```
@@ -124,7 +153,11 @@ test1_rocky9.5.qcow2
 ### SSH 접속 활성화 (NAT 모드)
 - 방화벽 설정
 	- ssh 서비스 허용
-- vm에서 sshd active 상태인지 확인
+		```
+		firiewall-cmd --list-all
+		firewall-cmd --add-service=ssh
+		```
+- vm에서 sshd active 상태인지 확인 (데몬)
 	- systemctl status sshd
 - 호스트에서 아래 명령어로 접속
 	- ssh `사용자명`@`vm ip`

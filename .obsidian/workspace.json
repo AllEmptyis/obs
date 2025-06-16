@@ -27,12 +27,12 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "서버 원격 접속.md",
+                "file": "KVM-Bridge 모드.md",
                 "mode": "source",
                 "source": false
               },
               "icon": "lucide-file",
-              "title": "서버 원격 접속"
+              "title": "KVM-Bridge 모드"
             }
           },
           {
@@ -50,7 +50,7 @@
             }
           }
         ],
-        "currentTab": 2
+        "currentTab": 1
       }
     ],
     "direction": "vertical"
@@ -181,13 +181,13 @@
             "state": {
               "type": "outline",
               "state": {
-                "file": "IPTABLES.md",
+                "file": "KVM-Bridge 모드.md",
                 "followCursor": false,
                 "showSearch": false,
                 "searchQuery": ""
               },
               "icon": "lucide-list",
-              "title": "Outline of IPTABLES"
+              "title": "Outline of KVM-Bridge 모드"
             }
           },
           {
@@ -239,15 +239,24 @@
       "remotely-save:Remotely Save": false
     }
   },
-  "active": "8f3886311c91ddeb",
+  "active": "236318581c482313",
   "lastOpenFiles": [
+    "KVM 실습 - VM 생성 관리.md",
+    "서버 원격 접속.md",
+    "IPTABLES.md",
+    "클라우드 이미지.md",
+    "서버 성능 비교.md",
+    "KVM-Bridge 모드.md",
+    "nmcli 명령어.md",
+    "KVM-NAT 모드.md",
+    "to do/2025-W25.md",
+    "Libvirt 동작 방식.md",
+    "Libvirt 네트워크 설정.md",
     "KVM 실습.md",
     "Rocky linux9.3 DUD 생성.md",
     "to do/2025-W24.md",
     "TiController Rocky Linux 마이그레이션.md",
-    "서버 원격 접속.md",
     "cloud/libvirt 명령어.md",
-    "IPTABLES.md",
     "Pasted image 20250610103420.png",
     "cloud/libvirt.md",
     "Loopback 인터페이스.md",
@@ -260,15 +269,6 @@
     "스토리지.md",
     "가상 디스크 이미지.md",
     "to do/2025-W22.md",
-    "ZeroTrust ZT.md",
-    "cloud/QEMU.md",
-    "cloud/KVM.md",
-    "신규기능/IP Tunnel DSR_HC 실습.md",
-    "conflict-files-obsidian-git.md",
-    "PAS-K/PAS-K 서버 부하 분산 NAT 모드.md",
-    "Linux/리눅스 메모리 공간.md",
-    "Linux/Ubuntu DNS 설정.md",
-    "신규기능/IP Tunnel DSR.md",
     "Linux",
     "첨부파일/Pasted image 20250515173108.png",
     "Tags",
