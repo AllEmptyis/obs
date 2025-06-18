@@ -14,6 +14,8 @@
 - VM: 가상머신
 ### 네트워크 유형
 - NAT (default)
+	- 호스트만 외부 네트워크와 연결 / 가상머신은 내부 L2구간에 위치
+	- 가상브릿지에 탭 인터페이스가 슬레이브 형태로 연결
 	- 기본 네트워크 (virbr0)
 		- 기본 IP: 192.168.122.0/24
 		- 기본 MAC: `52:54:00:xx:xx:xx`
@@ -22,9 +24,9 @@
 	- vm은 외부로 통신 가능 / 외부에서 vm으로 접근 불가
 	- 기본적으로 virbr0 기반으로 하나의 서브넷을 가지며, dnsmasq가 관리하기 때문에 하나의 대역만 가짐  
 - Bridge
-	- L2스위치처럼 동작하는 가상 인터페이스(br0)에 여러 인터페이스 연결하는 방식
+	- L2스위치처럼 동작하는 가상 인터페이스(br0)에 여러 인터페이스 연결하는 방식 
 	- 해당 br0은 물리 nic과 연결되어 있음
-		- 따라서 vm과 호스트가 동일 네트워크에 존재
+		- 외부 네트워크와 L2를 물리 nic을 통해 연결하는 방식
 	- 브리지를 직접 생성해야 함
 - isolated
 	- vm간 통신만 가능 / 외부 통신 불가
@@ -79,8 +81,8 @@
 - vm에게 dhcp 역할을 해주는 `dnsmasq 프로세스` 자동 실행
 	- `dnsmasq`는 libvirt가 NAT 네트워크를 생성할 때 실행하는 프로세스
 	- 리눅스 서비스 데몬과 관계 없음 / libvirt가 죽으면 같이 사라진다
-- [[IPTABLES|iptables]] 규칙 자동 생성
-	- [[IPTABLES#chain|POSTROUTING]] (SNAT / MASQUERADE)
+- [[IPTABLES & nftables|iptables]] 규칙 자동 생성
+	- [[IPTABLES & nftables#chain|POSTROUTING]] (SNAT / MASQUERADE)
 		- 외부로 나가는 패킷을 호스트 ip로 SNAT
 	- FORWARD 필터링
 		- vm과 외부 통신 할 수 있도록 허용 (vm->외부로 트래픽이 나갈 수 있도록)
@@ -108,6 +110,21 @@
 #### xml 파일
 - libvirt 설치, 실행 시 자동으로 default.xml 파일이 생성 된다. (`/etc/libvirt/qemu/networks/default.xml`)
 	- 기본 NAT 설정 관련하여 수정하고 싶을 때 사용
+#### iptables(nftables) 생성
+- `LIBVIRT_PRT` 등 libvirt가 자동으로 iptables 체인을 생성
+- 해당 체인은 NAT모드에서 동작하는 가상머신에 적용
+	- firewalld(시스템 방화벽)에는 적용X
+##### 체인 설명
+- LIBVIRT_FWI (Forward Inbound)
+	- 외부->VM
+	- virbr0 인터페이스를 통해 외부에서 가상머신으로 들어오는 트래픽 처리 / 이미 연결 된 세션 외 나머지 리젝
+- LIBVIRT_FWO (Forward Outbound)
+	- VM->외부
+	- 122.0 대역에서 virbr0을 통해 외부로 나가는 패킷 허용 / 나머지 리젝
+- LIBVIRT_FWX (Forward Cross)
+	- VM 간 통신 (모두 허용)
+- LIBVIRT_INP (input체인)
+- LIBVIRT_OUT (output체인)
 ### Bridge 모드
 - [[KVM-Bridge 모드]]
 ## 동작 확인
@@ -299,3 +316,29 @@ COMMIT
 	  </ip>
 	</network>
 	```
+## DHCP 자동 할당 실패
+- 원인
+	- tap 인터페이스가 브릿지랑 연결이 안 된 상황
+- TAP 인터페이스 상태 확인
+	- ip link show vnet1
+	- ip link set vnet1 master virbr0
+	- bridge link show
+		- 브릿지 연결 확인
+```
+[root@localhost ~]# ip link show vnet1
+6: vnet1: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1500 qdisc noqueue state UNKNOWN mode DEFAULT group default qlen 1000
+    link/ether fe:54:00:be:28:d3 brd ff:ff:ff:ff:ff:ff -->state unknonw
+
+[root@localhost ~]# ip link set vnet1 master virbr0
+[root@localhost ~]# ip link set vnet8 master virbr0
+
+[root@localhost ~]# bridge link show
+6: vnet1: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1500 master virbr0 state forwarding priority 32 cost 100
+13: vnet8: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1500 master virbr0 state learning priority 32 cost 100
+
+[root@localhost ~]# ip link set dev vnet1 up
+[root@localhost ~]# ip link set dev vnet8 up
+```
+- VM에서 인터페이스 up
+	- nmcli con up enp1s0
+

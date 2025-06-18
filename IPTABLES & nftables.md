@@ -1,4 +1,4 @@
-### IPTABLES
+# IPTABLES
 - 패킷 필터 시스템
 - 커널 수준의 방화벽 엔진
 ### 구성
@@ -77,7 +77,6 @@
 - REDIRECT
 	- 패킷이 들어올 때 DIP를 로컬 호스트로 redirection
 	- 프록시 서버 (패킷이 들어오는 서버를 경유)
-
 ## IPTABLES 명령어
 - Rocky Linux 9.x 기준 iptables가 아닌 `nftables`로 동작
 - 호환성 때문에 iptables도 동작
@@ -98,3 +97,15 @@
 - iptables-save
   /etc/sysconfig/iptables
 	- 모든 테이블/체인/규칙 조회
+## 규칙 삭제
+- iptables -t nat -L --line-numbers
+	- 규칙 목록 번호로 확인
+- iptables -t nat -D `체인명` `line number`
+	- 특정 규칙 번호 삭제
+	- -D : 삭제 옵션
+- iptables -t nat -F
+	- 전체 초기화
+
+# nftables
+## 명령어
+- nft list ruleset

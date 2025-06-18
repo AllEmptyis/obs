@@ -55,14 +55,21 @@
 	- xml로 vm 생성+시작
 - virsh dumpxml `name` > `vm.xml`
 - virsh console testvm
-	- --graphics none인 경우에만 가능 / cli 접속
+	- cli 접속
+	- --extra-args="console=ttyS0"
+		- 주의 / cdrom 으로 설치 시 extra args 같이 사용 불가
 - virsh domblklist `name`
 	- vm의 디스크 확인
-- virsh domiflish `name`
+- virsh domiflist `name`
 	- vm의 nic 확인
-- virsh dominfo `name` : vm  현재 상태 정보 확인
+- virsh dominfo `name`
+	- vm 현재 상태 정보 확인
 - virsh vncdisplay `name`
 - virsh net-dumpxml default
 	- libvirt NAT 네트워크 설정 xml 확인
 - virsh net-list --all
 	-  NAT 네트워크 확인
+- virsh net-dhcp-leases default
+	- NAT 모드에서 dhcp로 할당 받은 ip 확인
+-  virsh net-`start / destroy` default
+	- NAT 네트워크 시작 / 강제 종료

@@ -7,8 +7,9 @@
 		- [x] minimal iso 설치
 		- [x] VM 복제
 - 네트워크 - NAT 모드
-	- [ ] 포트포워딩 설정하여 외부와 통신 (DNAT)
+	- [x] 포트포워딩 설정하여 외부와 통신
 	- [ ] 서로 다른 NAT 네트워크 대역 생성
+- [x] Bridge 모드 실습 
 - qcow2
 	- cow 실습
 ## 기본 설정
@@ -45,6 +46,7 @@
 	- systemctl status libvirtd
 	- qemu는 데몬이 아닌 프로세스 형태이기 때문에 할 필요 없음
 ## VM생성 / 확인
+- [[KVM-Bridge 모드#실습]]
 ### virt-install 사용
 - [[libvirt 명령어#virt-install|virt install 명령어 참고]]
 - 기본 인터페이스 확인 (libvirt 자동 생성)
@@ -69,7 +71,7 @@
 	- wget `https://download.rockylinux.org/pub/rocky/9/isos/x86_64/Rocky-9.6-x86_64-minimal.iso`
 	- `virt-install --name test2 --memory 2048 --vcpu 2 --cdrom /iso/Rocky-9.6-x86_64-minimal.iso --network network=default --os-variant generic --disk /qcow2/test2_minimal,size=20`
 ### VM 복제 (virt-clone)
-- virt-clone 사용
+- virt-clone 사용--
 	- `--original <기존 vm이름> --name <새 vm 이름> --file <새 디스크 경로>`
 	- 동일한 id/pw로 접속 확인
 		```
@@ -150,7 +152,9 @@ test1_rocky9.5.qcow2
 	default via 192.168.122.1 dev enp1s0 proto dhcp src 192.168.122.155 metric 100 
 	192.168.122.0/24 dev enp1s0 proto kernel scope link src 192.168.122.155 metric 100 
 	```
-### SSH 접속 활성화 (NAT 모드)
+- bridge 모드의 경우 가상머신도 따로 ip, 라우팅 설정 필요
+	- libvirt가 ip 임대해 주는 방식X
+### SSH 접속 활성화
 - 방화벽 설정
 	- ssh 서비스 허용
 		```
@@ -171,3 +175,8 @@ test1_rocky9.5.qcow2
 	Warning: Permanently added '192.168.122.155' (ED25519) to the list of known hosts.
 	test@192.168.122.155's password: 
 	```
+## 통신 흐름 확인
+- [[KVM-Bridge 모드#통신 확인]]
+- [[KVM-NAT 모드#통신 확인]]
+## NAT모드-포트포워딩
+- [[NAT모드-포트포워딩 설정]]
