@@ -55,12 +55,12 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "KVM-Bridge 모드.md",
+                "file": "KVM 실습 - VM 생성 및 네트워크 구성.md",
                 "mode": "source",
                 "source": false
               },
               "icon": "lucide-file",
-              "title": "KVM-Bridge 모드"
+              "title": "KVM 실습 - VM 생성 및 네트워크 구성"
             }
           },
           {
@@ -205,13 +205,13 @@
             "state": {
               "type": "outline",
               "state": {
-                "file": "KVM-Bridge 모드.md",
+                "file": "KVM 실습 - VM 생성 및 네트워크 구성.md",
                 "followCursor": false,
                 "showSearch": false,
                 "searchQuery": ""
               },
               "icon": "lucide-list",
-              "title": "Outline of KVM-Bridge 모드"
+              "title": "Outline of KVM 실습 - VM 생성 및 네트워크 구성"
             }
           },
           {
@@ -249,7 +249,8 @@
       }
     ],
     "direction": "horizontal",
-    "width": 376.5
+    "width": 200,
+    "collapsed": true
   },
   "left-ribbon": {
     "hiddenItems": {
