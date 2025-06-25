@@ -55,12 +55,12 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "KVM 실습 - VM 생성 및 네트워크 구성.md",
+                "file": "컨테이너.md",
                 "mode": "source",
                 "source": false
               },
               "icon": "lucide-file",
-              "title": "KVM 실습 - VM 생성 및 네트워크 구성"
+              "title": "컨테이너"
             }
           },
           {
@@ -205,13 +205,13 @@
             "state": {
               "type": "outline",
               "state": {
-                "file": "KVM 실습 - VM 생성 및 네트워크 구성.md",
+                "file": "컨테이너.md",
                 "followCursor": false,
                 "showSearch": false,
                 "searchQuery": ""
               },
               "icon": "lucide-list",
-              "title": "Outline of KVM 실습 - VM 생성 및 네트워크 구성"
+              "title": "Outline of 컨테이너"
             }
           },
           {
@@ -249,8 +249,7 @@
       }
     ],
     "direction": "horizontal",
-    "width": 200,
-    "collapsed": true
+    "width": 285.5
   },
   "left-ribbon": {
     "hiddenItems": {
@@ -264,10 +263,19 @@
       "remotely-save:Remotely Save": false
     }
   },
-  "active": "c888cb3a00ff91ca",
+  "active": "b8befef284db0e58",
   "lastOpenFiles": [
-    "가상화 방식.md",
+    "to do/2025-W26.md",
+    "가상 디스크 이미지.md",
     "KVM 실습 - VM 생성 및 네트워크 구성.md",
+    "image.png",
+    "컨테이너.md",
+    "기능 검증/점보프레임.md",
+    "Namespace, cgroups.md",
+    "Case Report/CaseReport 리스트.md",
+    "기능 검증",
+    "Case Report",
+    "가상화 방식.md",
     "cloud/네트워크 가상화.md",
     "Libvirt 동작 방식.md",
     "KVM-Bridge 모드.md",
@@ -286,14 +294,8 @@
     "Rocky linux9.3 DUD 생성.md",
     "to do/2025-W24.md",
     "TiController Rocky Linux 마이그레이션.md",
-    "cloud/libvirt 명령어.md",
     "Pasted image 20250610103420.png",
-    "cloud/libvirt.md",
-    "Loopback 인터페이스.md",
     "Pasted image 20250609173724.png",
-    "IODD를 사용한 OS 설치.md",
-    "libvirt 네트워크 설정.md",
-    "DUD 파일 생성.md",
     "Linux",
     "첨부파일/Pasted image 20250515173108.png",
     "Tags",
@@ -308,9 +310,6 @@
     "첨부파일",
     "첨부파일/Pasted image 20250430110533.png",
     "첨부파일/Pasted image 20250430103010.png",
-    "첨부파일/Pasted image 20250430110904.png",
-    "to do",
-    "obs 활용",
-    "rhuw3bFa0VzZk7ACW6_9OQ/QqFguH4eXxXUhJqhJFCdxw"
+    "to do"
   ]
 }

@@ -148,12 +148,12 @@ Chain OUTPUT (policy ACCEPT 0 packets, 0 bytes)
  902K 1358M LIBVIRT_OUT  all  --  *      *       0.0.0.0/0            0.0.0.0/0           
 
 Chain LIBVIRT_FWI (1 references)
- pkts bytes target     prot opt in     out     source               destination         
+ pkts bytes target     prot opt in     out     source               destination         --->일반적인 NAT 환경에서는 크게 의미 없음 / vm ip로 직접 들어오는 패킷X
 1344K 3395M ACCEPT     all  --  *      virbr0  0.0.0.0/0            192.168.122.0/24     ctstate RELATED,ESTABLISHED #생성된 연결에 속한 패킷만 허용
     0     0 REJECT     all  --  *      virbr0  0.0.0.0/0            0.0.0.0/0            reject-with icmp-port-unreachable
 
 Chain LIBVIRT_FWO (1 references)
- pkts bytes target     prot opt in     out     source               destination         
+ pkts bytes target     prot opt in     out     source               destination         -----> vm의 ip가 192.168.122.0/24가 아닐 경우 외부로 나가는 트래픽 거부
  741K   38M ACCEPT     all  --  virbr0 *       192.168.122.0/24     0.0.0.0/0           
     0     0 REJECT     all  --  virbr0 *       0.0.0.0/0            0.0.0.0/0            reject-with icmp-port-unreachable #reject 할 때 icmp 메시지 전송
 
