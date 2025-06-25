@@ -55,12 +55,12 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "컨테이너.md",
+                "file": "기능 검증/점보프레임.md",
                 "mode": "source",
                 "source": false
               },
               "icon": "lucide-file",
-              "title": "컨테이너"
+              "title": "점보프레임"
             }
           },
           {
@@ -205,13 +205,13 @@
             "state": {
               "type": "outline",
               "state": {
-                "file": "컨테이너.md",
+                "file": "기능 검증/점보프레임.md",
                 "followCursor": false,
                 "showSearch": false,
                 "searchQuery": ""
               },
               "icon": "lucide-list",
-              "title": "Outline of 컨테이너"
+              "title": "Outline of 점보프레임"
             }
           },
           {
@@ -263,13 +263,13 @@
       "remotely-save:Remotely Save": false
     }
   },
-  "active": "b8befef284db0e58",
+  "active": "c888cb3a00ff91ca",
   "lastOpenFiles": [
+    "컨테이너.md",
     "to do/2025-W26.md",
     "가상 디스크 이미지.md",
     "KVM 실습 - VM 생성 및 네트워크 구성.md",
     "image.png",
-    "컨테이너.md",
     "기능 검증/점보프레임.md",
     "Namespace, cgroups.md",
     "Case Report/CaseReport 리스트.md",
