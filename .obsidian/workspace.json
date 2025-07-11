@@ -55,12 +55,12 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "기능 검증/점보프레임.md",
+                "file": "to do/2025-W28.md",
                 "mode": "source",
                 "source": false
               },
               "icon": "lucide-file",
-              "title": "점보프레임"
+              "title": "2025-W28"
             }
           },
           {
@@ -205,13 +205,13 @@
             "state": {
               "type": "outline",
               "state": {
-                "file": "기능 검증/점보프레임.md",
+                "file": "to do/2025-W28.md",
                 "followCursor": false,
                 "showSearch": false,
                 "searchQuery": ""
               },
               "icon": "lucide-list",
-              "title": "Outline of 점보프레임"
+              "title": "Outline of 2025-W28"
             }
           },
           {
@@ -245,7 +245,7 @@
             }
           }
         ],
-        "currentTab": 3
+        "currentTab": 6
       }
     ],
     "direction": "horizontal",
@@ -265,12 +265,20 @@
   },
   "active": "c888cb3a00ff91ca",
   "lastOpenFiles": [
+    "기능 검증/점보프레임.md",
+    "Docker.md",
+    "Docker 명령어.md",
+    "기능 검증/ACL.md",
+    "서버 규격 확인 - Dell R450.md",
+    "to do/2025-W28.md",
+    "개인 용무/TiController와 스위치 연동 안 됨.md",
+    "to do/2025-W27.md",
+    "개인 용무",
     "컨테이너.md",
     "to do/2025-W26.md",
     "가상 디스크 이미지.md",
     "KVM 실습 - VM 생성 및 네트워크 구성.md",
     "image.png",
-    "기능 검증/점보프레임.md",
     "Namespace, cgroups.md",
     "Case Report/CaseReport 리스트.md",
     "기능 검증",
@@ -287,13 +295,6 @@
     "IPTABLES.md",
     "클라우드 이미지.md",
     "서버 성능 비교.md",
-    "nmcli 명령어.md",
-    "KVM-NAT 모드.md",
-    "to do/2025-W25.md",
-    "KVM 실습.md",
-    "Rocky linux9.3 DUD 생성.md",
-    "to do/2025-W24.md",
-    "TiController Rocky Linux 마이그레이션.md",
     "Pasted image 20250610103420.png",
     "Pasted image 20250609173724.png",
     "Linux",
@@ -309,7 +310,6 @@
     "첨부파일/Pasted image 20250429180735.png",
     "첨부파일",
     "첨부파일/Pasted image 20250430110533.png",
-    "첨부파일/Pasted image 20250430103010.png",
-    "to do"
+    "첨부파일/Pasted image 20250430103010.png"
   ]
 }
