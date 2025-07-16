@@ -295,7 +295,7 @@ $TTL 86400
 - `/etc/resolv.conf`
 	- nameserver 주소 지정
 ### 확인
-- DNS 구문확인 명령어
+- DNS 구문 확인 명령어
 	- `named-checkzone test.com /var/named/test.zone`
 - nslookup 결과
 ```
@@ -314,4 +314,3 @@ Name:   mail.test.com
 Address: 192.168.193.102
 ```
 ## Sendmail 구성
-
