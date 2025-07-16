@@ -217,7 +217,7 @@ Jul 16 02:51:57 localhost.localdomain systemd[1]: Started The Apache HTTP Server
 	- 실제 둘 다 지정해주어야 함
 - 도메인은 역순으로 읽음 (최상위 도메인이 가장 나중에 나옴)
 	- ex) www.test.com. 
-		- 루트도메인 `.`> 
+		- 루트도메인(보통 생략) `.`> `com`>`test`>`www`
 ### 동작 방식
 - named.conf 파일을 읽고 전역 설정 적용
 - include로 rfc1912.zones 포함
