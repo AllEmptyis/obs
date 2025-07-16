@@ -215,6 +215,9 @@ Jul 16 02:51:57 localhost.localdomain systemd[1]: Started The Apache HTTP Server
 	- 정방향(forward DNS): 도메인 -> ip 주소 변환
 	- 역방향(reverse DNS): IP주소-> 도메인 변환
 	- 실제 둘 다 지정해주어야 함
+- 도메인은 역순으로 읽음 (최상위 도메인이 가장 나중에 나옴)
+	- ex) www.test.com. 
+		- 루트도메인 `.`> 
 ### 동작 방식
 - named.conf 파일을 읽고 전역 설정 적용
 - include로 rfc1912.zones 포함
@@ -242,7 +245,7 @@ allow-query { localhost; };
 		- 하단에 아래와 같이 추가 (정방향, 역방향)
 			- 만일 호스트와 네임서버 **ip 대역이 다르면 역방향은 존파일 따로 생성**
 ```
-zone "test" IN{
+zone "test.com" IN{
         type master;
         file "test.zone";
         allow-update { none; };
@@ -257,6 +260,7 @@ zone "193.168.192.in-addr.arpa" IN {
 - `/var/named/test.zone` (정방향)
 	- 아래와 같이 파일 생성
 		- 실제로 네임서버를 정의한 파일, 질의가 들어오면 이 파일을 보고 어느 ip로 매핑 시킬지 결정
+	- zone파일에서 "test.com"으로 정의했기 때문에 ns1, www, mail 뒤에 test.com이 자동으로 붙는 구조
 ```
 $TTL 86400
 @   IN  SOA     ns1.test. admin.test. (
@@ -288,6 +292,5 @@ $TTL 86400
 102 IN  PTR mail.test.com.
 ```
 - `/etc/resolv.conf`
-	- nameserver 주소 넣어주기
-- 
-
+	- nameserver 주소 지정
+### 확인
