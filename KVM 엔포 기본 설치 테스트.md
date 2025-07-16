@@ -2,7 +2,7 @@
 - [x] 패키지 설치, 버전 확인
 	- [x] mysql 설치
 - [x] Apache
-- [ ] DNS(named)
+- [x] DNS(named)
 - [ ] sendmail
 - [ ] dovecot
 ## VM 정보
@@ -261,6 +261,7 @@ zone "193.168.192.in-addr.arpa" IN {
 	- 아래와 같이 파일 생성
 		- 실제로 네임서버를 정의한 파일, 질의가 들어오면 이 파일을 보고 어느 ip로 매핑 시킬지 결정
 	- zone파일에서 "test.com"으로 정의했기 때문에 ns1, www, mail 뒤에 test.com이 자동으로 붙는 구조
+	- MX(메일서버)는 반드시 우선순위 지정 필요
 ```
 $TTL 86400
 @   IN  SOA     ns1.test. admin.test. (
@@ -270,9 +271,9 @@ $TTL 86400
                 604800     ; Expire
                 86400 )    ; Minimum
 
-    IN  NS      ns1.test. //test.com 도메인의 네임서버 지정
+    IN  NS      ns1.test.com //test.com 도메인의 네임서버 지정
     IN  A       192.168.193.102 //test.com으로도 접속 가능하도록 함
-    IN  MX  10  mail.test. //메일서버 지정
+    IN  MX  10  mail.test.com //메일서버 지정
 ns1 IN  A       192.168.193.102 //ns1.test.com이 가지는 ip
 www IN  A       192.168.193.102 //www 호스트의 ip
 mail IN A       192.168.193.102
@@ -294,3 +295,23 @@ $TTL 86400
 - `/etc/resolv.conf`
 	- nameserver 주소 지정
 ### 확인
+- DNS 구문확인 명령어
+	- `named-checkzone test.com /var/named/test.zone`
+- nslookup 결과
+```
+[root@localhost ~]# nslookup www.test.com 192.168.193.102
+Server:         192.168.193.102
+Address:        192.168.193.102#53
+
+Name:   www.test.com
+Address: 192.168.193.102
+
+[root@localhost ~]# nslookup mail.test.com 192.168.193.102
+Server:         192.168.193.102
+Address:        192.168.193.102#53
+
+Name:   mail.test.com
+Address: 192.168.193.102
+```
+## Sendmail 구성
+
