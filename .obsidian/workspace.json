@@ -69,12 +69,12 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "서버 관련/엔지니어포털 마이그레이션.md",
+                "file": "기능 검증/점보프레임.md",
                 "mode": "source",
                 "source": false
               },
               "icon": "lucide-file",
-              "title": "엔지니어포털 마이그레이션"
+              "title": "점보프레임"
             }
           }
         ],
@@ -209,13 +209,13 @@
             "state": {
               "type": "outline",
               "state": {
-                "file": "서버 관련/엔지니어포털 마이그레이션.md",
+                "file": "기능 검증/점보프레임.md",
                 "followCursor": false,
                 "showSearch": false,
                 "searchQuery": ""
               },
               "icon": "lucide-list",
-              "title": "Outline of 엔지니어포털 마이그레이션"
+              "title": "Outline of 점보프레임"
             }
           },
           {
@@ -269,12 +269,13 @@
   },
   "active": "8f3886311c91ddeb",
   "lastOpenFiles": [
+    "서버 관련/엔지니어포털 마이그레이션.md",
+    "메일 서버.md",
     "KVM 엔포 기본 설치 테스트.md",
     "to do/2025-W29.md",
     "서버 관련/서버 성능 비교.md",
     "서버 관련/서버 규격 확인 - Dell R450.md",
     "KVM - 디스크 용량 부족 문제.md",
-    "서버 관련/엔지니어포털 마이그레이션.md",
     "서버 관련/DUD 파일 생성.md",
     "서버 관련/Rocky linux9.3 DUD 생성.md",
     "기능 검증/TiController Rocky Linux 마이그레이션.md",
@@ -297,7 +298,6 @@
     "KVM 실습 - VM 생성 및 네트워크 구성.md",
     "image.png",
     "Namespace, cgroups.md",
-    "Case Report/CaseReport 리스트.md",
     "기능 검증",
     "Case Report",
     "Pasted image 20250610103420.png",
