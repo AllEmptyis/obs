@@ -109,3 +109,10 @@ find . -name 'mpt2sas.ko'
 - cat /etc/redhat-release
 - nmcli device reapply <인터페이스명>
 
+## 참고
+- iodd 원리
+	- iodd는 일반 디스크이지만 서버가 실제 광학 cd/dvd와 같이 인식하도록 함
+	- 따라서 그냥 디스크에 iso가 들어있는 거지만 iso 내부의 구조를 그대로 사용할 수 있음
+- usb 부팅
+	- usb는 일반 디스크이기 때문에 iso파일만 들어 있으면 인식하지 못함, 따라서 rufus같은 것을 사용하여 부팅 디스크로 만들어주어야 한다
+	- iso 파일을 해체해서 usb에 부팅이 가능한 구조로 설치하는 것
