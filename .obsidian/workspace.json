@@ -78,7 +78,7 @@
             }
           }
         ],
-        "currentTab": 1
+        "currentTab": 4
       }
     ],
     "direction": "vertical"
@@ -209,13 +209,13 @@
             "state": {
               "type": "outline",
               "state": {
-                "file": "Libvirt 동작 방식.md",
+                "file": "cloud/libvirt 명령어.md",
                 "followCursor": false,
                 "showSearch": false,
                 "searchQuery": ""
               },
               "icon": "lucide-list",
-              "title": "Outline of Libvirt 동작 방식"
+              "title": "Outline of libvirt 명령어"
             }
           },
           {
@@ -267,8 +267,9 @@
       "remotely-save:Remotely Save": false
     }
   },
-  "active": "236318581c482313",
+  "active": "7b30b01b823b6b7f",
   "lastOpenFiles": [
+    "Libvirt 동작 방식.md",
     "KVM 엔포 기본 설치 테스트.md",
     "to do/2025-W28.md",
     "cloud/libvirt 명령어.md",
@@ -296,7 +297,6 @@
     "개인 용무/TiController와 스위치 연동 안 됨.md",
     "to do/2025-W27.md",
     "개인 용무",
-    "컨테이너.md",
     "image.png",
     "기능 검증",
     "Case Report",
