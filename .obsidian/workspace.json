@@ -78,7 +78,7 @@
             }
           }
         ],
-        "currentTab": 4
+        "currentTab": 3
       }
     ],
     "direction": "vertical"
@@ -209,13 +209,13 @@
             "state": {
               "type": "outline",
               "state": {
-                "file": "cloud/libvirt 명령어.md",
+                "file": "to do/2025-W29.md",
                 "followCursor": false,
                 "showSearch": false,
                 "searchQuery": ""
               },
               "icon": "lucide-list",
-              "title": "Outline of libvirt 명령어"
+              "title": "Outline of 2025-W29"
             }
           },
           {
@@ -267,12 +267,12 @@
       "remotely-save:Remotely Save": false
     }
   },
-  "active": "7b30b01b823b6b7f",
+  "active": "8f3886311c91ddeb",
   "lastOpenFiles": [
+    "cloud/libvirt 명령어.md",
     "Libvirt 동작 방식.md",
     "KVM 엔포 기본 설치 테스트.md",
     "to do/2025-W28.md",
-    "cloud/libvirt 명령어.md",
     "to do/2025-W29.md",
     "to do/2025-W21.md",
     "to do/2025-W19.md",
