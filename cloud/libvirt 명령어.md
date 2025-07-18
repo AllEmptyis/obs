@@ -73,6 +73,6 @@
 	- NAT 모드에서 dhcp로 할당 받은 ip 확인
 -  virsh net-`start / destroy` default
 	- NAT 네트워크 시작 / 강제 종료
-- virsh dumpxml `myvm > myvm.xml`
+- virsh dumpxml `myvm > /경로/myvm.xml`
 	- 가상 머신 옮길 때 qcow2, xml 파일 백업 받은 후 virsh define 으로 xml 정의해주면
 	  새로 처음부터 설치 할 필요x
