@@ -55,12 +55,12 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "to do/2025-W29.md",
+                "file": "KVM 엔포 기본 설치 테스트.md",
                 "mode": "source",
                 "source": false
               },
               "icon": "lucide-file",
-              "title": "2025-W29"
+              "title": "KVM 엔포 기본 설치 테스트"
             }
           },
           {
@@ -209,13 +209,13 @@
             "state": {
               "type": "outline",
               "state": {
-                "file": "to do/2025-W29.md",
+                "file": "KVM 엔포 기본 설치 테스트.md",
                 "followCursor": false,
                 "showSearch": false,
                 "searchQuery": ""
               },
               "icon": "lucide-list",
-              "title": "Outline of 2025-W29"
+              "title": "Outline of KVM 엔포 기본 설치 테스트"
             }
           },
           {
@@ -269,8 +269,8 @@
   },
   "active": "8f3886311c91ddeb",
   "lastOpenFiles": [
-    "서버 관련/IODD를 사용한 OS 설치.md",
     "to do/2025-W29.md",
+    "서버 관련/IODD를 사용한 OS 설치.md",
     "cloud/libvirt 명령어.md",
     "Libvirt 동작 방식.md",
     "KVM 엔포 기본 설치 테스트.md",

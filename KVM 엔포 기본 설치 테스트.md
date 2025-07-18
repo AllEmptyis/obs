@@ -314,3 +314,6 @@ Name:   mail.test.com
 Address: 192.168.193.102
 ```
 ## Sendmail 구성
+- 일단 생략
+## DB(mysql)
+
