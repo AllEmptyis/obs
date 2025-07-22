@@ -13,12 +13,12 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "to do/2025-W30.md",
+                "file": "기능 검증/ACL.md",
                 "mode": "source",
                 "source": false
               },
               "icon": "lucide-file",
-              "title": "2025-W30"
+              "title": "ACL"
             }
           },
           {
@@ -180,13 +180,13 @@
             "state": {
               "type": "outline",
               "state": {
-                "file": "to do/2025-W30.md",
+                "file": "기능 검증/ACL.md",
                 "followCursor": false,
                 "showSearch": false,
                 "searchQuery": ""
               },
               "icon": "lucide-list",
-              "title": "Outline of 2025-W30"
+              "title": "Outline of ACL"
             }
           },
           {
@@ -240,8 +240,8 @@
   },
   "active": "236318581c482313",
   "lastOpenFiles": [
-    "to do/2025-W29.md",
     "to do/2025-W30.md",
+    "to do/2025-W29.md",
     "Libvirt 동작 방식.md",
     "가상 디스크 이미지.md",
     "서버 관련/엔지니어포털 마이그레이션.md",
