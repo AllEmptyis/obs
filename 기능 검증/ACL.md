@@ -46,17 +46,25 @@
 ### Access Group
 - `access- group <word> access-list <id>`
 - `access-group <word> interface <int>`
+### 시간/날짜 기반 ACL
+- `access-list <id> <time 0-24>`
+- `access-list <id> <date> to <date>`
+	- YYYY/MM/DD
 # 시스템 접근 제어
 - 장비 자체에 대한 접근 제어 (관리 접근 제한 용도)
+	- 스위치 ip로 오는 패킷만 적용 (ex.스위치에 대한 ssh, icmp 등)
+	- 우선순위는 시스템 접근 제어가 높음
+		- ex. 네트워크 접근제어에서 all deny 설정 후 시스템 접근제어에서 허용 설정하면 적용.
 - 특정 프로토콜에 대하여 접근/허용 할 네트워크 대역 설정
 	- any, tcp, udp, icmp
 - 호스트의 비밀번호가 유출되어 다른  사용자가 임의로 접근하는 것을 차단
 	- 허용할 ip/네트워크 대역으로 지정
 ## 시스템 접근 제어 설정
-- `system-access [deny/permit] [any/icmp/tcp/udp] `
+- `system-access [deny/permit] [any/icmp/tcp/udp] [SIP] [DIP] [sport] [dport]`
 - `show system-access`
 # ACL 실습
 ## CLI mode
+### 네트워크 접근 제어
 - access list 설정
 	- **모든 패킷에 대한 차단 규칙은 자동으로 생성**되기 때문에 넣을 필요 없음
 	- 162 가상머신, 130 스위치 gw ip, 131 host
@@ -74,7 +82,6 @@ TiFRONT(config)# show access-list acl3
           IP Protocol       : 6
           Src IPv4 address  : 192.168.212.131/24
           Dst IPv4 address  : 192.168.212.162/24
-          Src port          : 22
           Dst port          : 22
 
         2 Action            : Permit
@@ -118,7 +125,143 @@ TiFRONT(config)# show access-group interface
 
 //설정 조회
 ```
-## 결과
-- 성공
-	- 포트 변경 시 ping, ssh, 8443포트로 서버 접속 모두 가능
-	- ge3번에 연결 시 ssh, ping만 가능 / 8443 포트 reset
+- 결과
+	- 성공
+		- 포트 변경 시 ping, ssh, 8443포트로 서버 접속 모두 가능
+		- ge3번에 연결 시 ssh, ping만 가능 / 8443 포트 reset
+### 시스템 접근 제어
+- 호스트의 ip에 대해 설정 해도 적용 되지 않고 스위치 ip로의 접근만 차단 됨
+```
+TiFRONT(config)# system-access permit tcp 192.168.212.131/24 192.168.212.162/24 any eq 22
+TiFRONT(config)# system-access deny tcp any 192.168.212.162/24 any any
+TiFRONT(config)#
+TiFRONT(config)#
+TiFRONT(config)# show system-access
+  System Access List
+ -------------------------------------------------------
+   #1
+     Action            : Permit
+     IP Protocol       : TCP
+     Src IP address    : 192.168.212.131/24
+     Dst IP address    : 192.168.212.162/24
+     Src port          : ANY
+     Dst port          :    22
+
+   #2
+     Action            : Deny
+     IP Protocol       : TCP
+     Src IP address    : ANY
+     Dst IP address    : 192.168.212.162/24
+     Src port          : ANY
+     Dst port          : ANY
+ -------------------------------------------------------
+```
+- 특정 호스트로부터 icmp 접근 차단
+	- ip 대역은 서브넷 기준으로 처리, /24로 지정 시 해당 대역이 차단 됨
+```
+TiFRONT(config)# system-access deny icmp 192.168.212.131/32 192.168.212.130/24
+TiFRONT(config)# show system-access
+  System Access List
+ -------------------------------------------------------
+   #1
+     Action            : Deny
+     IP Protocol       : ICMP
+     Src IP address    : 192.168.212.131/32
+     Dst IP address    : 192.168.212.130/24
+ -------------------------------------------------------
+```
+- 우선순위 비교
+	- ping 안 됨 - 시스템 접근 제어 우세
+```
+TiFRONT(config)# show access-list permit
+ =========================================================================
+   Access List permit
+     Action Time : any
+     Action Date : any
+        1 Action            : Permit
+          IP Protocol       : 1
+          Src IPv4 address  : 192.168.212.131/32
+          Dst IPv4 address  : 192.168.212.130/24
+ =========================================================================
+
+TiFRONT(config)# show system-access
+  System Access List
+ -------------------------------------------------------
+   #1
+     Action            : Deny
+     IP Protocol       : ICMP
+     Src IP address    : 192.168.212.131/32
+     Dst IP address    : 192.168.212.130/24
+ -------------------------------------------------------
+```
+### 동작 원리
+- 장비로 오는 패킷의 경우 시스템 접근제어 적용
+	- 컨트롤 플레인에서 필터링
+- 경유하는 패킷이면 네트워크 접근 제어 적용
+	- 데이터 플레인에서 포워딩 결정
+- 즉 장비로 오는 경우 시스템 접근 제어로 적용 된다
+
+## Cloud mode
+- 허용 주소
+	- 컨트롤러 주소 외 기본적으로 허용 할 주소 설정 (최대 10개)
+		- 컨트롤러 ip는 기본적으로 허용 됨
+- 스위치 system-access 정책 확인
+	- 컨트롤러 ip 트래픽 자동 정책 추가, 시스템 접근 제어에 규칙 하나라도 있으면 생성 됨.
+	- 허용 주소에 설정한 ip에 대한 트래픽 허용 규칙도 자동 추가
+```
+TiFRONT(config)% show system-access
+  System Access List
+ -------------------------------------------------------
+   #1
+     Action            : Permit
+     IP Protocol       : ANY
+     Src IP address    : 192.168.212.162/32
+     Dst IP address    : ANY
+
+   #2
+     Action            : Permit
+     IP Protocol       : ANY
+     Src IP address    : ANY
+     Dst IP address    : 192.168.212.162/32
+
+   #3
+     Action            : Permit
+     IP Protocol       : ANY
+     Src IP address    : 127.0.0.1/32
+     Dst IP address    : ANY
+
+   #4
+     Action            : Permit
+     IP Protocol       : ANY
+     Src IP address    : ANY
+     Dst IP address    : 127.0.0.1/32
+
+   #5
+     Action            : Deny
+     IP Protocol       : ICMP
+     Src IP address    : 192.168.212.131/32
+     Dst IP address    : ANY
+ -------------------------------------------------------
+TiFRONT(config)%
+TiFRONT(config)%
+TiFRONT(config)%
+TiFRONT(config)%
+TiFRONT(config)% show system-access
+  System Access List
+ -------------------------------------------------------
+    None
+ -------------------------------------------------------
+```
+- 네트워크 접근 제어 설정 시에는 스위치에 추가 되는 정책 없음
+```
+TiFRONT% show system-access
+  System Access List
+ -------------------------------------------------------
+    None
+ -------------------------------------------------------
+TiFRONT%
+TiFRONT% show access-list
+ =========================================================================
+   None
+ =========================================================================
+```

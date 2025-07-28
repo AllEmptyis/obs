@@ -41,15 +41,16 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "cloud/libvirt 명령어.md",
+                "file": "KVM-NAT 모드.md",
                 "mode": "source",
                 "source": false
               },
               "icon": "lucide-file",
-              "title": "libvirt 명령어"
+              "title": "KVM-NAT 모드"
             }
           }
-        ]
+        ],
+        "currentTab": 2
       }
     ],
     "direction": "vertical"
@@ -180,13 +181,13 @@
             "state": {
               "type": "outline",
               "state": {
-                "file": "기능 검증/ACL.md",
+                "file": "KVM-NAT 모드.md",
                 "followCursor": false,
                 "showSearch": false,
                 "searchQuery": ""
               },
               "icon": "lucide-list",
-              "title": "Outline of ACL"
+              "title": "Outline of KVM-NAT 모드"
             }
           },
           {
@@ -238,16 +239,22 @@
       "remotely-save:Remotely Save": false
     }
   },
-  "active": "236318581c482313",
+  "active": "7b30b01b823b6b7f",
   "lastOpenFiles": [
+    "KVM-Bridge 모드.md",
+    "KVM-NAT 모드.md",
     "to do/2025-W30.md",
+    "cloud/libvirt 명령어.md",
+    "기능 검증/ACL.md",
+    "에러/TiController와 스위치 연동 안 됨.md",
+    "에러/TiController ip 변경 후 컨트롤러 ip가 반영되지 않는 현상.md",
+    "에러",
     "to do/2025-W29.md",
     "Libvirt 동작 방식.md",
     "가상 디스크 이미지.md",
     "서버 관련/엔지니어포털 마이그레이션.md",
     "KVM 엔포 기본 설치 테스트.md",
     "서버 관련/IODD를 사용한 OS 설치.md",
-    "cloud/libvirt 명령어.md",
     "to do/2025-W28.md",
     "to do/2025-W21.md",
     "to do/2025-W19.md",
@@ -262,11 +269,6 @@
     "기능 검증/TiController Rocky Linux 마이그레이션.md",
     "서버 관련/SAS2008 IT mode 전환 방법.md",
     "서버 관련",
-    "Docker 명령어.md",
-    "Docker.md",
-    "Libvirt 네트워크 설정.md",
-    "기능 검증/ACL.md",
-    "서버 규격 확인 - Dell R450.md",
     "개인 용무",
     "image.png",
     "기능 검증",
@@ -280,7 +282,6 @@
     "명령어",
     "Bass",
     "신규기능",
-    "PAS-K",
     "첨부파일/Pasted image 20250430104724.png",
     "첨부파일/Pasted image 20250430102557.png",
     "첨부파일/Pasted image 20250429180735.png",
