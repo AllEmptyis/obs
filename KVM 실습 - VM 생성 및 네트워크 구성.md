@@ -39,6 +39,7 @@
 	```
 - 필수 패키지 설치
 	- dnf install -y qemu-kvm libvirt virt-install virt-manager virt-viewer libvirt-daemon-kvm libvirt-daemon-config-network bridge-utils\
+		- *bridge-utlils는 로키9.4 이상부터는 제공X*
 	- virt-install: 명령어 기반 가상 머신 생성 도구
 	  virt-manager: gui 기반 가상 머신 관리자
 - 데몬 실행
