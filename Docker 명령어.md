@@ -32,6 +32,8 @@
 
 - `docker logs [컨테이너ID/이름]`
 	- 컨테이너 로그 확인
+
+- `docekr port [이미지명]`
 ## 이미지
 - `docker images`
 	- 로컬에 존재하는 이미지 목록 조회
@@ -42,6 +44,12 @@
 	- docker build -t myapp .
 - `docker rmi [이미지ID/이름]`
 	- 이미지 삭제
+- `docker image inspect <img>`
+	- 이미지 레이어 보기 / json 형태로 출력
+- `docker history <img>`
+	- 이미지 레이어 보기 / 레이어 별 크기, 생성 명령어 출력
+- `dive <img>`
+	- 터미널에서 이미지 레이어 분석하는 툴
 ## 네트워크 / 볼륨 / 기타
 - `docker network ls`
 	- 네트워크 목록 조회

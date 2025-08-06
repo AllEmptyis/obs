@@ -13,12 +13,12 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "to do/2025-W31.md",
+                "file": "Loopback 인터페이스.md",
                 "mode": "source",
                 "source": false
               },
               "icon": "lucide-file",
-              "title": "2025-W31"
+              "title": "Loopback 인터페이스"
             }
           },
           {
@@ -63,8 +63,7 @@
               "title": "Docker"
             }
           }
-        ],
-        "currentTab": 3
+        ]
       }
     ],
     "direction": "vertical"
@@ -195,13 +194,13 @@
             "state": {
               "type": "outline",
               "state": {
-                "file": "Docker.md",
+                "file": "Loopback 인터페이스.md",
                 "followCursor": false,
                 "showSearch": false,
                 "searchQuery": ""
               },
               "icon": "lucide-list",
-              "title": "Outline of Docker"
+              "title": "Outline of Loopback 인터페이스"
             }
           },
           {
@@ -253,14 +252,17 @@
       "remotely-save:Remotely Save": false
     }
   },
-  "active": "19774155a81beb88",
+  "active": "236318581c482313",
   "lastOpenFiles": [
-    "서버 관련/엔지니어포털 마이그레이션.md",
+    "nmcli 명령어.md",
     "to do/2025-W31.md",
+    "to do/2025-W30.md",
+    "Docker.md",
+    "에러/ftp, tftp 사용 방법.md",
+    "서버 관련/엔지니어포털 마이그레이션.md",
     "기능 검증/ACL.md",
     "KVM-NAT 모드.md",
     "KVM-Bridge 모드.md",
-    "to do/2025-W30.md",
     "cloud/libvirt 명령어.md",
     "에러/TiController와 스위치 연동 안 됨.md",
     "에러/TiController ip 변경 후 컨트롤러 ip가 반영되지 않는 현상.md",
@@ -279,9 +281,6 @@
     "서버 관련/서버 성능 비교.md",
     "서버 관련/서버 규격 확인 - Dell R450.md",
     "KVM - 디스크 용량 부족 문제.md",
-    "서버 관련/DUD 파일 생성.md",
-    "서버 관련/Rocky linux9.3 DUD 생성.md",
-    "기능 검증/TiController Rocky Linux 마이그레이션.md",
     "서버 관련",
     "개인 용무",
     "image.png",

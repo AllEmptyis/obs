@@ -34,7 +34,7 @@
 # Docker 실습
 ## 실습 로드맵
 - [x] 기본 패키지 설치
-- [ ] 컨테이너 띄우기
+- [x] 컨테이너 띄우기
 - [ ] 이미지 확인 (pull/tag/rmi & 캐시 이해)
 	- 레이어 구조, 저장 위치 확인
 - [ ] 볼륨 & 바인드 마운트
@@ -72,12 +72,12 @@ Docker version 28.3.2, build 578ccf6
 	- --name: 컨테이너명
 	- -p: 컨테이너의 80번 포트를 호스트의 8080으로 연결 (호스트 포트: 컨테이너 포트)
 	- nginx: 이미지명
-- `docker run -d --name mariadb -e MYSQL_ROOT_PASSWORD=1234 -p 13306:3306 mariadb:10.6`
+- `docker run -d --name [mariadb] -e [MYSQL_ROOT_PASSWORD=1234] -p [13306:3306] [mariadb:10.6]`
 	- -e: 환경 변수 설정 (비밀번호)
 	- mariadb:10.6 : tag, 10.6 버전으로 다운받겠다는 의미. 미지정 시 latest로 다운로드
-- `docker exec -it mariadb mysql -u root -p`
+- `docker exec -it [mariadb] [mysql -u root -p]`
 	- mariadb 컨테이너 내부에서 mysql -u root -p로 접속
-- `mysql -h 192.168.211.101 -P 13306 -u root -p`
+- `mysql -h [192.168.211.101] -P [13306] -u [root] -p`
 	- 외부에서 mysql 접속 방법
 	- -h: 접속할 도커 호스트의 ip, -P: 컨테이너의 포트
 	- `firewall-cmd --list-all`
@@ -97,4 +97,21 @@ f30ffbee4c54: Pull complete
 Digest: sha256:84ec966e61a8c7846f509da7eb081c55c1d56817448728924a87ab32f12a72fb
 Status: Downloaded newer image for nginx:latest
 6848dd5739f67ee5e4464d17c6201a80ac19f95530ca3dbd9dde5185fac5db04
+
+//포트 확인
+[root@localhost ~]# ss -ntlp | grep 13306
+LISTEN 0      4096           0.0.0.0:13306      0.0.0.0:*    users:(("docker-proxy",pid=37529,fd=7))
+LISTEN 0      4096              [::]:13306         [::]:*    users:(("docker-proxy",pid=37535,fd=7))
+
+[root@localhost ~]# docker port mariadb
+3306/tcp -> 0.0.0.0:13306
+3306/tcp -> [::]:13306
 ```
+## 이미지 레이어
+- `docker history <img>`
+	- image: 최상위 이미지는 id가 보이며, 하위 레이어는 `<missing>`으로 표시
+	- created by: dockerfile 내 사용된 명령어
+	- size: 해당 명령어로 추가된 파일 시스템 크기
+	- comment: buildkit or 빌드 도구 관련 주석
+- `docker image inspect <img>`
+
