@@ -13,12 +13,12 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "Loopback 인터페이스.md",
+                "file": "to do/2025-W31.md",
                 "mode": "source",
                 "source": false
               },
               "icon": "lucide-file",
-              "title": "Loopback 인터페이스"
+              "title": "2025-W31"
             }
           },
           {
@@ -194,13 +194,13 @@
             "state": {
               "type": "outline",
               "state": {
-                "file": "Loopback 인터페이스.md",
+                "file": "to do/2025-W31.md",
                 "followCursor": false,
                 "showSearch": false,
                 "searchQuery": ""
               },
               "icon": "lucide-list",
-              "title": "Outline of Loopback 인터페이스"
+              "title": "Outline of 2025-W31"
             }
           },
           {
@@ -234,7 +234,7 @@
             }
           }
         ],
-        "currentTab": 3
+        "currentTab": 5
       }
     ],
     "direction": "horizontal",
@@ -252,11 +252,12 @@
       "remotely-save:Remotely Save": false
     }
   },
-  "active": "236318581c482313",
+  "active": "f08da995e18ff313",
   "lastOpenFiles": [
-    "nmcli 명령어.md",
-    "to do/2025-W31.md",
     "to do/2025-W30.md",
+    "to do/2025-W31.md",
+    "Loopback 인터페이스.md",
+    "nmcli 명령어.md",
     "Docker.md",
     "에러/ftp, tftp 사용 방법.md",
     "서버 관련/엔지니어포털 마이그레이션.md",
@@ -280,7 +281,6 @@
     "메일 서버.md",
     "서버 관련/서버 성능 비교.md",
     "서버 관련/서버 규격 확인 - Dell R450.md",
-    "KVM - 디스크 용량 부족 문제.md",
     "서버 관련",
     "개인 용무",
     "image.png",
