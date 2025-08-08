@@ -6,7 +6,7 @@
 - [ ] sendmail
 - [ ] dovecot
 ## VM 정보
-- rocky9.6
+- **rocky9.6**
 	- rocky10은 kvm에서 인식 안 됨
 	- 192.168.193.102/24
 - 아래와 같이 설치
@@ -21,7 +21,7 @@ virt-install --name enpotest --memory 8012 --vcpu 2 --cdrom /Rocky-9.6-x86_64-dv
 ```
 [root@localhost ~]# systemctl enable named
 ```
-### mysql 설치
+### mysql 설치 (8.0.42)
 - mysqyl 공식 리포지토리 패키지 다운 필요
 	- repo 경로: `/etc/yum.repos.d/mysql-community.repo`
 ```
@@ -54,6 +54,88 @@ sub   rsa4096 2021-12-14 [E] [expired: 2023-12-14]
 ```
 rpm --import https://repo.mysql.com/RPM-GPG-KEY-mysql-2023
 ```
+### mysql 설치 (5.7)
+- 8.x 번대 패키지 제거
+```
+systemctl stop mysqld
+
+[root@localhost ~]# dnf list installed | grep mysql //설치 된 msyql 패키지 확인
+mysql-community-client.x86_64                    8.0.42-1.el9                        @mysql80-community
+mysql-community-client-plugins.x86_64            8.0.42-1.el9                        @mysql80-community
+mysql-community-common.x86_64                    8.0.42-1.el9                        @mysql80-community
+mysql-community-icu-data-files.x86_64            8.0.42-1.el9                        @mysql80-community
+mysql-community-libs.x86_64                      8.0.42-1.el9                        @mysql80-community
+mysql-community-server.x86_64                    8.0.42-1.el9                        @mysql80-community
+mysql80-community-release.noarch                 el9-1                               @@commandline
+
+[root@localhost ~]# dnf remove mysql-community* mysql80*
+```
+- 5.7 레포지토리(저장소) 설치
+	- 로키9에서는 5.7 공식 저장소 없음, 로키8버전에서는 mysql5.7 제거
+	- 아래 저장소로 설치 (7.11)
+```
+wget http://repo.mysql.com/mysql57-community-release-el7-11.noarch.rpm
+dnf -y install mysql57-community-release-el7-11.noarch.rpm
+```
+- 패키지 설치
+	- mysql57-community enable 후 설치
+	- `dnf install mysql-community-server`
+```
+[root@localhost ~]# dnf config-manager --disable mysql80-community
+[root@localhost ~]# dnf config-manager --enable mysql57-community
+
+
+//저장소 확인
+[root@localhost ~]# dnf repolist --all | grep mysql
+mysql-cluster-7.5-community        MySQL Cluster 7.5 Community          disabled
+mysql-cluster-7.5-community-source MySQL Cluster 7.5 Community - Source disabled
+mysql-cluster-7.6-community        MySQL Cluster 7.6 Community          disabled
+mysql-cluster-7.6-community-source MySQL Cluster 7.6 Community - Source disabled
+mysql-connectors-community         MySQL Connectors Community           enabled
+mysql-connectors-community-source  MySQL Connectors Community - Source  disabled
+mysql-tools-community              MySQL Tools Community                enabled
+mysql-tools-community-source       MySQL Tools Community - Source       disabled
+mysql-tools-preview                MySQL Tools Preview                  disabled
+mysql-tools-preview-source         MySQL Tools Preview - Source         disabled
+mysql55-community                  MySQL 5.5 Community Server           disabled
+mysql55-community-source           MySQL 5.5 Community Server - Source  disabled
+mysql56-community                  MySQL 5.6 Community Server           disabled
+mysql56-community-source           MySQL 5.6 Community Server - Source  disabled
+mysql57-community                  MySQL 5.7 Community Server           enabled    --->확인
+mysql57-community-source           MySQL 5.7 Community Server - Source  disabled
+mysql80-community                  MySQL 8.0 Community Server           disabled
+mysql80-community-source           MySQL 8.0 Community Server - Source  disabled
+
+//속도 느릴 경우
+dnf config-manager --save --setopt=timeout=1000
+```
+#### 호환성 문제
+- signal 11 에러 발생
+	- 버전 호환성 때문에 발생 (사용하는 라이브러리 다름)
+	- 아래 패키지 설치 시 임시 조치 가능
+		- 로키8 설치하는 것이 안정
+```
+//에러 확인
+[root@localhost ~]# cat /var/log/mysqld.log | tail -50
+2025-08-04T05:55:29.440092Z 0 [Note] InnoDB: Number of pools: 1
+2025-08-04T05:55:29.440171Z 0 [Note] InnoDB: Using CPU crc32 instructions
+2025-08-04T05:55:29.441334Z 0 [Note] InnoDB: Initializing buffer pool, total size = 128M, instances = 1, chunk size = 128M
+2025-08-04T05:55:29.446539Z 0 [Note] InnoDB: Completed initialization of buffer pool
+2025-08-04T05:55:29.448129Z 0 [Note] InnoDB: If the mysqld execution user is authorized, page cleaner thread priority can be changed. See the man page of setpriority().
+05:55:29 UTC - mysqld got signal 11 ;
+This could be because you hit a bug. It is also possible that this binary
+
+//패키지 설치
+dnf install -y libaio ncurses-compat-libs compat-openssl11
+
+//데이터 디렉토리 초기화 후 데몬 재시작
+rm -rf /var/lib/mysql/*
+mysqld --initialize --user=mysql
+chown -R mysql:mysql /var/lib/mysql
+
+systemctl restart mysqld
+```
+
 ## 버전 확인
 ```
 [root@localhost ~]# httpd -v
@@ -61,7 +143,7 @@ Server version: Apache/2.4.62 (Rocky Linux)
 Server built:   Jan 29 2025 00:00:00
 
 [root@localhost ~]# mysqld --version
-mysqld  Ver 10.5.27-MariaDB for Linux on x86_64 (MariaDB Server)
+mysqld  Ver 5.7.44 for Linux on x86_64 (MySQL Community Server (GPL))
 
 [root@localhost ~]# dovecot --version
 2.3.16 (7e2e900c1a)
@@ -72,8 +154,8 @@ Version 8.16.1
 [root@localhost ~]# named -v
 BIND 9.16.23-RH (Extended Support Version) <id:fde3b1f>
 
-[root@localhost etc]# mysql --version
-mysql  Ver 8.0.42 for Linux on x86_64 (MySQL Community Server - GPL)
+[root@localhost ~]# mysql --version
+mysql  Ver 14.14 Distrib 5.7.44, for Linux (x86_64) using  EditLine wrapper
 ```
 ### 버전 업그레이드 (필요X)
 - mariadb /v10.11.13 버전 설치 방법
@@ -314,6 +396,45 @@ Name:   mail.test.com
 Address: 192.168.193.102
 ```
 ## Sendmail 구성
-- 일단 생략
-## DB(mysql)
+- 테스트 유저 생성 / pw:1234
+```
+useradd test
 
+[root@localhost mail]# passwd --stdin test
+Changing password for user test.
+1234
+passwd: all authentication tokens updated successfully.
+```
+- 메일 송수신 테스트
+	- s-nail 패키지 설치 필요
+```
+//test라는 메일 제목으로 test 유저에게 testmail 메일 전송
+echo "testmail" | mail -s "test" test
+
+인터렉티브로 보낼 땐 내용 입력하고 . <- 종료
+```
+- test 계정 메일 기본 경로 수정
+	- /var/mail/root로 되어있는 경우 있음
+```
+[root@localhost mail]# su test
+[test@localhost mail]$ echo 'export MAIL=/var/spool/mail/test' >> ~/.bash_profile
+[test@localhost mail]$ source ~/.bash_profile
+[test@localhost mail]$ echo $MAIL
+/var/spool/mail/test
+```
+- 확인
+```
+[test@localhost mail]$ mail
+s-nail version v14.9.22.  Type `?' for help
+/var/spool/mail/test: 1 message
+▸   1 root                  2025-08-04 03:48   19/746   "test     
+```
+## DB(mysql)
+### 초기 설정
+- mysql5.7은 설치 시 임시 비밀번호를 자동 생성
+```
+sudo grep 'temporary password' /var/log/mysqld.log
+2025-08-04T06:57:32.973961Z 1 [Note] A temporary password is generated for root@localhost: Hj9YKsgieU%n
+```
+- `mysql_secure_installation` 로 비밀번호 설정 
+	- 임시 비번:Admin123!@#

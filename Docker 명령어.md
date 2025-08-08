@@ -24,7 +24,7 @@
 	 - restart: 컨테이너 재시작
 	 - rm: 컨테이너 삭제
   
-- `docker exec -it [컨테이너ID/이름] <bash/명령어>`
+- `docker exec -it [컨테이너ID/이름] </bin/bash or 명령어>`
 	- 기존 컨테이너 내부 bash 쉘 접속
 		- -i: stdin을 열어두어서 사용자 입력을 받을 수 있도록 함
 		- -t: 터미널 연결 (셸 환경처럼 실행)

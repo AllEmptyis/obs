@@ -1,0 +1,3 @@
+- 유선 문의 (모바엑스텀 관련)
+	- switch.conf: 모바엑스텀으로 접근 시 초기화 되는 설정 파일. 부팅 시 해당 파일로 startup.conf 덮어 씌움
+	- startup.conf: running config와 같은 파일. wr 하면 startup.conf 내용이 switch.conf로 저장

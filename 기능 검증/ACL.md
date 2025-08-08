@@ -203,7 +203,22 @@ TiFRONT(config)# show system-access
 #### ticontroller
 - 시스템 접근 제어는 커널의 방화벽에서 설정 됨 (iptables)
 - 네트워크 접근 제어는 FP rule에 적용 됨. (스위칭 칩)
-	- 시스템 접근 제어의 규칙은 네트워크 접근 제어에서도 똑같이 설정해주어야 적용 됨 (확인 필요)
+	- 네트워크 접근제어가 시스템접근제어와 겹치게 설정되어 있을 땐 시스템 접근 제어 동작 안 됨
+		- ex) 네트워크 접근제어에서 all deny 했는데 시스템 접근제어는 all allow 한 경우
+		- 시스템은 방화벽에서 막고, 네트워크 접근제어는 스위칭 칩에서 막아서 그런 거 같다. /네트워크에서 허용하고 시스템에서 deny하는 건 동작 잘 됨
+```
+bash-4.3# iptables -L
+Chain INPUT (policy ACCEPT)
+target     prot opt source               destination
+ACCEPT     all  --  TiFRONT              TiFRONT
+ACCEPT     all  --  192.168.212.162      anywhere
+ACCEPT     all  --  anywhere             192.168.212.162
+ACCEPT     all  --  one.one.one.one      anywhere
+ACCEPT     all  --  anywhere             one.one.one.one
+ACCEPT     all  --  TiFRONT              anywhere
+ACCEPT     all  --  anywhere             TiFRONT
+ACCEPT     all  --  anywhere             anywhere
+```
 
 ## Cloud mode
 - 허용 주소
