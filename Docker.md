@@ -53,7 +53,7 @@ docker run은 새 컨테이너 실행 명령어
 - [x] 컨테이너 띄우기
 - [x] 이미지 확인 (pull/tag/rmi & 캐시 이해)
 	- 레이어 구조, 저장 위치 확인
-- [ ] 볼륨 & 바인드 마운트
+- [x] 볼륨 & 바인드 마운트
 	- named volume vs bind mount 차이
 - [ ] 네트워크 (bridge 사용자 정의, 포트 mapping)
 	- iptables/nftables 규칙 확인
@@ -296,16 +296,18 @@ drwxr-xr-x. 2 root root  26 Jul 28 02:57 conf.d
 - 컨테이너와 호스트 간 데이터 공유, 저장하기 위한 기능
 	- 컨테이너는 종료하면 데이터도 같이 삭제 됨
 - 볼륨 종류
-	- named volume: 도커가 관리하는 디렉터리
+	- named volume: **도커가 관리하는 디렉터리**
 		- 기본경로: `/var/lib/docker/volumes/_data`
 		- 내부에서는 볼륨을 생성한 위치로 보이고, 호스트에서 보면 위의 기본 경로에 볼륨이 저장 됨
 		- 볼륨 생성 후 볼륨의 내부가 비어있으면 데이터 자동 복사
-	- bind mount: 호스트의 특정 디렉터리를 컨테이너와 공유
+			- **마운트 할 볼륨 경로에 데이터가 있다면 볼륨의 데이터를 우선 사용**
+	- bind mount: **호스트의 특정 디렉터리를 컨테이너와 공유**
+	- tmpfs:프로세스 종료 시 데이터 삭제
 - 명령어 (named)
 	- `docker volume create <volume-name>` //볼륨 수동 생성
-	- `docker run -v <볼륨이름>:<컨테이너경로> <container name>`
+	- `docker run -v <볼륨이름>:<컨테이너경로> <container name> [:rw/ro]`
 - 명령어 (bind)
-	- `docker run -v <호스트경로>:<컨테이너경로> <container name>`
+	- `docker run -v <호스트경로>:<컨테이너경로> <container name> [:rw/ro]`
 - 볼륨은 "컨테이너 생성 시" 같이 생성해야 함
 	- 호스트와 공유하는 볼륨이 있는 파일시스템으로 만들어지는 것
 - 비슷한 옵션 -  `--mount`
@@ -314,7 +316,7 @@ drwxr-xr-x. 2 root root  26 Jul 28 02:57 conf.d
 	- 컨테이너 간 공유: named 방식이 유리
 ### 실습 / nginx 컨테이너에서 html 파일 수정
 - /usr/share/nginx/html 기본 루트를 공유 볼륨으로 잡기
-	- 바인드 마운트하면 루트에 있는 파일은 가려짐
+	- 바인드 마운트하면 루트에 있는 파일은 가려짐 (호스트 볼륨의 데이터 내용만 보임)
 ```
 [root@localhost /]# docker run -itd --name nginx_volume -p 8081:80 -v /host_volume:/usr/share/nginx/html nginx
 5c06db850f9736105a7565de0945d3589dbd5761545b72ce0fea1c4b252bc48f
@@ -327,6 +329,7 @@ d18c0646b1e5   nginx     "/docker-entrypoint.…"   44 hours ago    Up 44 hours 
 ->그 전에는 403 forbidden
 ```
 - named 방식
+	- bind방식과 달리 볼륨 내용이 가려지지 않고 호스트에서 수정 가능
 ```
 [root@localhost /]# docker run -d --name nginx_volume2 -p 8082:80 -v named_vomue:/usr/share/nginx/html nginx
 
@@ -335,3 +338,188 @@ d18c0646b1e5   nginx     "/docker-entrypoint.…"   44 hours ago    Up 44 hours 
 [root@localhost _data]# ls
 50x.html  index.html
 ```
+- 볼륨 조회 방법
+	- `docker volume ls`
+	- `docker volume inspect [볼륨 이름]`
+```
+[root@localhost ~]# docker volume ls
+DRIVER    VOLUME NAME
+local     named_vomue
+
+[root@localhost ~]# docker volume inspect named_vomue
+[
+    {
+        "CreatedAt": "2025-08-08T17:50:41+09:00",
+        "Driver": "local",
+        "Labels": null,
+        "Mountpoint": "/var/lib/docker/volumes/named_vomue/_data",
+        "Name": "named_vomue",
+        "Options": null,
+        "Scope": "local"
+    }
+]
+```
+## bridge 네트워크
+- 각 컨테이너 내부에는 가상 nic이 있고 가상 nic은 호스트의 가상 nic veth랑 페어링 되어 있다
+	- veth가 호스트 ip로부터 NAPT(Network Address Port Translation)을 이용하여 컨테이너와 통신하도록 함
+- 기본 브리지 ip 대역
+	- `172.17.0.0/16`
+	- 컨테이너 시작 ip 주소: `172.17.0.2`
+- 커스텀 브리지 ip 대역
+	- `172.18.0.0/16` 부터 순차적으로 할당
+- 도커 네트워크 종류
+	- bridge
+		- iptables 기반으로 변환 주소 변환
+		- 리눅스 커널에 내장된 netfilter 커널 모듈을 통해 필터링 되며, iptables는 해당 커널 모듈을 이용할 수 있게 해주는 user space 프로그램
+		- iptables 규칙을 통해 네트워크 격리 (docker chain안에 룰 설정)
+	- host
+		- 컨테이너와 호스트 간 네트워크 격리가 없으며, 호스트의 포트를 이용하여 통신 가능
+		- bridge네트워크 없음
+	- none
+		- 외부와 통신x
+- 커스텀 네트워크는 dns 통신 가능, 일반 브리지 네트워크에서는 ip로만 통신
+	- dns 통신하기 위해서는 --link 및 /etc/hosts에 설정 필요 (커스텀 브리지 만드는 것 권장)
+- 커스텀 브리지는 네트워크별 ip범위, 게이트웨이, 서브넷 설정 가능하며 내부적으로 docker dns(127.0.0.11) 자동 활성화
+```
+[root@localhost ~]# docker network ls
+NETWORK ID     NAME      DRIVER    SCOPE
+efc588d50f8b   bridge    bridge    local
+97aec1c00d63   host      host      local
+63598a25259d   none      null      local
+```
+### iptables 확인
+```
+[root@localhost ~]# iptables -nL -t nat //nat 테이블의 체인 출력 
+Chain PREROUTING (policy ACCEPT)
+target     prot opt source               destination
+DOCKER     all  --  0.0.0.0/0            0.0.0.0/0            ADDRTYPE match dst-type LOCAL //목적지가 로컬 주소인 경우 도커 체인으로 보냄, 만일 도커체인에서 일치하는 조건 없으면 다시 리턴
+
+Chain INPUT (policy ACCEPT)
+target     prot opt source               destination // 없음. 해당 규칙은 주로 호스트가 사용
+
+Chain OUTPUT (policy ACCEPT)
+target     prot opt source               destination
+DOCKER     all  --  0.0.0.0/0           !127.0.0.0/8          ADDRTYPE match dst-type LOCAL //목적지가 로컬주소인 경우 도커 체인으로 보냄, 루프백 주소는 제외. (호스트에서도 컨테이너 접속 허용)
+
+Chain POSTROUTING (policy ACCEPT)
+target     prot opt source               destination
+MASQUERADE  all  --  172.17.0.0/16        0.0.0.0/0 //출발지가 도커ip대역인 경우 외부로 나갈 때 SNAT
+
+Chain DOCKER (2 references)
+target     prot opt source               destination
+RETURN     all  --  0.0.0.0/0            0.0.0.0/0
+DNAT       tcp  --  0.0.0.0/0            0.0.0.0/0            tcp dpt:8080 to:172.17.0.2:80
+DNAT       tcp  --  0.0.0.0/0            0.0.0.0/0            tcp dpt:8081 to:172.17.0.3:80
+DNAT       tcp  --  0.0.0.0/0            0.0.0.0/0            tcp dpt:8082 to:172.17.0.4:80
+```
+### 명령어
+- 네트워크 조회
+	- `docker network ls`
+	- `docker network inspect <id/네트워크명>`
+	- `docker network inspect bridge`
+	- `docker inspect -f '{{.Name}} - {{.NetworkSettings.IPAddress}}' $(docker ps -q)`
+		- 실행 중인 모든 컨테이너 이름/ip를 한 줄씩 출력
+- 생성
+	- `docker network create <네트워크명>`
+		- 브리지 드라이버 사용한 커스텀 네트워크 생성
+	- `docker network create --driver bridge --subnet 192.168.100.0/24 --gateway 192.168.100.1 <네트워크명>`
+		- 서브넷, 게이트웨이 지정해서 생성
+		- 드라이버 종류
+			- bridge, host, none, overlay
+- 연결/해제
+	- `docker network connect <네트워크명> <컨테이너명>`
+	- `docker network disconnect <네트워크명> <컨테이너명>`
+	- `docker run -d --name xx --network xx nginx`
+		- 컨테이너 생성하면서 네트워크 지정할 수 있음 (이 경우는 지정한 네트워크에만 연결 됨)
+		- 컨테이너는 여러 네트워크에 동시에 붙을 수 있음
+- 네트워크 삭제
+	- `docker network rm <네트워크명>`
+	- `docker network prune`
+		- 사용하지 않는 네트워크 전체 삭제
+		- 사용 중인 네트워크는 삭제 불가
+- 기타 트러블슈팅
+	- `docker exec -it <컨테이너명> cat /etc/resolv.conf`
+	- `docker exec -it <컨테이너명> ip a`
+	- `docker inspect <컨테이너명> | grep -A 10 "Networks"`
+		- 연결 된 네트워크 확인
+### 실습
+- 커스텀 브리지 생성 및 통신 확인
+```
+[root@localhost ~]# docker network create test
+[root@localhost ~]# docker run -itd --name alpine_2 --network test alpine
+[root@localhost ~]# docker run -it --name alpine_1 --network test alpine
+
+15: br-60abe44a3dbd: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1500 qdisc noqueue state UP group default
+    link/ether ca:aa:6d:c0:16:cb brd ff:ff:ff:ff:ff:ff
+    inet 172.18.0.1/16 brd 172.18.255.255 scope global br-60abe44a3dbd
+       valid_lft forever preferred_lft forever
+    inet6 fe80::c8aa:6dff:fec0:16cb/64 scope link
+       valid_lft forever preferred_lft forever
+
+[root@localhost ~]# docker exec -it alpine_1 sh
+/ # ip a
+1: lo: <LOOPBACK,UP,LOWER_UP> mtu 65536 qdisc noqueue state UNKNOWN qlen 1000
+    link/loopback 00:00:00:00:00:00 brd 00:00:00:00:00:00
+    inet 127.0.0.1/8 scope host lo
+       valid_lft forever preferred_lft forever
+    inet6 ::1/128 scope host
+       valid_lft forever preferred_lft forever
+2: eth0@if19: <BROADCAST,MULTICAST,UP,LOWER_UP,M-DOWN> mtu 1500 qdisc noqueue state UP
+    link/ether 5e:eb:40:2a:bc:ff brd ff:ff:ff:ff:ff:ff
+    inet 172.18.0.3/16 brd 172.18.255.255 scope global eth0
+       valid_lft forever preferred_lft forever
+
+/ # ping 172.18.0.2
+PING 172.18.0.2 (172.18.0.2): 56 data bytes
+64 bytes from 172.18.0.2: seq=0 ttl=64 time=0.063 ms
+^C
+--- 172.18.0.2 ping statistics ---
+1 packets transmitted, 1 packets received, 0% packet loss
+round-trip min/avg/max = 0.063/0.063/0.063 ms
+/ #
+/ # ping alpine_2
+PING alpine_2 (172.18.0.2): 56 data bytes
+64 bytes from 172.18.0.2: seq=0 ttl=64 time=0.052 ms
+64 bytes from 172.18.0.2: seq=1 ttl=64 time=0.026 ms
+```
+- 커스텀 브리지 iptables 확인
+```
+[root@localhost ~]# iptables -L -t nat
+Chain PREROUTING (policy ACCEPT)
+target     prot opt source               destination
+DOCKER     all  --  anywhere             anywhere             ADDRTYPE match dst-type LOCAL
+
+Chain INPUT (policy ACCEPT)
+target     prot opt source               destination
+
+Chain OUTPUT (policy ACCEPT)
+target     prot opt source               destination
+DOCKER     all  --  anywhere            !127.0.0.0/8          ADDRTYPE match dst-type LOCAL
+
+Chain POSTROUTING (policy ACCEPT)
+target     prot opt source               destination
+MASQUERADE  all  --  172.18.0.0/16        anywhere
+MASQUERADE  all  --  172.17.0.0/16        anywhere
+
+Chain DOCKER (2 references)
+target     prot opt source               destination
+RETURN     all  --  anywhere             anywhere
+RETURN     all  --  anywhere             anywhere
+DNAT       tcp  --  anywhere             anywhere             tcp dpt:webcache to:172.17.0.2:80
+DNAT       tcp  --  anywhere             anywhere             tcp dpt:tproxy to:172.17.0.3:80
+DNAT       tcp  --  anywhere             anywhere             tcp dpt:us-cli to:172.17.0.4:80
+
+[root@localhost ~]# docker ps -a
+CONTAINER ID   IMAGE     COMMAND                  CREATED          STATUS          PORTS                                     NAMES
+9e739c23e2ec   alpine    "/bin/sh"                10 minutes ago   Up 10 minutes                                             alpine_2
+65497fd87fd7   alpine    "/bin/sh"                11 minutes ago   Up 4 minutes                                              alpine_1
+38a207cca48e   nginx     "/docker-entrypoint.…"   24 hours ago     Up 24 hours     0.0.0.0:8082->80/tcp, [::]:8082->80/tcp   nignx_named
+ebcc18d9b343   nginx     "/docker-entrypoint.…"   24 hours ago     Up 24 hours     0.0.0.0:8081->80/tcp, [::]:8081->80/tcp   nginx_hostvolume
+d18c0646b1e5   nginx     "/docker-entrypoint.…"   5 days ago       Up 5 days       0.0.0.0:8080->80/tcp, [::]:8080->80/tcp   nginx_test
+```
+
+
+
+-----
+## 참고
+- https://tech.cloudmt.co.kr/2022/06/29/%EB%8F%84%EC%BB%A4%EC%99%80-%EC%BB%A8%ED%85%8C%EC%9D%B4%EB%84%88%EC%9D%98-%EC%9D%B4%ED%95%B4-3-3-docker-image-dockerfile-docker-compose/
