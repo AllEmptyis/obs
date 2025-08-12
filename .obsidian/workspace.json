@@ -209,13 +209,13 @@
             "state": {
               "type": "outline",
               "state": {
-                "file": "to do/2025-W31.md",
+                "file": "Docker.md",
                 "followCursor": false,
                 "showSearch": false,
                 "searchQuery": ""
               },
               "icon": "lucide-list",
-              "title": "Outline of 2025-W31"
+              "title": "Outline of Docker"
             }
           },
           {
@@ -249,7 +249,7 @@
             }
           }
         ],
-        "currentTab": 6
+        "currentTab": 3
       }
     ],
     "direction": "horizontal",
@@ -267,17 +267,17 @@
       "remotely-save:Remotely Save": false
     }
   },
-  "active": "19774155a81beb88",
+  "active": "659da2eb5e72b0f8",
   "lastOpenFiles": [
-    "명령어/윈도우 명령어.md",
+    "엑셀 활용.md",
     "to do/2025-W33.md",
+    "Docker.md",
+    "명령어/윈도우 명령어.md",
     "to do/2025-W32.md",
     "명령어/엑셀 활용.md",
-    "엑셀 활용.md",
     "서버 관련/IODD를 사용한 OS 설치.md",
     "obs 활용/옵시디언 사용 방법 정리.md",
     "obs 활용/단축키.md",
-    "Docker.md",
     "도커 레이어 구조.md",
     "to do/2025-W31.md",
     "기타/TiController와 스위치 연동 안 됨.md",
