@@ -55,12 +55,12 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "Docker.md",
-                "mode": "preview",
+                "file": "Untitled.md",
+                "mode": "source",
                 "source": false
               },
               "icon": "lucide-file",
-              "title": "Docker"
+              "title": "Untitled"
             }
           },
           {
@@ -218,21 +218,6 @@
             }
           },
           {
-            "id": "659da2eb5e72b0f8",
-            "type": "leaf",
-            "state": {
-              "type": "outline",
-              "state": {
-                "file": "Docker.md",
-                "followCursor": false,
-                "showSearch": false,
-                "searchQuery": ""
-              },
-              "icon": "lucide-list",
-              "title": "Outline of Docker"
-            }
-          },
-          {
             "id": "02e0c848f038160e",
             "type": "leaf",
             "state": {
@@ -263,11 +248,12 @@
             }
           }
         ],
-        "currentTab": 3
+        "currentTab": 2
       }
     ],
     "direction": "horizontal",
-    "width": 285.5
+    "width": 285.5,
+    "collapsed": true
   },
   "left-ribbon": {
     "hiddenItems": {
@@ -283,10 +269,11 @@
   },
   "active": "19774155a81beb88",
   "lastOpenFiles": [
-    "to do/2025-W33.md",
+    "Pasted image 20250610103420.png",
     "Untitled.md",
-    "명령어/bing wallpaper 배경 화면 저장.md",
     "Docker.md",
+    "to do/2025-W33.md",
+    "명령어/bing wallpaper 배경 화면 저장.md",
     "엑셀 활용.md",
     "명령어/윈도우 명령어.md",
     "to do/2025-W32.md",
@@ -309,14 +296,12 @@
     "기능 검증/ACL.md",
     "KVM-NAT 모드.md",
     "KVM-Bridge 모드.md",
-    "cloud/libvirt 명령어.md",
     "에러",
     "서버 관련",
     "개인 용무",
     "image.png",
     "기능 검증",
     "Case Report",
-    "Pasted image 20250610103420.png",
     "Pasted image 20250609173724.png",
     "Linux",
     "첨부파일/Pasted image 20250515173108.png",
