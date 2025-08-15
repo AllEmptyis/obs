@@ -55,7 +55,7 @@ docker run은 새 컨테이너 실행 명령어
 	- 레이어 구조, 저장 위치 확인
 - [x] 볼륨 & 바인드 마운트
 	- named volume vs bind mount 차이
-- [ ] 네트워크 (bridge 사용자 정의, 포트 mapping)
+- [x] 네트워크 (bridge 사용자 정의, 포트 mapping)
 	- iptables/nftables 규칙 확인
 - [ ] Dockerfile 작성, 멀티스테이지 빌드
 	- 이미지 빌드 원리, 캐시
@@ -269,10 +269,10 @@ drwxr-xr-x. 2 root root  26 Jul 28 02:57 conf.d
 		- 도커 이미지 레이어를 재사용하는 매커니즘
 		- 레이어 단위 SHA256 해시로 관리
 		- 도커파일의 명령어, 관련 파일 해시 등을 비교하여 sha256해시 계산
-		- docker pull로 이미지를 받으면 sha256해시 digest를 내려준다
+		- docker pull로 이미지를 받으면 sha256해시 digest(해시값)를 내려준다
 			- 그 결과를 비교하여 현재 동일한 sha256값이 있으면 저장X (캐시 재사용)
 - `docker tag`
-	- `docker tag mariadb:10.6 mariadb:test`
+	- `docker tag [source imgae:tag] [target image:tag]`
 	- 같은 이미지에 별칭 붙여서 새로운 컨테이너 생성 (이미지 레이어는 공유) / 메타데이터만 추가, 같은 이미지를 참조
 		- 백업, 버전 관리, 배포 등에 활용
 	- 같은 이미지 레이어를 공유하지만 수정하면 각 컨테이너의 upper dir에 새로운 데이터가 쓰여짐
@@ -517,9 +517,66 @@ CONTAINER ID   IMAGE     COMMAND                  CREATED          STATUS       
 ebcc18d9b343   nginx     "/docker-entrypoint.…"   24 hours ago     Up 24 hours     0.0.0.0:8081->80/tcp, [::]:8081->80/tcp   nginx_hostvolume
 d18c0646b1e5   nginx     "/docker-entrypoint.…"   5 days ago       Up 5 days       0.0.0.0:8080->80/tcp, [::]:8080->80/tcp   nginx_test
 ```
+## 도커 이미지 (commit/save/export/import)
+- docker commit
+	- `docker commit [op] [container-name] [commit할 이미지명]`
+	- 컨테이너 상태를 새로운 이미지로 저장
+	- 새 이미지 id로 생성 됨
+		- 원본 이미지와 같은 레이어는 재사용
+- docker save
+	- `docker save -o [xx.tar] [이미지명]`
+	- 컨테이너 이미지를 로컬파일(.tar)로 저장
+	- 이미지 자체를 복사하는 방식이기 때문에 이미지id가 원본과 같음
+- docker load
+	- `docker load -i [저장되어있는 파일명.tar]`
+	- tar 파일 →이미지
+- docker export
+	- 컨테이너 파일시스템 전체를 tar 파일로 추출
+		- 이미지 레이어 구조 없으며, 파일시스템만 tar 형식으로 저장 됨 / 메타데이터 유지X
+		- 주로 도커 외부 환경 (다른 서버, vm)에 컨테이너 내용을 옮길 때
+	- `docker export [op] [container-name] > [xx.tar]`
+- docker import
+	- `docker import [op] [xx.tar] [새이미지]`
+	- tar안의 파일시스템 내용을 기반으로 새 이미지 생성 / 메타데이터X
+```
+요약:
+save/load: 원본 이미지 tar파일로 내보내서 동일하게 옮김
+import/export: 컨테이너 파일시스템 내용만 tar파일로 덤프해서 새로운 이미지 생성
+import로 생성한 이미지는 실행하기 위해서는 도커파일작성 or --change 명령어 사용해서 환경변수 같은 거 넣어줘야 함
 
+tar파일이란?
+여러 개의 파일과 디렉토리를 폴더 구조, 권한, 타임스탬프 하나로 묶은 것
+
+따라서 save,load 명령어를 써서 tar아카이브로 생성하면 레이어 구조가 보존 됨
+```
+## Docker 이미지 빌드
+### 도커 파일 문법
+- 필수로 들어가야 하는 것
+	- FROM: 운영체제 이미지 (베이스 이미지)
+		- 베이스 이미지가 없다면 허브에서 pull해옴
+	- RUN: 이미지를 빌드할 때 실행되는 명령어
+		- run 명령어는 최대한 한 줄로 줄이는 것이 좋음
+		- 애플리케이션, 미들웨어 설치/환경설정을 위한 명령어 정
+	- CMD: 빌드 된 이미지로부터 컨테이너를 시작할 때 실행되는 명령어
+		- 하나의 명령어만 기술 가능
+- entrypoint: 컨테이너 시작 시 실행될 커맨드 지정
+	- CMD와 비슷하지만 entrypoint만 param값 사용 가능
+- expose: 컨테이너로 들어오는 트래픽을 리슨할 포트 지정 / 지정하지 않는 경우 tcp
+	- `expose 포트/프로토콜`
+- copy: 호스트에 있는 파일,디렉토리를 컨테이너로 복사
+- add: copy와 동일하나, url을 지정하여 복사해올 수 있음
+	- `ADD [url] /경로`
+- user: 컨테이너 안에서 명령을 실행할 유저명, 유저그룹 설정
+	- 기본 : root, 다른 사용자 계정으로 변경하기 위함
+- workdir: 작업 디렉토리 설정
+	- `WORKDIR [경로]`
+- volume: 컨테이너 내부 디렉토리를 호스트에 마운트하는 명령
+	- 마운트할 컨테이너 디렉토리만 지정 가능
+	- `VOLUME ["경로"]`
 
 
 -----
 ## 참고
 - https://tech.cloudmt.co.kr/2022/06/29/%EB%8F%84%EC%BB%A4%EC%99%80-%EC%BB%A8%ED%85%8C%EC%9D%B4%EB%84%88%EC%9D%98-%EC%9D%B4%ED%95%B4-3-3-docker-image-dockerfile-docker-compose/
+- https://waspro.tistory.com/584
+- https://toramko.tistory.com/entry/docker-%EB%8F%84%EC%BB%A4%ED%8C%8C%EC%9D%BCDockerfile-%EC%9D%98-%EA%B0%9C%EB%85%90-%EC%9E%91%EC%84%B1-%EB%B0%A9%EB%B2%95%EB%AC%B8%EB%B2%95-%EC%9E%91%EC%84%B1-%EC%98%88%EC%8B%9C
