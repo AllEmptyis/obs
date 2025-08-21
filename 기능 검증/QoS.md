@@ -137,30 +137,6 @@ Optional features available: CPU affinity setting, support IPv4 don't fragment, 
 TiFRONT(config-qos-pamp-class)# rate-limit 500000 1
 % Action Conflict with Permit
 ```
-- QoS 설정 없을 때
-	- 손실률 0.9%
-```
-C:\Users\parkd\Desktop\case>iperf3 -c 10.10.10.10 -u -b 1000M -l 500 -t 10
-Connecting to host 10.10.10.10, port 5201
-[  5] local 10.10.10.20 port 51755 connected to 10.10.10.10 port 5201
-[ ID] Interval           Transfer     Bitrate         Total Datagrams
-[  5]   0.00-1.01   sec  38.9 MBytes   322 Mbits/sec  81681
-[  5]   1.01-2.01   sec  38.5 MBytes   324 Mbits/sec  80801
-[  5]   2.01-3.01   sec  38.4 MBytes   323 Mbits/sec  80512
-[  5]   3.01-4.00   sec  38.5 MBytes   324 Mbits/sec  80835
-[  5]   4.00-5.00   sec  38.7 MBytes   326 Mbits/sec  81141
-[  5]   5.00-6.01   sec  38.8 MBytes   322 Mbits/sec  81316
-[  5]   6.01-7.01   sec  38.3 MBytes   321 Mbits/sec  80363
-[  5]   7.01-8.01   sec  38.5 MBytes   325 Mbits/sec  80769
-[  5]   8.01-9.02   sec  39.0 MBytes   324 Mbits/sec  81767
-[  5]   9.02-10.01  sec  38.2 MBytes   322 Mbits/sec  80091
-- - - - - - - - - - - - - - - - - - - - - - - - -
-[ ID] Interval           Transfer     Bitrate         Jitter    Lost/Total Datagrams
-[  5]   0.00-10.01  sec   386 MBytes   323 Mbits/sec  0.000 ms  0/809276 (0%)  sender
-[  5]   0.00-10.01  sec   382 MBytes   320 Mbits/sec  0.013 ms  7317/809276 (0.9%)  receiver
-
-iperf Done.
-```
 - 정책, 클래스 설정
 	- 최대 대역폭: 500mbps
 	- 버스트: 10mbps
@@ -289,3 +265,5 @@ Connecting to host 10.10.10.20, port 5201
 
 iperf Done.
 ```
+-----
+https://atthis.tistory.com/3
