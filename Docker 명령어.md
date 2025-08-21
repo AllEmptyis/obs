@@ -28,7 +28,7 @@
 	- 기존 컨테이너 내부 bash 쉘 접속
 		- -i: stdin을 열어두어서 사용자 입력을 받을 수 있도록 함
 		- -t: 터미널 연결 (셸 환경처럼 실행)
-	- exec: 실행 중인 컨테이너 내부에서 명령어 실행
+	- exec: 실행 중인 컨테이너 내부에서 명령어 실행 (프로세스 실행)
 
 - `docker logs [컨테이너ID/이름]`
 	- 컨테이너 로그 확인
@@ -57,6 +57,9 @@
 	- 볼륨 목록
 - `docker info`
 	- 도커 엔진 상태 조회 (네트워크 정보, 실행환경 등)
+- `docker search [옵션] [이미지명]`
+	- 도커 허브에서 이미지 조회
+	- `--filter=is-official=true`
 - `docker inspect [이미지명 or 컨테이너id]`
 	- 도커 이미지/컨테이너의 내부 정보를 json 형식으로 보는 명령어
 	- 이미지
@@ -72,3 +75,26 @@
 	- 네트워크 지정
 - `Ctrl+PQ`
 	- 컨테이너 종료하지 않고 빠져나오기
+## inspect 옵션
+- `docker inspect -f '{{.필드.하위필드}}' <컨테이너/이미지>`
+	- -f: --format 옵션
+	- docker inspect했을 때 출력되는 json 파일 중 원하는 필드만 go 탬플릿 문법으로 뽑아내는 옵션
+```
+예시
+
+# 컨테이너의 메인 PID
+docker inspect -f '{{.State.Pid}}' a1
+
+# 상태/명령을 한 번에
+docker inspect -f 'PID={{.State.Pid}} Status={{.State.Status}} Cmd={{.Config.Cmd}}' a1
+
+# 엔트리포인트와 CMD
+docker inspect -f 'Entrypoint={{.Config.Entrypoint}} Cmd={{.Config.Cmd}}' a1
+
+# JSON 형태로 하위 구조 출력 (jq 없이도 읽기 좋게)
+docker inspect -f '{{json .State}}' a1
+docker inspect -f '{{json .NetworkSettings.Networks}}' a1
+
+jq: json을 파싱,검색,변환,포맷팅 하는 도구
+json파일을 구조적으로 뽑고 읽기 쉽게 바꿈 
+```

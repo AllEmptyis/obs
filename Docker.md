@@ -554,15 +554,20 @@ tar파일이란?
 - 필수로 들어가야 하는 것
 	- FROM: 운영체제 이미지 (베이스 이미지)
 		- 베이스 이미지가 없다면 허브에서 pull해옴
-	- RUN: 이미지를 빌드할 때 실행되는 명령어
-		- run 명령어는 최대한 한 줄로 줄이는 것이 좋음
-		- 애플리케이션, 미들웨어 설치/환경설정을 위한 명령어 정
-	- CMD: 빌드 된 이미지로부터 컨테이너를 시작할 때 실행되는 명령어
-		- 하나의 명령어만 기술 가능
-- entrypoint: 컨테이너 시작 시 실행될 커맨드 지정
+- RUN: 이미지를 빌드할 때 실행되는 명령어
+	- run 명령어는 최대한 한 줄로 줄이는 것이 좋음
+		- run 명령이 실행될 때마다 레이어가 생성 됨
+	- 애플리케이션, 미들웨어 설치/환경설정을 위한 명령어
+- CMD: 빌드 된 이미지로부터 컨테이너를 **생성할 때만** 실행되는 명령어 (docker run)
+	- 하나의 명령어만 기술 가능
+	- 실행 시 추가적인 명령어를 주는 설정한 명령어가 수정될 수 있음
+	- docker run할 때 자동으로 컨테이너의 1번 프로세스로 실행 됨
+- entrypoint: 컨테이너 **시작 할 때** 실행될 커맨드 지정 (docker start)
 	- CMD와 비슷하지만 entrypoint만 param값 사용 가능
+	- 고정 실행 프로세스 지정
 - expose: 컨테이너로 들어오는 트래픽을 리슨할 포트 지정 / 지정하지 않는 경우 tcp
 	- `expose 포트/프로토콜`
+	- 문서화 용도 (실제 지정한 포트만 열리는 건 아님)
 - copy: 호스트에 있는 파일,디렉토리를 컨테이너로 복사
 - add: copy와 동일하나, url을 지정하여 복사해올 수 있음
 	- `ADD [url] /경로`
@@ -573,10 +578,172 @@ tar파일이란?
 - volume: 컨테이너 내부 디렉토리를 호스트에 마운트하는 명령
 	- 마운트할 컨테이너 디렉토리만 지정 가능
 	- `VOLUME ["경로"]`
+- ENV
+	- 이미지에서 사용할 환경 변수 값 지정 (path 등)
+- CMD, ENTRYPOINT 명령어
+```
+- CMD ["<커맨드>", "<파라미터1>", "<파라미터2>"] ->exec 형식
+- CMD <커맨드> <파라미터1> <파라미터2> ->shell 형식
+- ENTRYPOINT ["<커맨드>", "<파라미터1>", "<파라미터2>"]
+- ENTRYPOINT <커맨드> <파라미터1> <파라미터2>
 
+활용:
+보통 entrypoint는 데몬 실행
+cmd는 설정파일 경로, 옵션을 넘기는 방식으로 사용
+```
+- run 명령어 예시
+```
+FROM ubuntu:20.04
 
+RUN apt-get update && apt-get install -y \
+    curl \
+    vim \
+    git
+
+명령어 묶을 때: &&
+```
+#### CMD 실행 방식 (exec, shell)
+1) exec 형식 (권장)
+```
+CMD ["nginx", "-g", "daemon off;"]
+
+- json 배열 형식
+- 쉘 거치지 않고 직접 실행
+- pid 1 프로세스로 실행
+```
+2) shell 형식
+```
+CMD nginx -g "daemon off;"
+
+문자열 그대로 실행함
+내부적으로 /bin/sh -c 실행
+즉 sh -c "nginx -g 'daemon off;'"
+변수치환 가능 ($VAR)
+컨테이너 프로세스 1번이 nginx가 아니라 /bin/sh가 됨
+```
+- 옵션 설명
+```
+-g: 글로벌 옵션
+"daemon off;": nginx가 백그라운드가 아닌 포그라운드에서 실행될 수 있도록 함
+백그라운드에서 실행되면 pid 1로 실행이 안 돼서 컨테이너 실행 불가
+nginx -g "daemon off;"
+```
+### 이미지 빌드 명령어
+- `docker build -t [이미지 이름:이미지 버전] [도커파일의 경로]`
+### Docker file 작성 예시
+- 아파치에서 index.html 띄우기
+```bash
+FROM nginx:alpine
+COPY ./index.html /usr/share/nginx/html/index.html
+EXPOSE 80
+CMD ["nginx", "-g", "daemon off;"]
+
+// copy 할 때 도커파일 위치는 반드시 빌드하는 위치 기준 상대위치로 지정 (에러 발생함)
+-----
+[root@localhost dockerfile]# ls
+dockerfile  index.html
+[root@localhost dockerfile]# pwd
+/dockerfile
+
+----빌드 과정----
+[root@localhost dockerfile]# docker build -t nginx_custompg .
+[+] Building 5.1s (7/7) FINISHED                                                                                                                                                               docker:default
+ => [internal] load build definition from dockerfile                                                                                                                                                     0.0s
+ => => transferring dockerfile: 208B                                                                                                                                                                     0.0s
+ => [internal] load metadata for docker.io/library/nginx:alpine                                                                                                                                          1.5s
+ => [internal] load .dockerignore                                                                                                                                                                        0.0s
+ => => transferring context: 2B                                                                                                                                                                          0.0s
+ => [internal] load build context                                                                                                                                                                        0.0s
+ => => transferring context: 208B                                                                                                                                                                        0.0s
+ => [1/2] FROM docker.io/library/nginx:alpine@sha256:42a516af16b852e33b7682d5ef8acbd5d13fe08fecadc7ed98605ba5e3b26ab8                                                                                    3.5s
+ => => resolve docker.io/library/nginx:alpine@sha256:42a516af16b852e33b7682d5ef8acbd5d13fe08fecadc7ed98605ba5e3b26ab8                                                                                    0.0s
+ => => sha256:42a516af16b852e33b7682d5ef8acbd5d13fe08fecadc7ed98605ba5e3b26ab8 10.33kB / 10.33kB                                                                                                         0.0s
+ => => sha256:6bc572a340ecbc60aca0c624f76b32de0b073d5efa4fa1e0b6d9da6405976946 1.81MB / 1.81MB                                                                                                           0.7s
+ => => sha256:60e48a050b6408d0c5dd59b98b6e36bf0937a0bbe99304e3e9c0e63b7563443a 2.50kB / 2.50kB                                                                                                           0.0s
+ => => sha256:4a86014ec6994761b7f3118cf47e4b4fd6bac15fc6fa262c4f356386bbc0e9d9 10.78kB / 10.78kB                                                                                                         0.0s
+ => => sha256:403e3f251637881bbdc5fb06df8da55c149c00ccb0addbcb7839fa4ad60dfd04 628B / 628B                                                                                                               0.8s
+ => => sha256:9adfbae99cb79774fdc14ca03a0a0154b8c199a69f69316bcfce64b07f80719f 955B / 955B                                                                                                               0.9s
+ => => extracting sha256:6bc572a340ecbc60aca0c624f76b32de0b073d5efa4fa1e0b6d9da6405976946                                                                                                                0.0s
+ => => sha256:7a8a46741e18ed98437271669138116163f14596f411c1948fd7836e39f1afea 405B / 405B                                                                                                               1.1s
+ => => extracting sha256:403e3f251637881bbdc5fb06df8da55c149c00ccb0addbcb7839fa4ad60dfd04                                                                                                                0.0s
+ => => sha256:c9ebe2ff2d2cd981811cefb6df49a116da6074c770c07ee86a6ae2ebe7eee926 1.21kB / 1.21kB                                                                                                           1.2s
+ => => extracting sha256:9adfbae99cb79774fdc14ca03a0a0154b8c199a69f69316bcfce64b07f80719f                                                                                                                0.0s
+ => => sha256:a992fbc61ecc9d8291c27f9add7b8a07d374c06a435d4734519b634762cf1c51 1.40kB / 1.40kB                                                                                                           1.4s
+ => => extracting sha256:7a8a46741e18ed98437271669138116163f14596f411c1948fd7836e39f1afea                                                                                                                0.0s
+ => => sha256:cb1ff4086f82493a4b8b02ec71bfed092cad25bd5bf302aec78d4979895350cb 16.84MB / 16.84MB                                                                                                         3.1s
+ => => extracting sha256:c9ebe2ff2d2cd981811cefb6df49a116da6074c770c07ee86a6ae2ebe7eee926                                                                                                                0.0s
+ => => extracting sha256:a992fbc61ecc9d8291c27f9add7b8a07d374c06a435d4734519b634762cf1c51                                                                                                                0.0s
+ => => extracting sha256:cb1ff4086f82493a4b8b02ec71bfed092cad25bd5bf302aec78d4979895350cb                                                                                                                0.3s
+ => [2/2] COPY ./dockerfile /usr/share/nginx/html/index.html                                                                                                                                             0.0s
+ => exporting to image                                                                                                                                                                                   0.0s
+ => => exporting layers                                                                                                                                                                                  0.0s
+ => => writing image sha256:fcc419336cf4a1e1f318ea300b5a2f8a37aaf0f7fa349b9ff5ef9f4f1bf2f648                                                                                                             0.0s
+ => => naming to docker.io/library/nginx_custompg                                                             
+----------
+[root@localhost dockerfile]# docker images
+REPOSITORY       TAG       IMAGE ID       CREATED          SIZE
+nginx_custompg   latest    fcc419336cf4   15 seconds ago   52.5MB
+alpine           latest    9234e8fb04c4   4 weeks ago      8.31MB
+nginx            latest    2cd1d97f893f   4 weeks ago      192MB
+```
+
+## 컨테이너 프로세스 확인
+- 컨테이너는 호스트 입장에서 하나의 프로세스로 실행
+- 네임스페이스로 분리되어서 컨테이너 입장에서는 자신의 프로세스만 떠있는 것으로 보임
+- 확인
+```
+[root@localhost ~]# docker history alpine //알파인 이미지 레이어 조회
+IMAGE          CREATED       CREATED BY                                      SIZE      COMMENT
+9234e8fb04c4   4 weeks ago   CMD ["/bin/sh"]                                 0B        buildkit.dockerfile.v0
+<missing>      4 weeks ago   ADD alpine-minirootfs-3.22.1-x86_64.tar.gz /…   8.31MB    buildkit.dockerfile.v0
+
+[root@localhost ~]# docker exec -it a1 sh
+/ # ps -ef
+PID   USER     TIME  COMMAND
+    1 root      0:00 /bin/sh
+    7 root      0:00 sh
+   14 root      0:00 ps -ef
+// 7번: sh로 실행한 프로세스
+1번: 컨테이너 시작할 때 첫 프로세스로 시작 ->해당 프로세스가 살아있어야 컨테이너가 실행됨
+14번: 컨테이너 내부 실행
+```
+- 컨테이너 프로세스 확인
+	- 명령어 설명
+		- `docker inspect -f '{{.필드.하위필드}}' <컨테이너/이미지>`
+			- -f: --format 옵션
+			- docker inspect했을 때 출력 되는 json 파일 중 원하는 필드만 go 탬플릿 문법으로 뽑아내는 옵션
+		- `ps -fp`
+			- -f: --full format (상세열 조회)
+			- -p `<pid>` : 해당 pid만 필터링
+```
+[root@localhost ~]# docker inspect -f '{{.State.Pid}}' a1 //컨테이너가 호스트에서 몇 번째 프로세스인지 확인
+131810
+[root@localhost ~]# ps -fp 131810
+UID          PID    PPID  C STIME TTY          TIME CMD
+root      131810  131786  0 13:58 pts/0    00:00:00 /bin/sh
+[root@localhost ~]#
+[root@localhost ~]# docker top a1
+UID                 PID                 PPID                C                   STIME               TTY                 TIME                CMD
+root                131810              131786              0                   13:58               pts/0               00:00:00            /bin/sh
+
+[root@localhost ~]# docker inspect -f '{{.State.Pid}}' a1
+131810
+[root@localhost ~]# kill -TERM 131810
+[root@localhost ~]# docker ps -a
+CONTAINER ID   IMAGE     COMMAND     CREATED      STATUS          PORTS     NAMES
+cb731e80707f   alpine    "/bin/sh"   3 days ago   Up 56 minutes             a1
+
+//kill 안 됨. 이유는 컨테이너 pid가 1인 경우 기본 동작이 종료인 신호들은 무시 됨.
+docker stop은 term을 보내고 얼마 동안 종료되지 않으면 강제 kill 동작
+
+[root@localhost ~]# kill -9 131810
+[root@localhost ~]# docker ps -a
+CONTAINER ID   IMAGE     COMMAND     CREATED      STATUS                       PORTS     NAMES
+cb731e80707f   alpine    "/bin/sh"   3 days ago   Exited (137) 4 seconds ago             a1
+```
 -----
 ## 참고
 - https://tech.cloudmt.co.kr/2022/06/29/%EB%8F%84%EC%BB%A4%EC%99%80-%EC%BB%A8%ED%85%8C%EC%9D%B4%EB%84%88%EC%9D%98-%EC%9D%B4%ED%95%B4-3-3-docker-image-dockerfile-docker-compose/
 - https://waspro.tistory.com/584
-- https://toramko.tistory.com/entry/docker-%EB%8F%84%EC%BB%A4%ED%8C%8C%EC%9D%BCDockerfile-%EC%9D%98-%EA%B0%9C%EB%85%90-%EC%9E%91%EC%84%B1-%EB%B0%A9%EB%B2%95%EB%AC%B8%EB%B2%95-%EC%9E%91%EC%84%B1-%EC%98%88%EC%8B%9C
+- [[https://toramko.tistory.com/entry/docker-%EB%8F%84%EC%BB%A4%ED%8C%8C%EC%9D%BCDockerfile-%EC%9D%98-%EA%B0%9C%EB%85%90-%EC%9E%91%EC%84%B1-%EB%B0%A9%EB%B2%95%EB%AC%B8%EB%B2%95-%EC%9E%91%EC%84%B1-%EC%98%88%EC%8B%9C|도커파일 문법 정리]]
+- [[https://wooono.tistory.com/category/DevOps/Docker|도커 관련]]
