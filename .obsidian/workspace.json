@@ -90,9 +90,21 @@
               "icon": "lucide-file",
               "title": "2025-W33"
             }
+          },
+          {
+            "id": "8ebe945aa883d34a",
+            "type": "leaf",
+            "state": {
+              "type": "release-notes",
+              "state": {
+                "currentVersion": "1.9.10"
+              },
+              "icon": "lucide-book-up",
+              "title": "Release Notes 1.9.10"
+            }
           }
         ],
-        "currentTab": 3
+        "currentTab": 6
       }
     ],
     "direction": "vertical"
@@ -151,8 +163,8 @@
             "state": {
               "type": "mk-path-view",
               "state": {},
-              "icon": "lucide-file",
-              "title": "Plugin no longer active"
+              "icon": "lucide-ghost",
+              "title": "mk-path-view"
             }
           }
         ]
@@ -271,6 +283,7 @@
   },
   "left-ribbon": {
     "hiddenItems": {
+      "bases:Create new base": false,
       "switcher:Open quick switcher": false,
       "graph:Open graph view": false,
       "canvas:Create new canvas": false,
@@ -281,7 +294,7 @@
       "remotely-save:Remotely Save": false
     }
   },
-  "active": "fcf769739dba7bf8",
+  "active": "8ebe945aa883d34a",
   "lastOpenFiles": [
     "Untitled.md",
     "to do/2025-W34.md",
