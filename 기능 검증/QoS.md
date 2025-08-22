@@ -172,7 +172,29 @@ TiFRONT(config-qos)# sh policy-map
               rate value: 500000
               burst value: 10000
 ```
+- 서버
+```
+C:\Users\parkd\Desktop\case>iperf3 -c 10.10.10.10 -u -b 1000M -l 1400 -t 10
+Connecting to host 10.10.10.10, port 5201
+[  5] local 10.10.10.20 port 60752 connected to 10.10.10.10 port 5201
+[ ID] Interval           Transfer     Bitrate         Total Datagrams
+[  5]   0.00-1.00   sec  41.7 MBytes   348 Mbits/sec  31214
+[  5]   1.00-2.01   sec  41.5 MBytes   345 Mbits/sec  31110
+[  5]   2.01-3.01   sec  41.0 MBytes   346 Mbits/sec  30731
+[  5]   3.01-4.00   sec  40.9 MBytes   345 Mbits/sec  30669
+[  5]   4.00-5.01   sec  41.7 MBytes   346 Mbits/sec  31201
+[  5]   5.01-6.01   sec  41.3 MBytes   346 Mbits/sec  30919
+[  5]   6.01-7.01   sec  40.7 MBytes   344 Mbits/sec  30491
+[  5]   7.01-8.00   sec  41.2 MBytes   346 Mbits/sec  30894
+[  5]   8.00-9.01   sec  41.3 MBytes   346 Mbits/sec  30957
+[  5]   9.01-10.01  sec  41.5 MBytes   348 Mbits/sec  31052
+- - - - - - - - - - - - - - - - - - - - - - - - -
+[ ID] Interval           Transfer     Bitrate         Jitter    Lost/Total Datagrams
+[  5]   0.00-10.01  sec   413 MBytes   346 Mbits/sec  0.000 ms  0/309238 (0%)  sender
+[  5]   0.00-10.21  sec   233 MBytes   191 Mbits/sec  0.076 ms  134754/309237 (44%)  receiver
 
+iperf Done.
+```
 
 
 
