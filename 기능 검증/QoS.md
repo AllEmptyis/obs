@@ -11,7 +11,7 @@
 	- IP 프로토콜
 	- 패킷을 수신한 인터페이스
 	- VLAN
-- 정책 - 클래스 별로 적용 될 대역폭 정의 (액션)
+- 정책 - 클래스 별로 적용 될 정책 정의
 	- 클래스
 	- 우선순위 - 같은 정책에 여러 클래스가 정의 된 경우 어떤 클래스를 우선 적용할지
 	- 대역폭 (클래스에 해당하는 패킷/특정 포트 범위)
@@ -27,6 +27,10 @@ confirm-action에서는 폴리싱 방식 사용 (클래스에 보장되는 최�
 servie-queue output rate-limit: shaping 방식 사용 (특정 포트에 적용되는 송수신 대역폭 제한)
 ```
 - 큐 스케줄링
+	- QoS 처리 과정
+		- 분류: dscp, cos등을 보고 어떤 큐에 넣을지 결정
+		- 스케줄링: 각 큐에 있는 패킷을 어떤 순서/비율로 꺼낼지 결정
+			- 즉 패킷이 우선순위 높은 큐로 가도 스케줄링을 rr로 하면 qos 효과가 별로 없음
 ```
 출력포트에서 큐에 저장된 패킷이 전송 가능한 대역폭보다 많은 경우 어떻게 처리할지
 
@@ -72,19 +76,13 @@ CIR(보충속도): 초당 채워지는 토큰 양
     - 10 Mbps ⇒ 초당 10 Mb 만큼만 채워짐
 CBS(버스트용량): 한 번에 꺼내 쓸 수 있는 토큰 최대치    
     - 두 경우 모두 10 Mb
-
-udp 8mbps는 평균치이고
-실제 송신 시에는 피크가 발생한다.
-
-rate-limit이 500mpbs일 땐 순간 버스트가 올라도 토큰이 금방 채워짐
-그러나 10mbps일 땐 토큰 충전이 느려서 버킷을 채우는 속도가 저하. 드롭 발생
 ```
 ## 설정 -CLI
 - class map
 	- qos
 	- class-map `<map name>`
 	- match `<분류 기준 정의>`
-- policy map
+- policy map (confirm-action / rate-limit 두 종류)
 	- qos
 	- policy-map `<policy name>`
 	- class `<적용할 클래스명> <우선순위>`
@@ -93,22 +91,28 @@ rate-limit이 500mpbs일 땐 순간 버스트가 올라도 토큰이 금방 채�
 	- rate-limit `<클래스의 트래픽에 보장해줄 최대 대역폭> <클래스의 트래픽이 사용할 수 있는 최대 버스트>`
 		- 버스트: 순간적으로 몰리는 트래픽량 허용 범위
 		- 최대 대역폭 설정보다 큰 트래픽이 들어오게 되면 허용된 버스트 만큼 잠시 허용
-	- 주의: rate-limit, confirm-action 동시에 설정 안 됨
 - service policy (적용)
 	- qos
 	- service-policy `<정책 이름>`
 	- 한 정책만 적용 가능
+	- 정책이 변경된 경우 servie policy로 재적용 필요
 - 큐 스케줄링 설정
 	- service-queue output `<ifname>` schedule mode `{drr/rr/spq/wrr}`
+		- 스케줄 모드
+			- sqp: 기본 / 우선순위 높은 패킷 부터 처리
+			- rr: 각 큐를 순차적으로 처리
+			- drr: 지정된 weight에 따라 프레임 사이즈 별로 라운드 로빈
+			- wrr: 지정된 weight에 따라 프레임 별로 라운드 로빈
 	- service-queue input `<ifname>` cos-map `{defualt/Cos우선순위/큐번호}`
 		- CoS 필드의 우선순위에 따라 전송 큐 처리하도록 설정
-- 송/수신 대역폭 제한 설정 (특정 포트)
+- 포트 별 송/수신 대역폭 제한 설정
 	- service-queue output `<ifname>` rate-limit `{<최대대역폭 최대버스트>/none}`
-- 정의한 큐에 대역폭 제한 설정
+- 큐 별 속도 제한
 	- service-queue output `<ifname>` cos-rate-limit `<큐번호> {<최소 대역폭 최대 대역폭>/none}`
 - 조회
 	- show class-map / policy-map / service-policy
 	- show service-queue `input/output <ifname>`
+	- show qos install
 ## 설정 - Ticontroller
 - ACL 설정에서 네트워크 접근제어 설정할 때 qos 설정 가능
 	- dscp, cos, rate-limit 설정 가능
@@ -132,11 +136,6 @@ Optional features available: CPU affinity setting, support IPv4 don't fragment, 
 	- 클라이언트: iperf3 -c `서버ip` -u -b `대역폭` -l `1200` -t `시간`
 		- 패킷 크기 지정 반드시 필요->안하면 스위치에서 드롭함
 ### 대역폭 제한 (policing)
-- 설정 오류 - confirm action permit과 rate limit 같이 설정 안 됨
-```
-TiFRONT(config-qos-pamp-class)# rate-limit 500000 1
-% Action Conflict with Permit
-```
 - 정책, 클래스 설정
 	- 최대 대역폭: 500mbps
 	- 버스트: 10mbps

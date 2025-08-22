@@ -92,7 +92,7 @@
             }
           }
         ],
-        "currentTab": 5
+        "currentTab": 3
       }
     ],
     "direction": "vertical"
@@ -253,13 +253,13 @@
             "state": {
               "type": "outline",
               "state": {
-                "file": "to do/2025-W33.md",
+                "file": "기능 검증/QoS.md",
                 "followCursor": false,
                 "showSearch": false,
                 "searchQuery": ""
               },
               "icon": "lucide-list",
-              "title": "Outline of 2025-W33"
+              "title": "Outline of QoS"
             }
           }
         ],
@@ -282,10 +282,10 @@
       "obsidian-git:Open Git source control": false
     }
   },
-  "active": "6b642916271d740e",
+  "active": "19774155a81beb88",
   "lastOpenFiles": [
-    "to do/2025-W34.md",
     "to do/2025-W33.md",
+    "to do/2025-W34.md",
     "기능 검증/QoS.md",
     "Untitled.md",
     "Pasted image 20250610103420.png",
