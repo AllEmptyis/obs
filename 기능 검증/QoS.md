@@ -136,6 +136,29 @@ Optional features available: CPU affinity setting, support IPv4 don't fragment, 
 	- 클라이언트: iperf3 -c `서버ip` -u -b `대역폭` -l `1200` -t `시간`
 		- 패킷 크기 지정 반드시 필요->안하면 스위치에서 드롭함
 ### 대역폭 제한 (policing)
+- 대역폭 제한 없는 경우
+```
+C:\Users\parkd\Desktop\case>iperf3 -c 10.10.10.10 -u -b 1000M -l 500 -t 10
+Connecting to host 10.10.10.10, port 5201
+[  5] local 10.10.10.20 port 50468 connected to 10.10.10.10 port 5201
+[ ID] Interval           Transfer     Bitrate         Total Datagrams
+[  5]   0.00-1.01   sec  38.4 MBytes   320 Mbits/sec  80495
+[  5]   1.01-2.01   sec  38.3 MBytes   320 Mbits/sec  80229
+[  5]   2.01-3.01   sec  38.2 MBytes   321 Mbits/sec  80149
+[  5]   3.01-4.01   sec  38.5 MBytes   321 Mbits/sec  80767
+[  5]   4.01-5.01   sec  38.2 MBytes   321 Mbits/sec  80121
+[  5]   5.01-6.00   sec  38.1 MBytes   322 Mbits/sec  79798
+[  5]   6.00-7.01   sec  38.4 MBytes   321 Mbits/sec  80580
+[  5]   7.01-8.01   sec  38.7 MBytes   322 Mbits/sec  81078
+[  5]   8.01-9.01   sec  38.3 MBytes   323 Mbits/sec  80286
+[  5]   9.01-10.02  sec  38.7 MBytes   322 Mbits/sec  81073
+- - - - - - - - - - - - - - - - - - - - - - - - -
+[ ID] Interval           Transfer     Bitrate         Jitter    Lost/Total Datagrams
+[  5]   0.00-10.02  sec   384 MBytes   321 Mbits/sec  0.000 ms  0/804576 (0%)  sender
+[  5]   0.00-10.02  sec   377 MBytes   316 Mbits/sec  0.023 ms  13482/804576 (1.7%)  receiver
+
+iperf Done.
+```
 - 정책, 클래스 설정
 	- 최대 대역폭: 500mbps
 	- 버스트: 10mbps
@@ -149,6 +172,10 @@ TiFRONT(config-qos)# sh policy-map
               rate value: 500000
               burst value: 10000
 ```
+
+
+
+
 - 결과
 	- 400mbps / 손실률 37%
 	- 500mbps / 손실률 53%
