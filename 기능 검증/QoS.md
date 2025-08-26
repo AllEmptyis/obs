@@ -180,7 +180,8 @@ Connecting to host 10.10.10.10, port 5201
 
 iperf Done.
 ```
-- 서버
+- 대역폭 제한 설정
+	- 서버
 ```
 C:\Users\parkd\Desktop\case>iperf3 -c 10.10.10.10 -u -b 1000M -l 1400 -t 10
 Connecting to host 10.10.10.10, port 5201
