@@ -91,8 +91,7 @@
               "title": "2025-W33"
             }
           }
-        ],
-        "currentTab": 3
+        ]
       }
     ],
     "direction": "vertical"
@@ -253,13 +252,13 @@
             "state": {
               "type": "outline",
               "state": {
-                "file": "기능 검증/QoS.md",
+                "file": "to do/2025-W34.md",
                 "followCursor": false,
                 "showSearch": false,
                 "searchQuery": ""
               },
               "icon": "lucide-list",
-              "title": "Outline of QoS"
+              "title": "Outline of 2025-W34"
             }
           }
         ],
@@ -282,11 +281,11 @@
       "obsidian-git:Open Git source control": false
     }
   },
-  "active": "19774155a81beb88",
+  "active": "236318581c482313",
   "lastOpenFiles": [
+    "기능 검증/QoS.md",
     "to do/2025-W33.md",
     "to do/2025-W34.md",
-    "기능 검증/QoS.md",
     "Untitled.md",
     "Pasted image 20250610103420.png",
     "Docker.md",

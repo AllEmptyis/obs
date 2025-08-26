@@ -97,7 +97,7 @@ CBS(버스트용량): 한 번에 꺼내 쓸 수 있는 토큰 최대치
 	- 한 정책만 적용 가능
 	- 정책이 변경된 경우 servie policy로 재적용 필요
 - 큐 스케줄링 설정
-	- service-queue output `<ifname>` schedule mode `{drr/rr/spq/wrr}`
+	- **service-queue output `<ifname>` schedule mode `{drr/rr/spq/wrr}`**
 		- 스케줄 모드
 			- sqp: 기본 / 우선순위 높은 패킷 부터 처리
 			- rr: 각 큐를 순차적으로 처리
@@ -105,6 +105,11 @@ CBS(버스트용량): 한 번에 꺼내 쓸 수 있는 토큰 최대치
 			- wrr: 지정된 weight에 따라 프레임 별로 라운드 로빈
 	- service-queue input `<ifname>` cos-map `{defualt/Cos우선순위/큐번호}`
 		- CoS 필드의 우선순위에 따라 전송 큐 처리하도록 설정
+```
+RTK: servie-queue 명령어 input만 가능
+BCM: input/output 모두 가능
+- 즉 bcm에서는 qos 설정 ingress/egress 모두 가능한 것으로 보여짐. (확인 필요)
+```
 - 포트 별 송/수신 대역폭 제한 설정
 	- service-queue output `<ifname>` rate-limit `{<최대대역폭 최대버스트>/none}`
 - 큐 별 속도 제한
@@ -114,7 +119,7 @@ CBS(버스트용량): 한 번에 꺼내 쓸 수 있는 토큰 최대치
 	- show service-queue `input/output <ifname>`
 	- show qos install
 ## 설정 - Ticontroller
-- ACL 설정에서 네트워크 접근제어 설정할 때 qos 설정 가능
+- ACL 설정에서 네트워크 접근 제어 설정할 때 qos 설정 가능
 	- dscp, cos, rate-limit 설정 가능
 		- rate-limit만 설정한 경우 설정한 값에 맞게 트래픽 인가
 		- dscp,cos와 함께 rate-limit 설정한 경우: dscp 값이 매칭 되는 트래픽에 대해 rate-limit 동작 ->왜 cos값은 안보는지?
@@ -136,7 +141,23 @@ Optional features available: CPU affinity setting, support IPv4 don't fragment, 
 	- 클라이언트: iperf3 -c `서버ip` -u -b `대역폭` -l `1200` -t `시간`
 		- 패킷 크기 지정 반드시 필요->안하면 스위치에서 드롭함
 ### 대역폭 제한 (policing)
+- class별 rate limit 정책 설정
+	- 최대 대역폭: 200mbps / 버스트: 16m
+```
+TiFRONT(config-qos)# show qos install
+  SERVICE POLICY : test1
+
+  CLASS-MAP : test1 precedence 6
+    match :
+        any enable
+    action :
+        limit info :
+          rate limit
+              rate value: 200000
+              burst value: 16000
+```
 - 대역폭 제한 없는 경우
+	- 비트레이트: 약 300mbps
 ```
 C:\Users\parkd\Desktop\case>iperf3 -c 10.10.10.10 -u -b 1000M -l 500 -t 10
 Connecting to host 10.10.10.10, port 5201
@@ -158,19 +179,6 @@ Connecting to host 10.10.10.10, port 5201
 [  5]   0.00-10.02  sec   377 MBytes   316 Mbits/sec  0.023 ms  13482/804576 (1.7%)  receiver
 
 iperf Done.
-```
-- 정책, 클래스 설정
-	- 최대 대역폭: 500mbps
-	- 버스트: 10mbps
-```
-TiFRONT(config-qos)# sh policy-map
-
-  POLICY-MAP : test1
-    CLASS-MAP : test1 precedence 1
-        limit info :
-          rate limit
-              rate value: 500000
-              burst value: 10000
 ```
 - 서버
 ```
@@ -195,123 +203,34 @@ Connecting to host 10.10.10.10, port 5201
 
 iperf Done.
 ```
-
-
-
-- 결과
-	- 400mbps / 손실률 37%
-	- 500mbps / 손실률 53%
+- 클라이언트
 ```
-C:\Users\USER\Desktop\Dabin\iperf3>iperf3 -c 10.10.10.20 -u -b 400M -l 500 -t 10
-Connecting to host 10.10.10.20, port 5201
-[  5] local 10.10.10.10 port 54173 connected to 10.10.10.20 port 5201
-[ ID] Interval           Transfer     Bitrate         Total Datagrams
-[  5]   0.00-1.01   sec  48.0 MBytes   398 Mbits/sec  100592
-[  5]   1.01-2.01   sec  47.1 MBytes   397 Mbits/sec  98765
-[  5]   2.01-3.01   sec  48.3 MBytes   404 Mbits/sec  101237
-[  5]   3.01-4.01   sec  47.1 MBytes   396 Mbits/sec  98751
-[  5]   4.01-5.01   sec  48.3 MBytes   403 Mbits/sec  101242
-[  5]   5.01-6.01   sec  47.1 MBytes   397 Mbits/sec  98675
-[  5]   6.01-7.01   sec  48.3 MBytes   403 Mbits/sec  101336
-[  5]   7.01-8.01   sec  47.9 MBytes   402 Mbits/sec  100476
-[  5]   8.01-9.00   sec  46.6 MBytes   396 Mbits/sec  97702
-[  5]   9.00-10.01  sec  48.7 MBytes   404 Mbits/sec  102084
+C:\Users\USER\Desktop\Dabin\iperf3>iperf3 -s
+-----------------------------------------------------------
+Server listening on 5201 (test #1)
+-----------------------------------------------------------
+Accepted connection from 10.10.10.20, port 51360
+[  5] local 10.10.10.10 port 5201 connected to 10.10.10.20 port 60752
+[ ID] Interval           Transfer     Bitrate         Jitter    Lost/Total Datagrams
+[  5]   0.00-1.00   sec  25.1 MBytes   210 Mbits/sec  0.072 ms  12312/31084 (40%)
+[  5]   1.00-2.01   sec  23.3 MBytes   194 Mbits/sec  0.096 ms  13677/31110 (44%)
+[  5]   2.01-3.00   sec  22.9 MBytes   194 Mbits/sec  0.065 ms  13461/30593 (44%)
+[  5]   3.00-4.01   sec  23.3 MBytes   194 Mbits/sec  0.112 ms  13662/31094 (44%)
+[  5]   4.01-5.00   sec  22.9 MBytes   194 Mbits/sec  0.080 ms  13506/30648 (44%)
+[  5]   5.00-6.01   sec  23.2 MBytes   194 Mbits/sec  0.067 ms  13714/31110 (44%)
+[  5]   6.01-7.00   sec  22.9 MBytes   194 Mbits/sec  0.137 ms  13319/30495 (44%)
+[  5]   7.00-8.01   sec  23.3 MBytes   194 Mbits/sec  0.064 ms  13703/31141 (44%)
+[  5]   8.01-9.01   sec  23.0 MBytes   194 Mbits/sec  0.112 ms  13569/30821 (44%)
+[  5]   9.01-10.01  sec  23.1 MBytes   193 Mbits/sec  0.076 ms  13831/31141 (44%)
+[  5]  10.01-10.21  sec  0.00 Bytes  0.00 bits/sec  0.076 ms  0/0 (0%)
 - - - - - - - - - - - - - - - - - - - - - - - - -
 [ ID] Interval           Transfer     Bitrate         Jitter    Lost/Total Datagrams
-[  5]   0.00-10.01  sec   477 MBytes   400 Mbits/sec  0.000 ms  0/1000860 (0%)  sender
-[  5]   0.00-10.01  sec   302 MBytes   253 Mbits/sec  0.037 ms  366727/1000860 (37%)  receiver
-
-iperf Done.
-
-
+[  5]   0.00-10.21  sec   233 MBytes   191 Mbits/sec  0.076 ms  134754/309237 (44%)  receiver
 ```
-
-- 값 변경
-	- rate-limit: 800mbps
-	- burst: 16mb
-```
-TiFRONT# sh policy-map
-
-  POLICY-MAP : test1
-    CLASS-MAP : test1 precedence 1
-        limit info :
-          rate limit
-              rate value: 800000
-              burst value: 16000
-```
-- 문제: 1G까지 전송 가능 (폴리싱 동작 안함)
-```
-C:\Users\USER\Desktop\Dabin\iperf3>iperf3 -c 10.10.10.20 -u -b 1000M -t 10
-Connecting to host 10.10.10.20, port 5201
-[  5] local 10.10.10.10 port 58399 connected to 10.10.10.20 port 5201
-[ ID] Interval           Transfer     Bitrate         Total Datagrams
-[  5]   0.00-1.00   sec   116 MBytes   966 Mbits/sec  30064
-[  5]   1.00-2.00   sec   116 MBytes   977 Mbits/sec  30188
-[  5]   2.00-3.01   sec   118 MBytes   979 Mbits/sec  30661
-[  5]   3.01-4.00   sec   115 MBytes   976 Mbits/sec  29898
-[  5]   4.00-5.01   sec   118 MBytes   977 Mbits/sec  30591
-[  5]   5.01-6.01   sec   115 MBytes   972 Mbits/sec  29979
-[  5]   6.01-7.00   sec   116 MBytes   977 Mbits/sec  30152
-[  5]   7.00-8.01   sec   117 MBytes   976 Mbits/sec  30356
-[  5]   8.01-9.01   sec   117 MBytes   977 Mbits/sec  30346
-[  5]   9.01-10.00  sec   114 MBytes   966 Mbits/sec  29720
-- - - - - - - - - - - - - - - - - - - - - - - - -
-[ ID] Interval           Transfer     Bitrate         Jitter    Lost/Total Datagrams
-[  5]   0.00-10.00  sec  1.13 GBytes   974 Mbits/sec  0.000 ms  0/301955 (0%)  sender
-[  5]   0.00-10.01  sec  0.00 Bytes  0.00 bits/sec  0.000 ms  0/0 (0%)  receiver
-
-iperf Done.
-
-
-인터페이스 드롭 없음.
-```
-### 대역폭 제한 (shaping)
-- 아래와 같이 설정
-```
-TiFRONT(config-qos)# service-queue output ge4 rate-limit 800000 128000
-
-TiFRONT(config-qos)# show service-queue output ge4
- Service Queue Egress Setting...
-   Interface: ge4
-    SCHEDULE MODE: STRICT
-    CoSq Rate Limit:
-    -----------------------------------------
-     CoS Q | min-rate(kbps)| max-rate(kbps)
-    -------+---------------+-----------------
-        0  |    no-limit   |    no-limit
-        1  |    no-limit   |    no-limit
-        2  |    no-limit   |    no-limit
-        3  |    no-limit   |    no-limit
-        4  |    no-limit   |    no-limit
-        5  |    no-limit   |    no-limit
-        6  |    no-limit   |    no-limit
-        7  |    no-limit   |    no-limit
-    -----------------------------------------
-    Egress Rate Limit:
-       Min-Rate(kbps): 800000, Max-Rate(kbps): 128000
-```
-- 결과
-```
-C:\Users\USER\Desktop\Dabin\iperf3>iperf3 -c 10.10.10.20 -u -b 2000M -t 10
-Connecting to host 10.10.10.20, port 5201
-[  5] local 10.10.10.10 port 51947 connected to 10.10.10.20 port 5201
-[ ID] Interval           Transfer     Bitrate         Total Datagrams
-[  5]   0.00-1.01   sec   116 MBytes   966 Mbits/sec  30113
-[  5]   1.01-2.00   sec   116 MBytes   977 Mbits/sec  30115
-[  5]   2.00-3.01   sec   117 MBytes   975 Mbits/sec  30531
-[  5]   3.01-4.01   sec   116 MBytes   975 Mbits/sec  30119
-[  5]   4.01-5.01   sec   117 MBytes   979 Mbits/sec  30351
-[  5]   5.01-6.00   sec   116 MBytes   976 Mbits/sec  30074
-[  5]   6.00-7.01   sec   118 MBytes   977 Mbits/sec  30544
-[  5]   7.01-8.01   sec   116 MBytes   977 Mbits/sec  30116
-[  5]   8.01-9.00   sec   116 MBytes   978 Mbits/sec  30177
-[  5]   9.00-10.02  sec   118 MBytes   974 Mbits/sec  30552
-- - - - - - - - - - - - - - - - - - - - - - - - -
-[ ID] Interval           Transfer     Bitrate         Jitter    Lost/Total Datagrams
-[  5]   0.00-10.02  sec  1.14 GBytes   975 Mbits/sec  0.000 ms  0/302692 (0%)  sender
-[  5]   0.00-10.02  sec  0.00 Bytes  0.00 bits/sec  0.000 ms  0/0 (0%)  receiver
-
-iperf Done.
-```
+- 결과 요약
+	- bitrate 200mbps로 제한 됨
+	- sender는 똑같이 300mbps로 전송하지만, 수신측에서 레이트리밋 걸림
+## 큐 스케줄링
+- 포트 속도 100mbps로 제한 후 큐 스케줄링 테스트 (우선순위 높은 것만)
 -----
 https://atthis.tistory.com/3
