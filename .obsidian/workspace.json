@@ -90,8 +90,23 @@
               "icon": "lucide-file",
               "title": "2025-W33"
             }
+          },
+          {
+            "id": "559804cba8fd131f",
+            "type": "leaf",
+            "state": {
+              "type": "markdown",
+              "state": {
+                "file": "OpeninfarDays2025.md",
+                "mode": "source",
+                "source": false
+              },
+              "icon": "lucide-file",
+              "title": "OpeninfarDays2025"
+            }
           }
-        ]
+        ],
+        "currentTab": 6
       }
     ],
     "direction": "vertical"
@@ -252,13 +267,13 @@
             "state": {
               "type": "outline",
               "state": {
-                "file": "to do/2025-W35.md",
+                "file": "OpeninfarDays2025.md",
                 "followCursor": false,
                 "showSearch": false,
                 "searchQuery": ""
               },
               "icon": "lucide-list",
-              "title": "Outline of 2025-W35"
+              "title": "Outline of OpeninfarDays2025"
             }
           }
         ],
@@ -281,10 +296,11 @@
       "obsidian-git:Open Git source control": false
     }
   },
-  "active": "236318581c482313",
+  "active": "559804cba8fd131f",
   "lastOpenFiles": [
-    "to do/2025-W34.md",
+    "OpeninfarDays2025.md",
     "to do/2025-W35.md",
+    "to do/2025-W34.md",
     "명령어/vscode 명령어.md",
     "기능 검증/QoS.md",
     "to do/2025-W33.md",
@@ -310,7 +326,6 @@
     "Loopback 인터페이스.md",
     "nmcli 명령어.md",
     "에러/ftp, tftp 사용 방법.md",
-    "서버 관련/엔지니어포털 마이그레이션.md",
     "에러",
     "서버 관련",
     "개인 용무",
