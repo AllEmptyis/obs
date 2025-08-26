@@ -9,5 +9,8 @@ starlingX: 오픈스택+쿠버네티스
 ## cloud native AI: Now and Future
 CNCF China
 
-
+AI인프라 운영
+- 자동 리소스 할당
+- 운영 및 유지보수 비용 절감
+	- GPU 비용
 
