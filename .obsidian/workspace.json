@@ -105,8 +105,7 @@
               "title": "OpeninfarDays2025"
             }
           }
-        ],
-        "currentTab": 6
+        ]
       }
     ],
     "direction": "vertical"
@@ -267,13 +266,13 @@
             "state": {
               "type": "outline",
               "state": {
-                "file": "OpeninfarDays2025.md",
+                "file": "to do/2025-W35.md",
                 "followCursor": false,
                 "showSearch": false,
                 "searchQuery": ""
               },
               "icon": "lucide-list",
-              "title": "Outline of OpeninfarDays2025"
+              "title": "Outline of 2025-W35"
             }
           }
         ],
@@ -296,7 +295,7 @@
       "obsidian-git:Open Git source control": false
     }
   },
-  "active": "559804cba8fd131f",
+  "active": "236318581c482313",
   "lastOpenFiles": [
     "OpeninfarDays2025.md",
     "to do/2025-W35.md",
