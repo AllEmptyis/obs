@@ -56,7 +56,7 @@
               "type": "markdown",
               "state": {
                 "file": "기능 검증/QoS.md",
-                "mode": "source",
+                "mode": "preview",
                 "source": false
               },
               "icon": "lucide-file",
@@ -105,7 +105,8 @@
               "title": "OpeninfarDays2025"
             }
           }
-        ]
+        ],
+        "currentTab": 3
       }
     ],
     "direction": "vertical"
@@ -266,13 +267,13 @@
             "state": {
               "type": "outline",
               "state": {
-                "file": "to do/2025-W35.md",
+                "file": "기능 검증/QoS.md",
                 "followCursor": false,
                 "showSearch": false,
                 "searchQuery": ""
               },
               "icon": "lucide-list",
-              "title": "Outline of 2025-W35"
+              "title": "Outline of QoS"
             }
           }
         ],
@@ -295,11 +296,11 @@
       "obsidian-git:Open Git source control": false
     }
   },
-  "active": "236318581c482313",
+  "active": "19774155a81beb88",
   "lastOpenFiles": [
+    "to do/2025-W35.md",
     "to do/2025-W33.md",
     "to do/2025-W34.md",
-    "to do/2025-W35.md",
     "명령어/vscode 명령어.md",
     "OpeninfarDays2025.md",
     "기능 검증/QoS.md",
