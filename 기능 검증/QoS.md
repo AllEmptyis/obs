@@ -123,6 +123,16 @@ BCM: input/output 모두 가능
 	- dscp, cos, rate-limit 설정 가능
 		- rate-limit만 설정한 경우 설정한 값에 맞게 트래픽 인가
 		- dscp,cos와 함께 rate-limit 설정한 경우: dscp 값이 매칭 되는 트래픽에 대해 rate-limit 동작 ->왜 cos값은 안보는지?
+### 컨트롤러 동작 방식
+- CLI mode에서는 qos, acl 각각 다른 fp group으로 처리됨
+- cloud mode에서는 qos, acl fp group이 합쳐지면서 qos 기능 감소
+	- https://redmine.piolink.com/issues/56434
+- QoS/ACL fp group 통합
+	- 클라우드 모드로 사용 중 cli로 qos 설정 넣으면 네트워크접근제어(acl)과 중복되어 오류 발생 가능
+	- https://redmine.piolink.com/issues/105935
+- json형식으로 스위치에 전달
+	- QoS/ACL에 대한 매칭 카운트
+	- count get/set/reset
 # 실습 - cli
 - 실습 도구: iperf3 (네트워크 성능 테스트 툴)
 	- https://iperf.fr/iperf-download.php
@@ -233,5 +243,162 @@ Accepted connection from 10.10.10.20, port 51360
 	- sender는 똑같이 300mbps로 전송하지만, 수신측에서 레이트리밋 걸림
 ## 큐 스케줄링
 - 포트 속도 100mbps로 제한 후 큐 스케줄링 테스트 (우선순위 높은 것만)
+
+# FP group 확인 (BCM)
+## qos 설정 없을 때 / CLI
+```
+TiFRONT# show sw-fabric-resource filter
+ -----------------------------------------------------------------
+                SWITCH FABRIC RESOURCE FILTER
+ -----------------------------------------------------------------
+                                         ENTRY  (2048) / USE( 61%)
+                                         COUNTER( 896) / USE( 85%)
+                                         METER  ( 768) / USE(  0%)
+ -----------------------------------------------------------------
+   CATEGORY |        NAME      |    USED   |  AVAILABLE  |  USE(%)
+ -----------+------------------+-----------+-------------+--------
+      ENTRY |       SECIPv4(0) |    512(D) |         768 |    25%
+    COUNTER |       SECIPv4(0) |    249(D) |         134 |    27%
+      METER |       SECIPv4(0) |      0(D) |         768 |     0%
+ -----------+------------------+-----------+-------------+--------
+      ENTRY |           SWT(1) |    256(D) |         768 |    12%
+    COUNTER |           SWT(1) |      1(D) |         134 |     0%
+      METER |           SWT(1) |      0(D) |         640 |     0%
+ -----------+------------------+-----------+-------------+--------
+      ENTRY |      TiNDM-RX(4) |    256(S) |         768 |    12%
+    COUNTER |      TiNDM-RX(4) |    256(S) |         134 |    28%
+      METER |      TiNDM-RX(4) |      0(S) |        1024 |     0%
+ -----------+------------------+-----------+-------------+--------
+      ENTRY |      TiNDM-TX(5) |    256(S) |         768 |    12%
+    COUNTER |      TiNDM-TX(5) |    256(S) |         134 |    28%
+      METER |      TiNDM-TX(5) |      0(S) |        1024 |     0%
+ -----------+------------------+-----------+-------------+--------
+  CATEGORY  : ENTRY / COUNTER / METER
+  NAME      : GROUP NAME(Group ID)
+  USED      : USE COUNT(Q:Quad / T:Triple+128 / D:Double / S:Single)
+  AVAILABLE : AVAILABLE COUNT
+  USE       : USE PERCENTAGE
+```
+## qos 설정 적용 / CLI
+- QOS-ACLIPv4(2) : 해당 fp group 사용
+- entry: 룰을 몇 개 설정할 수 있는지
+- meter: 트래픽 제한용 필드
+```
+TiFRONT(config-qos)# sh qos install
+  SERVICE POLICY : test
+
+  CLASS-MAP : test precedence 6
+    match :
+        any enable
+    action :
+        commit info :
+          permit
+
+TiFRONT# sh sw-fabric-resource filter
+ -----------------------------------------------------------------
+                SWITCH FABRIC RESOURCE FILTER
+ -----------------------------------------------------------------
+                                         ENTRY  (2048) / USE( 73%) -->증가
+                                         COUNTER(1024) / USE( 86%)
+                                         METER  ( 640) / USE(  0%)
+ -----------------------------------------------------------------
+   CATEGORY |        NAME      |    USED   |  AVAILABLE  |  USE(%)
+ -----------+------------------+-----------+-------------+--------
+      ENTRY |       SECIPv4(0) |    512(D) |         512 |    25%
+    COUNTER |       SECIPv4(0) |    249(D) |         134 |    24%
+      METER |       SECIPv4(0) |      0(D) |         640 |     0%
+ -----------+------------------+-----------+-------------+--------
+      ENTRY |           SWT(1) |    256(D) |         512 |    12%
+    COUNTER |           SWT(1) |      1(D) |         134 |     0%
+      METER |           SWT(1) |      0(D) |         512 |     0%
+ -----------+------------------+-----------+-------------+--------
+      ENTRY |   QOS-ACLIPv4(2) |    256(D) |         512 |    12%
+    COUNTER |   QOS-ACLIPv4(2) |    128(D) |         134 |    12%
+      METER |   QOS-ACLIPv4(2) |      0(D) |         512 |     0%
+ -----------+------------------+-----------+-------------+--------
+      ENTRY |      TiNDM-RX(4) |    256(S) |         512 |    12%
+    COUNTER |      TiNDM-RX(4) |    256(S) |         134 |    25%
+      METER |      TiNDM-RX(4) |      0(S) |         768 |     0%
+ -----------+------------------+-----------+-------------+--------
+      ENTRY |      TiNDM-TX(5) |    256(S) |         512 |    12%
+    COUNTER |      TiNDM-TX(5) |    256(S) |         134 |    25%
+      METER |      TiNDM-TX(5) |      0(S) |         768 |     0%
+ -----------+------------------+-----------+-------------+--------
+```
+- ratelimit 설정한 경우 meter 로 카운트 됨
+```
+TiFRONT# sh sw-fabric-resource filter
+ -----------------------------------------------------------------
+                SWITCH FABRIC RESOURCE FILTER
+ -----------------------------------------------------------------
+                                         ENTRY  (2048) / USE( 73%)
+                                         COUNTER(1024) / USE( 86%)
+                                         METER  ( 640) / USE(  0%)
+ -----------------------------------------------------------------
+   CATEGORY |        NAME      |    USED   |  AVAILABLE  |  USE(%)
+ -----------+------------------+-----------+-------------+--------
+      ENTRY |       SECIPv4(0) |    512(D) |         512 |    25%
+    COUNTER |       SECIPv4(0) |    249(D) |         134 |    24%
+      METER |       SECIPv4(0) |      0(D) |         640 |     0%
+ -----------+------------------+-----------+-------------+--------
+      ENTRY |           SWT(1) |    256(D) |         512 |    12%
+    COUNTER |           SWT(1) |      1(D) |         134 |     0%
+      METER |           SWT(1) |      0(D) |         512 |     0%
+ -----------+------------------+-----------+-------------+--------
+      ENTRY |   QOS-ACLIPv4(2) |    256(D) |         512 |    12%
+    COUNTER |   QOS-ACLIPv4(2) |    128(D) |         134 |    12%
+      METER |   QOS-ACLIPv4(2) |      1(D) |         511 |     0%
+ -----------+------------------+-----------+-------------+--------
+      ENTRY |      TiNDM-RX(4) |    256(S) |         512 |    12%
+    COUNTER |      TiNDM-RX(4) |    256(S) |         134 |    25%
+      METER |      TiNDM-RX(4) |      0(S) |         768 |     0%
+ -----------+------------------+-----------+-------------+--------
+      ENTRY |      TiNDM-TX(5) |    256(S) |         512 |    12%
+    COUNTER |      TiNDM-TX(5) |    256(S) |         134 |    25%
+      METER |      TiNDM-TX(5) |      0(S) |         768 |     0%
+ -----------+------------------+-----------+-------------+--------
+```
+- 의문
+	- acl과 같은 fp group에 적용되는것인지? acl 설정 했을 때는 fp group에서 use가 안올라감
+## qos 설정 적용 / Cloud
+- fp 그룹명 ACLIPv4(2)
+```
+TiFRONT# sh sw-fabric-resource filter
+ -----------------------------------------------------------------
+                SWITCH FABRIC RESOURCE FILTER
+ -----------------------------------------------------------------
+                                         ENTRY  (2048) / USE( 67%)
+                                         COUNTER(1024) / USE( 87%)
+                                         METER  ( 640) / USE(  0%)
+ -----------------------------------------------------------------
+   CATEGORY |        NAME      |    USED   |  AVAILABLE  |  USE(%)
+ -----------+------------------+-----------+-------------+--------
+      ENTRY |       SECIPv4(0) |    512(D) |         512 |    25%
+    COUNTER |       SECIPv4(0) |    256(D) |         127 |    25%
+      METER |       SECIPv4(0) |      0(D) |         640 |     0%
+ -----------+------------------+-----------+-------------+--------
+      ENTRY |           SWT(1) |    256(D) |         512 |    12%
+    COUNTER |           SWT(1) |      1(D) |         127 |     0%
+      METER |           SWT(1) |      0(D) |         512 |     0%
+ -----------+------------------+-----------+-------------+--------
+      ENTRY |       ACLIPv4(2) |    128(S) |         640 |     6%
+    COUNTER |       ACLIPv4(2) |    128(S) |         127 |    12%
+      METER |       ACLIPv4(2) |      0(S) |         768 |     0%
+ -----------+------------------+-----------+-------------+--------
+      ENTRY |      TiNDM-RX(4) |    256(S) |         640 |    12%
+    COUNTER |      TiNDM-RX(4) |    256(S) |         127 |    25%
+      METER |      TiNDM-RX(4) |      0(S) |         896 |     0%
+ -----------+------------------+-----------+-------------+--------
+      ENTRY |      TiNDM-TX(5) |    256(S) |         640 |    12%
+    COUNTER |      TiNDM-TX(5) |    256(S) |         127 |    25%
+      METER |      TiNDM-TX(5) |      0(S) |         896 |     0%
+ -----------+------------------+-----------+-------------+--------
+  CATEGORY  : ENTRY / COUNTER / METER
+  NAME      : GROUP NAME(Group ID)
+  USED      : USE COUNT(Q:Quad / T:Triple+128 / D:Double / S:Single)
+  AVAILABLE : AVAILABLE COUNT
+  USE       : USE PERCENTAGE
+```
+
 -----
 https://atthis.tistory.com/3

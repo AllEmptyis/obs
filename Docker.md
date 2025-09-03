@@ -186,7 +186,7 @@ drwx------.  2 root root    6 Jul 28 02:57 work
 - 레이어 디렉토리 구조
 ```
 [root@localhost ~]# cd /var/lib/docker/overlay2/
-//이미지 레이어 나옴
+//이미지 레이어 관리 디렉토리 나옴
 
 [root@localhost overlay2]# ls -l l
 total 0
@@ -407,10 +407,20 @@ MASQUERADE  all  --  172.17.0.0/16        0.0.0.0/0 //출발지가 도커ip대�
 
 Chain DOCKER (2 references)
 target     prot opt source               destination
-RETURN     all  --  0.0.0.0/0            0.0.0.0/0
+RETURN     all  --  0.0.0.0/0            0.0.0.0/0   --->아래 확인
 DNAT       tcp  --  0.0.0.0/0            0.0.0.0/0            tcp dpt:8080 to:172.17.0.2:80
 DNAT       tcp  --  0.0.0.0/0            0.0.0.0/0            tcp dpt:8081 to:172.17.0.3:80
 DNAT       tcp  --  0.0.0.0/0            0.0.0.0/0            tcp dpt:8082 to:172.17.0.4:80
+```
+- iptables -t nat -S DOCKER
+```
+-A DOCKER -i docker0 -j RETURN
+-A DOCKER -i br-60abe44a3dbd -j RETURN
+
+docker체인에서 들어오고 나가는 패킷 (즉 컨테이너에서 들어오고 나가는 패킷)은 리턴시킨다는 의미
+-L 옵션에서는 잘려서 출력 안됐음
+
+DNAT 하지 않도록 방지 차원
 ```
 ### 명령어
 - 네트워크 조회

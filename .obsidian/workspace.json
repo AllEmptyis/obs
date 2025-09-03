@@ -8,7 +8,7 @@
         "type": "tabs",
         "children": [
           {
-            "id": "236318581c482313",
+            "id": "f174b21eb270e169",
             "type": "leaf",
             "state": {
               "type": "markdown",
@@ -19,20 +19,6 @@
               },
               "icon": "lucide-file",
               "title": "2025-W35"
-            }
-          },
-          {
-            "id": "f174b21eb270e169",
-            "type": "leaf",
-            "state": {
-              "type": "markdown",
-              "state": {
-                "file": "서버 관련/엔지니어포털 마이그레이션.md",
-                "mode": "source",
-                "source": false
-              },
-              "icon": "lucide-file",
-              "title": "엔지니어포털 마이그레이션"
             }
           },
           {
@@ -67,12 +53,14 @@
             "id": "4d7c4c2b25950ab2",
             "type": "leaf",
             "state": {
-              "type": "release-notes",
+              "type": "markdown",
               "state": {
-                "currentVersion": "1.9.12"
+                "file": "명령어/vscode 명령어.md",
+                "mode": "source",
+                "source": false
               },
-              "icon": "lucide-book-up",
-              "title": "Release Notes 1.9.12"
+              "icon": "lucide-file",
+              "title": "vscode 명령어"
             }
           },
           {
@@ -90,20 +78,6 @@
             }
           },
           {
-            "id": "6b642916271d740e",
-            "type": "leaf",
-            "state": {
-              "type": "markdown",
-              "state": {
-                "file": "to do/2025-W33.md",
-                "mode": "source",
-                "source": false
-              },
-              "icon": "lucide-file",
-              "title": "2025-W33"
-            }
-          },
-          {
             "id": "559804cba8fd131f",
             "type": "leaf",
             "state": {
@@ -118,7 +92,7 @@
             }
           }
         ],
-        "currentTab": 4
+        "currentTab": 2
       }
     ],
     "direction": "vertical"
@@ -150,7 +124,7 @@
             "state": {
               "type": "search",
               "state": {
-                "query": "",
+                "query": "vs",
                 "matchingCase": false,
                 "explainSearch": false,
                 "collapseAll": false,
@@ -181,7 +155,8 @@
               "title": "mk-path-view"
             }
           }
-        ]
+        ],
+        "currentTab": 1
       }
     ],
     "direction": "horizontal",
@@ -308,20 +283,22 @@
       "obsidian-git:Open Git source control": false
     }
   },
-  "active": "4d7c4c2b25950ab2",
+  "active": "19774155a81beb88",
   "lastOpenFiles": [
+    "명령어/vscode 명령어.md",
+    "명령어/윈도우 명령어.md",
     "to do/2025-W35.md",
+    "서버 관련/엔지니어포털 마이그레이션.md",
+    "to do/2025-W36.md",
+    "OpeninfarDays2025.md",
     "to do/2025-W33.md",
     "to do/2025-W34.md",
-    "명령어/vscode 명령어.md",
-    "OpeninfarDays2025.md",
     "기능 검증/QoS.md",
     "Untitled.md",
     "Pasted image 20250610103420.png",
     "Docker.md",
     "명령어/bing wallpaper 배경 화면 저장.md",
     "엑셀 활용.md",
-    "명령어/윈도우 명령어.md",
     "to do/2025-W32.md",
     "명령어/엑셀 활용.md",
     "서버 관련/IODD를 사용한 OS 설치.md",
@@ -336,8 +313,6 @@
     "기타",
     "to do/2025-W30.md",
     "Loopback 인터페이스.md",
-    "nmcli 명령어.md",
-    "에러/ftp, tftp 사용 방법.md",
     "에러",
     "서버 관련",
     "개인 용무",
