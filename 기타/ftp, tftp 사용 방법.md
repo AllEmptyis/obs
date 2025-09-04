@@ -33,3 +33,10 @@ Using ascii mode to transfer files.
 ftp> binary
 200 Type set to I
 ```
+# tftp PLOS update 방법
+- auto: 현재 설치 된 os의 반대편에 설치
+```
+conf
+os update tftp  <A.B.C.D> <FILE> [auto | os1 | os2] [forced]
+os update ftp <A.B.C.D> <ID> <PASSWORD> <FILE> [auto | os1 | os2] [forced]
+```
