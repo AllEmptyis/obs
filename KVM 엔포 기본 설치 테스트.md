@@ -501,12 +501,14 @@ mysqld  Ver 5.7.44 for Linux on x86_64 (MySQL Community Server (GPL))
 ```
 ------------------
 
-# Rocky8.10 php5.6 설치 방법
+# Rocky8.4 php5.6 설치 방법
 - 참고 링크: https://xinet.kr/?p=3924
 ```
 [root@localhost ~]# cat /etc/redhat-release
 Rocky Linux release 8.10 (Green Obsidian)
 
+[root@localhost ~]# uname -r
+4.18.0-305.3.1.el8_4.x86_64
 
 yum install http://rpms.remirepo.net/enterprise/remi-release-8.rpm
 
