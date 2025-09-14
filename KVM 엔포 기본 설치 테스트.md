@@ -438,3 +438,65 @@ sudo grep 'temporary password' /var/log/mysqld.log
 ```
 - `mysql_secure_installation` 로 비밀번호 설정 
 	- 임시 비번:Admin123!@#
+
+------------------------
+# CentOS 7.9 minimal 설치 방법 정리
+## 버전
+- php v5.6
+- mysql v5.7
+- openssl v1.0.2k-fips
+## OS 설치 및 저장소 추가
+- 192.168.211.105 / root, Admin123!@#
+- KVM으로 설치
+- 기본 저장소 추가 필요
+## php v5.6 설치 방법
+- 저장소
+	- webatic 저장소
+	- webatic 릴리즈 레포 추가 후 yum으로 php 설치
+```
+rpm -Uvh https://mirror.webtatic.com/yum/el7/webtatic-release.rpm
+yum install php56w php56w-cli php56w-common php56w-mbstring php56w-mysql php56w-gd
+```
+## mysql v5.7 설치 방법
+- mysql 저장소 설치
+```
+wget http://repo.mysql.com/mysql57-community-release-el7-11.noarch.rpm
+yum -y install mysql57-community-release-el7-11.noarch.rpm
+```
+- 버전 확인
+```
+[root@localhost ~]# php -v
+PHP 5.6.40 (cli) (built: Jan 12 2019 13:11:15)
+Copyright (c) 1997-2016 The PHP Group
+Zend Engine v2.6.0, Copyright (c) 1998-2016 Zend Technologies
+```
+- mysql 서버 설치
+	- gpg key 문제로 인해 수동으로 mysql repo에 2022년도 gpg key 추가 필요
+	- centos7은 2023년도 key 인식 불가
+```
+# mysql 서버 설치
+yum install -y yum-utils
+yum config-manager --disable mysql80-community
+yum config-manager --enable mysql57-community
+yum -y install mysql-community-server
+--> 인증서 문제 해결 후 설치
+
+#2022년도 인증서 설치
+[root@localhost ~]# curl -fsSL https://repo.mysql.com/RPM-GPG-KEY-mysql-2022 -o /etc/pki/rpm-gpg/RPM-GPG-KEY-mysql-2022
+[root@localhost ~]# rpm --import /etc/pki/rpm-gpg/RPM-GPG-KEY-mysql-2022
+
+[root@localhost ~]# vi /etc/yum.repos.d/mysql-community.repo
+
+[mysql57-community]
+name=MySQL 5.7 Community Server
+baseurl=http://repo.mysql.com/yum/mysql-5.7-community/el/7/$basearch/
+enabled=1
+gpgcheck=1
+gpgkey=file:file:///etc/pki/rpm-gpg/RPM-GPG-KEY-mysql-2022  <---- 해당 부분 파일 경로를 새로 설치한 gpg key 경로로 변경
+```
+- 설치 완료 / 버전 확인
+```
+[root@localhost ~]# mysqld --version
+mysqld  Ver 5.7.44 for Linux on x86_64 (MySQL Community Server (GPL))
+```
+

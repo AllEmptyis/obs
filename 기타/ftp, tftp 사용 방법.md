@@ -35,8 +35,12 @@ ftp> binary
 ```
 # tftp PLOS update 방법
 - auto: 현재 설치 된 os의 반대편에 설치
+- 주의 **펌웨어 다운로드 후 반드시 reload**
 ```
 conf
 os update tftp  <A.B.C.D> <FILE> [auto | os1 | os2] [forced]
 os update ftp <A.B.C.D> <ID> <PASSWORD> <FILE> [auto | os1 | os2] [forced]
+
+<중요>
+reload
 ```

@@ -54,10 +54,28 @@
 - virsh create `vm.xml`
 	- xml로 vm 생성+시작
 - virsh dumpxml `name` > `vm.xml`
+- virsh dumpxml `name`
+	- 해당 VM의 xml 파일 조회
+- virsh edit `name`
+	- VM의 xml 파일 수정 (완료 후 자동으로 libvirt가 반영)
 - virsh console testvm
-	- cli 접속
+	- 콘솔 접속
+		- virt-install로 vm 생성 시 아래와 같이 옵션 넣어서 설정해주어야 함
+		  만일 그렇게 안하면 추후 vm의 xml 파일 수정 + vm 커널에서 콘솔 관련 옵션 활성화 필요
 	- --extra-args="console=ttyS0"
 		- 주의 / cdrom 으로 설치 시 extra args 같이 사용 불가
+```
+나중에 vm에서 콘솔 활성화 방법
+
+1)grub진입해서 해당 옵션 추가 (콘솔로 부팅 메시지 출력)
+console=ttyS0,115200n8
+2)systemd 서비스 활성화
+systemctl enable --now serial-getty@ttyS0.service
+-> 로그인 프롬프트가 ttys0 위에서 실행
+
+참고 링크:
+https://docs.redhat.com/ko/documentation/red_hat_enterprise_linux/9/html/configuring_and_managing_virtualization/proc_opening-a-virtual-machine-serial-console_assembly_connecting-to-virtual-machines
+```
 - virsh domblklist `name`
 	- vm의 디스크 확인
 - virsh domiflist `name`

@@ -13,12 +13,12 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "to do/2025-W36.md",
+                "file": "to do/2025-W37.md",
                 "mode": "source",
                 "source": false
               },
               "icon": "lucide-file",
-              "title": "2025-W36"
+              "title": "2025-W37"
             }
           },
           {
@@ -252,13 +252,13 @@
             "state": {
               "type": "outline",
               "state": {
-                "file": "to do/2025-W36.md",
+                "file": "to do/2025-W37.md",
                 "followCursor": false,
                 "showSearch": false,
                 "searchQuery": ""
               },
               "icon": "lucide-list",
-              "title": "Outline of 2025-W36"
+              "title": "Outline of 2025-W37"
             }
           }
         ],
@@ -283,13 +283,16 @@
   },
   "active": "f174b21eb270e169",
   "lastOpenFiles": [
+    "to do/2025-W36.md",
+    "to do/2025-W37.md",
+    "명령어/루이지에 명령어.md",
+    "쿠버네티스.md",
     "to do/2025-W35.md",
     "기능 검증/QoS.md",
     "BCM SDK shell 명령어.md",
     "명령어/vscode 명령어.md",
     "명령어/윈도우 명령어.md",
     "서버 관련/엔지니어포털 마이그레이션.md",
-    "to do/2025-W36.md",
     "OpeninfarDays2025.md",
     "to do/2025-W33.md",
     "to do/2025-W34.md",
@@ -307,10 +310,7 @@
     "to do/2025-W31.md",
     "기타/TiController와 스위치 연동 안 됨.md",
     "기타/ftp, tftp 사용 방법.md",
-    "기타/TiController ip 변경 후 컨트롤러 ip가 반영되지 않는 현상.md",
-    "기타/Mobaxterm 관련 (startup.conf, switch.conf).md",
     "기타",
-    "to do/2025-W30.md",
     "에러",
     "서버 관련",
     "개인 용무",
