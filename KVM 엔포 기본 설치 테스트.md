@@ -499,4 +499,9 @@ gpgkey=file:file:///etc/pki/rpm-gpg/RPM-GPG-KEY-mysql-2022  <---- 해당 부분 
 [root@localhost ~]# mysqld --version
 mysqld  Ver 5.7.44 for Linux on x86_64 (MySQL Community Server (GPL))
 ```
+------------------
 
+# Rockylinux 버전 업그레이드(php,openssl 버전 유지)
+- php v5.6
+- openssl 1.1.x 유지
+- 방법: dnf versionlock 사용
