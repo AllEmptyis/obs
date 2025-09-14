@@ -501,6 +501,62 @@ mysqld  Ver 5.7.44 for Linux on x86_64 (MySQL Community Server (GPL))
 ```
 ------------------
 
+# Rocky8.10 php5.6 설치 방법
+- 참고 링크: https://xinet.kr/?p=3924
+```
+[root@localhost ~]# cat /etc/redhat-release
+Rocky Linux release 8.10 (Green Obsidian)
+
+
+yum install http://rpms.remirepo.net/enterprise/remi-release-8.rpm
+
+dnf -y install php56-runtime php56-php-fpm php56-php-process php56-php-gd php56-php-common \php56-php-gmp php56-php-pecl-zip php56-php-pear php56-php-mysqlnd  \php56-php-mbstring php56-php-cli php56-php-mcrypt php56-php-pecl-jsonc \php56-php php56-php-dba php56-php-xml php56-php-pdo
+```
+- 확인
+```
+[root@localhost ~]# /opt/remi/php56/root/usr/bin/php -v
+PHP 5.6.40 (cli) (built: Dec  6 2024 10:27:24)
+Copyright (c) 1997-2016 The PHP Group
+Zend Engine v2.6.0, Copyright (c) 1998-2016 Zend Technologies
+
+[root@localhost ~]# /opt/remi/php56/root/usr/bin/php -m
+[PHP Modules]
+bz2
+calendar
+Core
+ctype
+curl
+date
+ereg
+exif
+fileinfo
+filter
+ftp
+gettext
+gmp
+hash
+iconv
+json
+libxml
+mbstring
+mhash
+openssl
+pcntl
+pcre
+Phar
+readline
+Reflection
+session
+sockets
+SPL
+standard
+tokenizer
+zip
+zlib
+
+[Zend Modules]
+```
+
 # Rockylinux 버전 업그레이드(php,openssl 버전 유지)
 - php v5.6
 - openssl 1.1.x 유지
