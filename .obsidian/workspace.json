@@ -27,12 +27,12 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "to do/2025-W37.md",
+                "file": "to do/2025-W38.md",
                 "mode": "source",
                 "source": false
               },
               "icon": "lucide-file",
-              "title": "2025-W37"
+              "title": "2025-W38"
             }
           },
           {
@@ -106,7 +106,7 @@
             }
           }
         ],
-        "currentTab": 1
+        "currentTab": 6
       }
     ],
     "direction": "vertical"
@@ -267,13 +267,13 @@
             "state": {
               "type": "outline",
               "state": {
-                "file": "to do/2025-W37.md",
+                "file": "OpeninfarDays2025.md",
                 "followCursor": false,
                 "showSearch": false,
                 "searchQuery": ""
               },
               "icon": "lucide-list",
-              "title": "Outline of 2025-W37"
+              "title": "Outline of OpeninfarDays2025"
             }
           }
         ],
@@ -296,10 +296,12 @@
       "obsidian-git:Open Git source control": false
     }
   },
-  "active": "be4a5b6bdff4c769",
+  "active": "559804cba8fd131f",
   "lastOpenFiles": [
-    "KVM 엔포 기본 설치 테스트.md",
+    "to do/2025-W38.md",
     "to do/2025-W37.md",
+    "명령어/Linux sed,awk 문법.md",
+    "KVM 엔포 기본 설치 테스트.md",
     "to do/2025-W36.md",
     "명령어/루이지에 명령어.md",
     "쿠버네티스.md",
@@ -323,8 +325,6 @@
     "obs 활용/옵시디언 사용 방법 정리.md",
     "obs 활용/단축키.md",
     "도커 레이어 구조.md",
-    "to do/2025-W31.md",
-    "기타/TiController와 스위치 연동 안 됨.md",
     "기타",
     "에러",
     "서버 관련",
