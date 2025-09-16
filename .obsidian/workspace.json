@@ -106,7 +106,7 @@
             }
           }
         ],
-        "currentTab": 6
+        "currentTab": 1
       }
     ],
     "direction": "vertical"
@@ -267,13 +267,13 @@
             "state": {
               "type": "outline",
               "state": {
-                "file": "OpeninfarDays2025.md",
+                "file": "to do/2025-W38.md",
                 "followCursor": false,
                 "showSearch": false,
                 "searchQuery": ""
               },
               "icon": "lucide-list",
-              "title": "Outline of OpeninfarDays2025"
+              "title": "Outline of 2025-W38"
             }
           }
         ],
@@ -296,8 +296,9 @@
       "obsidian-git:Open Git source control": false
     }
   },
-  "active": "559804cba8fd131f",
+  "active": "be4a5b6bdff4c769",
   "lastOpenFiles": [
+    "OpeninfarDays2025.md",
     "to do/2025-W38.md",
     "to do/2025-W37.md",
     "명령어/Linux sed,awk 문법.md",
@@ -311,7 +312,6 @@
     "명령어/vscode 명령어.md",
     "명령어/윈도우 명령어.md",
     "서버 관련/엔지니어포털 마이그레이션.md",
-    "OpeninfarDays2025.md",
     "to do/2025-W33.md",
     "to do/2025-W34.md",
     "Untitled.md",

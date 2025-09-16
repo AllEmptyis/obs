@@ -563,3 +563,23 @@ zlib
 - php v5.6
 - openssl 1.1.x 유지
 - 방법: dnf versionlock 사용
+
+# CentOS6.9 설치
+- vm 생성
+	- root / Admin123!@#
+```
+[root@localhost home]# virt-install --name Centos6.9minimal --memory 8012 --vcpu 2 --location /home/CentOS-6.9-x86_64-minimal.iso --graphics vnc --network bridge=br0 --os-variant centos6.9 --disk /home/disk/,size=100
+
+[root@localhost home]# ls -l
+total 76365648
+-rw-r--r--.  1 qemu qemu    427819008 Mar 28  2017 CentOS-6.9-x86_64-minimal.iso
+-rw-r--r--.  1 qemu qemu   1020264448 Jun 10 04:42 CentOS-7-x86_64-Minimal-2009.iso
+-rw-------.  1 qemu qemu 107390828544 Sep 16 03:37 disk   --------> centos6.9 disk
+-rw-r--r--.  1 root root  53695545344 Sep 10 21:39 enpotest
+-rw-r--r--.  1 root root         6852 Jul 18 08:05 enpotest.xml
+-rw-------.  1 qemu qemu  64434601984 Sep 16 03:35 rocky8.4disk
+-rw-r--r--.  1 qemu qemu   1980760064 Jun 20  2021 Rocky-8.4-x86_64-minimal.iso
+-rw-r--r--.  1 qemu qemu  12851544064 May 29 20:06 Rocky-9.6-x86_64-dvd.iso
+drwx------. 14 test test         4096 Jul 21 13:13 test
+
+```
