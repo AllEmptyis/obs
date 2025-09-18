@@ -564,9 +564,10 @@ zlib
 - openssl 1.1.x 유지
 - 방법: dnf versionlock 사용
 
-# CentOS6.9 설치
+# CentOS 6.9 minimal 설치
 - vm 생성
 	- root / Admin123!@#
+	- 192.168.211.103/24
 ```
 [root@localhost home]# virt-install --name Centos6.9minimal --memory 8012 --vcpu 2 --location /home/CentOS-6.9-x86_64-minimal.iso --graphics vnc --network bridge=br0 --os-variant centos6.9 --disk /home/disk/,size=100
 
@@ -581,5 +582,301 @@ total 76365648
 -rw-r--r--.  1 qemu qemu   1980760064 Jun 20  2021 Rocky-8.4-x86_64-minimal.iso
 -rw-r--r--.  1 qemu qemu  12851544064 May 29 20:06 Rocky-9.6-x86_64-dvd.iso
 drwx------. 14 test test         4096 Jul 21 13:13 test
+```
+## 초기 설정
+- ip 할당
+	- ip addr add 192.168.211.103/24 dev eth0
+	- ip link set eth0 up //기본 상태 인터페이스 down
+	- ip route add default 192.168.211.1
+- `/etc/sysconfig/network-scripts`
+- ssh 접속 / 구형 ssh 모듈을 사용 중이라 현재 클라이언트에서는 해당 모듈을 사용 안 함
+	- 신규 서버에서 ssh 접속하지 말고 그냥 세션 열어서 들어가면 된다
+- DNS 설정
+	- `/etc/resolv.conf`
+```
+[root@localhost ~]# ssh root@192.168.211.103
+Unable to negotiate with 192.168.211.103 port 22: no matching host key type found. Their offer: ssh-rsa,ssh-dss
 
+[root@localhost network-scripts]# cat /etc/resolv.conf
+nameserver      8.8.8.8
+```
+- ip/라우팅 설정 영구 저장(`/etc/sysconfig/network-scripts`)
+	- 네트워크매니저 사용 안해서 network-scripts에서 파일 수정 필요
+	- 라우팅은 route-eth0 파일 새로 작성
+	- ONBOOT=yes : 부팅 시 자동으로 인터페이스를 up
+```
+[root@localhost /]# cd /etc/sysconfig/network-scripts/
+[root@localhost network-scripts]# ls
+ifcfg-eth0  ifdown-bnep  ifdown-ipv6  ifdown-ppp     ifdown-tunnel  ifup-bnep  ifup-ipv6  ifup-plusb  ifup-routes  ifup-wireless     network-functions
+ifcfg-lo    ifdown-eth   ifdown-isdn  ifdown-routes  ifup           ifup-eth   ifup-isdn  ifup-post   ifup-sit     init.ipv6-global  network-functions-ipv6
+ifdown      ifdown-ippp  ifdown-post  ifdown-sit     ifup-aliases   ifup-ippp  ifup-plip  ifup-ppp    ifup-tunnel  net.hotplug
+
+
+[root@localhost network-scripts]# cat ifcfg-eth0
+DEVICE=eth0
+HWADDR=52:54:00:7A:6F:09
+TYPE=Ethernet
+IPADDR=192.168.211.103
+NETMASK=255.255.255.0
+DNS1=8.8.8.8
+UUID=48a45ec3-f276-4023-a723-99737559cbd4
+ONBOOT=yes
+NM_CONTROLLED=yes
+BOOTPROTO=static ---> static/none으로 두어야 ip 수동 적용
+
+/etc/sysconfig/network-scripts/route-eth0
+[root@localhost network-scripts]# cat route-eth0
+0.0.0.0/0 via 192.168.211.1 dev eth0
+
+
+service network restart
+```
+## 저장소 추가
+- /etc/yum.repos.d
+	- https://93it-serverengineer.co.kr/42
+	- 두 번째꺼 복사해서 Base.repo 덮어 씌우기
+```
+[root@localhost yum.repos.d]# cp CentOS-Base.repo CentOS-Base.repo.bk
+[root@localhost yum.repos.d]# ls
+CentOS-Base.repo  CentOS-Base.repo.bk  CentOS-Debuginfo.repo  CentOS-fasttrack.repo  CentOS-Media.repo  CentOS-Vault.repo
+```
+## php v5.33 설치
+```
+yum install -y php php-cli php-common php-mysql php-gd php-xml
+
+[root@localhost network-scripts]# php -v
+PHP 5.3.3 (cli) (built: Nov  1 2019 12:28:08)
+Copyright (c) 1997-2010 The PHP Group
+Zend Engine v2.3.0, Copyright (c) 1998-2010 Zend Technologies
+```
+## mysql v5.6 설치
+- centos6.9 기본 설치: v5.1
+- 아래와 같이 v5.1과 php가 의존성 걸려있어서 php-mysqlnd로 설치해야 함
+	- v5.6의 특정 라이브러리가 phpv5.33과 버전 안맞음
+	- php-mysqlnd는 php에서 제공하는 모듈로 해당 라이브러리 제약을 받지 않음 
+```
+[root@localhost network-scripts]# yum list installed | grep mysql
+mysql-libs.x86_64   5.1.73-8.el6_8      @anaconda-CentOS-201703281317.x86_64/6.9
+
+[root@localhost /]# yum remove mysql-libs-5.1.73-8.el6_8.x86_64
+ Package                                   Arch                                  Version                                          Repository                                                               Size
+================================================================================================================================================================================================================
+Removing:
+ mysql-libs                                x86_64                                5.1.73-8.el6_8                                   @anaconda-CentOS-201703281317.x86_64/6.9                                4.0 M
+Removing for dependencies:
+ php-mysql                                 x86_64                                5.3.3-50.el6_10                                  @updates                                                                216 k
+ postfix                                   x86_64                                2:2.6.6-8.el6                                    @anaconda-CentOS-201703281317.x86_64/6.9                                9.7 M
+
+Transaction Summary
+================================================================================================================================================================================================================
+Remove        3 Package(s)
+
+```
+- php-mysqlnd 설치는 실패
+	- php-mysqlnd 제공하는 remi repo 사이트 아예 종료됨
+```
+[root@localhost /]# curl -I https://rpms.remirepo.net/enterprise/6/remi/x86_64/
+HTTP/1.1 404 Not Found
+Date: Wed, 17 Sep 2025 01:58:35 GMT
+Server: Apache/2.4.62 (Rocky Linux) OpenSSL/3.2.2
+Content-Type: text/html; charset=iso-8859-1
+```
+- mysql v5.6 설치
+	- wget + rpm -ivh 와 yum install 차이: yum은 의존성 검사해서 패키지 자동으로 설치해준다
+	  wget은 rpm을 가져와 로컬에 설치 후 직접 rpm을 설치하는 방식, 만일 의존성 패키지가 필요한 경우 실패 할 수 있음
+```
+yum -y install https://dev.mysql.com/get/mysql-community-release-el6-5.noarch.rpm
+
+yum install mysql mysql-server mysql-devel -y
+
+mysql-server: mysql 데몬
+mysql-devel: 개발용 라이브러리 (php와 연동 위함)
+mysql: 클라이언트 툴 (cli 명령어)
+```
+- 요약
+	- 현재 phpv5.33+mysqlv5.6 설치
+	- mysql-community-libs 해당 패키지는 설치하면 php5.33과 충돌 가능성 있음
+		- mysql56 패키지에서 구버전도 지원하도록 패키지 같이 지원해주어서 문제 없을 거 같다
+```
+[root@localhost /]# yum list installed  | grep mysql
+mysql-community-client.x86_64
+                       5.6.51-2.el6     @mysql56-community
+mysql-community-common.x86_64
+                       5.6.51-2.el6     @mysql56-community
+mysql-community-devel.x86_64
+                       5.6.51-2.el6     @mysql56-community
+mysql-community-libs.x86_64   -----> 신규버전, 이것만 있으면 에러 발생 가능성 있음
+                       5.6.51-2.el6     @mysql56-community
+mysql-community-libs-compat.x86_64        -------> 구버전 호환
+                       5.6.51-2.el6     @mysql56-community
+mysql-community-release.noarch
+                       el6-5            @/mysql-community-release-el6-5.noarch
+mysql-community-server.x86_64
+                       5.6.51-2.el6     @mysql56-community
+php-mysql.x86_64       5.3.3-50.el6_10  @updates
+```
+
+## 버전 정리
+- openssl (기본 설치)
+	- 1.0.1e-fips
+- httpd (기본 설치)
+	- 2.2.15
+- bind, bind-utils
+- sendmail, sendmail-cf
+	- v8.14.4
+- php v5.33
+- mysql v5.6
+- dovecot v2.0.9
+## 직렬 콘솔 연결
+- centos6.9는 grub legacy 사용
+- 아래와 같이 변경
+	- `/etc/grub.conf`
+		- 수정 시 /proc/cmdline에 자동으로 추가
+```
+/etc/grub.conf
+
+serial --unit=0 --speed=115200
+terminal --timeout=5 serial console    --->2줄 추가
+
+default=0
+timeout=5
+splashimage=(hd0,0)/grub/splash.xpm.gz
+hiddenmenu
+title CentOS (2.6.32-754.35.1.el6.x86_64)
+        root (hd0,0)
+        kernel /vmlinuz-2.6.32-754.35.1.el6.x86_64 ro root=/dev/mapper/VolGroup-lv_root rd_NO_LUKS LANG=en_US.UTF-8 rd_NO_MD rd_LVM_LV=VolGroup/lv_swap SYSFONT=latarcyrheb-sun16 crashkernel=auto rd_LVM_LV=VolGroup/lv_root  KEYBOARDTYPE=pc KEYTABLE=us rd_NO_DM rhgb quiet console=ttyS0,115200n8 console=tty0   ---->console 설정 추가
+        initrd /initramfs-2.6.32-754.35.1.el6.x86_64.img
+title CentOS 6 (2.6.32-696.el6.x86_64)
+        root (hd0,0)
+        kernel /vmlinuz-2.6.32-696.el6.x86_64 ro root=/dev/mapper/VolGroup-lv_root rd_NO_LUKS LANG=en_US.UTF-8 rd_NO_MD rd_LVM_LV=VolGroup/lv_swap SYSFONT=latarcyrheb-sun16 crashkernel=auto rd_LVM_LV=VolGroup/lv_root  KEYBOARDTYPE=pc KEYTABLE=us rd_NO_DM rhgb quiet console=ttyS0,115200n8 console=tty0   ----> console 설정 추가
+        initrd /initramfs-2.6.32-696.el6.x86_64.img
+```
+- upstart설정 (로그인 프롬프트 나오도록 설정)
+	- centos6.9는 **SysV init가 아니라 Upstart**를 사용
+- sysV init: 예전 리눅스 시스템에서 사용하던 초기화 방식
+- upstart
+	- `/etc/init/tty1.conf` 같은 잡(job) 파일 단위로 관리
+	- centos6에서 사용
+```
+<파일 생성>
+cat >/etc/init/ttyS0.conf <<'EOF'
+# ttyS0 serial console (Upstart on CentOS 6)
+start on stopped rc RUNLEVEL=[2345]
+stop on runlevel [!2345]
+respawn
+exec /sbin/agetty -L 115200 ttyS0 vt100
+EOF
+
+<upstart 재로딩 및 즉시 시작>
+[root@localhost init]# initctl reload-configuration
+[root@localhost init]# start ttyS0
+
+<적용 확인>
+[root@localhost init]# ps -ef | grep [a]getty
+root      1650     1  0 06:18 ttyS0    00:00:00 /sbin/agetty -L 115200 ttyS0 vt100
+
+//[a]getty로 하면 grep agetty 매치 안됨
+[a]getty=agetty와 동일하게 인식
+
+<콘솔에서 root 로그인 허용>
+[root@localhost init]# echo ttyS0 >> /etc/securetty
+[root@localhost init]#
+[root@localhost init]#
+[root@localhost init]# cat /etc/securetty
+console
+vc/1
+vc/2
+vc/3
+vc/4
+vc/5
+vc/6
+vc/7
+vc/8
+vc/9
+vc/10
+vc/11
+tty1
+tty2
+tty3
+tty4
+tty5
+tty6
+tty7
+tty8
+tty9
+tty10
+tty11
+ttyS0   --->적용
+```
+- 확인
+```
+[root@localhost ~]# virsh console Centos6.9minimal
+Connected to domain 'Centos6.9minimal'
+Escape character is ^] (Ctrl + ])
+Press any key to continue.
+Press any key to continue.
+Detected CPU family 6 model 106
+Warning: Intel CPU model - this hardware has not undergone testing by Red Hat and might not be certified. Please consult https://hardware.redhat.com for certified hardware.
+▒               Welcome to CentOS
+Starting udev:                                             [  OK  ]
+Setting hostname localhost.localdomain:                    [  OK  ]
+Setting up Logical Volume Management:   3 logical volume(s) in volume group "VolGroup" now active
+                                                           [  OK  ]
+Checking filesystems
+/dev/mapper/VolGroup-lv_root: clean, 26372/3276800 files, 622843/13107200 blocks
+/dev/vda1: clean, 44/128016 files, 77485/512000 blocks
+/dev/mapper/VolGroup-lv_home: clean, 11/2744320 files, 217264/10975232 blocks
+                                                           [  OK  ]
+Remounting root filesystem in read-write mode:             [  OK  ]
+Mounting local filesystems:                                [  OK  ]
+Enabling /etc/fstab swaps:                                 [  OK  ]
+```
+## 스냅샷 생성
+- disk-only로 생성
+- snapshot1_250917
+```
+[root@localhost ~]# virsh snapshot-create-as --domain Centos6.9minimal snapshot1_250917 "settingcomplete" --disk-only --atomic
+Domain snapshot snapshot1_250917 created
+[root@localhost ~]# virsh snapshot-list Centos6.9minimal
+ Name               Creation Time               State
+---------------------------------------------------------
+ snapshot1_250917   2025-09-17 03:35:29 -0400   shutoff    <---스냅샷 찍을 때 당시 상태
+ 
+ 
+[root@localhost home]# ls -l
+total 77406288
+-rw-r--r--.  1 qemu qemu    427819008 Mar 28  2017 CentOS-6.9-x86_64-minimal.iso
+-rw-r--r--.  1 qemu qemu   1020264448 Jun 10 04:42 CentOS-7-x86_64-Minimal-2009.iso
+-rw-------.  1 qemu qemu 107390828544 Sep 17 02:34 disk
+-rw-------.  1 qemu qemu       851968 Sep 17 03:01 disk.snapshot1_250917
+-rw-r--r--.  1 root root  53695545344 Sep 10 21:39 enpotest
+-rw-r--r--.  1 root root         6852 Jul 18 08:05 enpotest.xml
+-rw-------.  1 qemu qemu  64434601984 Sep 17 03:03 rocky8.4disk
+-rw-r--r--.  1 qemu qemu   1980760064 Jun 20  2021 Rocky-8.4-x86_64-minimal.iso
+-rw-r--r--.  1 qemu qemu  12851544064 May 29 20:06 Rocky-9.6-x86_64-dvd.iso
+drwx------. 14 test test         4096 Jul 21 13:13 test
+```
+- 스냅샷 롤백 방법
+	- `virsh snapshot-revert VM이름 스냅샷이름`
+	- 가상머신 종료한 상태에서 진행
+```
+[root@localhost ~]# virsh snapshot-revert Centos6.9minimal snapshot1_250917
+Domain snapshot snapshot1_250917 reverted
+```
+## 특이사항_virsh shutdown 안 됨
+- centos6.9는 acpid가 없어서 virsh shutdown 신호를 받지 못함 (acpid 전원 버튼 신호)
+```
+yum install -y acpid
+service acpid start
+chkconfig acpid on
+```
+- qemu-guest-agent 설치
+	- 게스트OS에서 동작하는 데몬 / kvm과 vm사이 통신 해주는 역할
+	- 하이퍼바이저가 직접 게스트에게 종료 명령 내릴 수 있음
+		- ACPI 처리 안되는 OS에 설치하면 좋음 (신규OS 설치 필요x)
+```
+[root@localhost ~]# yum -y install qemu-guest-agent
+[root@localhost ~]# service qemu-ga start
+Starting qemu-ga: [  OK  ]
+[root@localhost ~]# chkconfig qemu-ga on
 ```
