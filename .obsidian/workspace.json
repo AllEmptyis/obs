@@ -120,7 +120,7 @@
             }
           }
         ],
-        "currentTab": 7
+        "currentTab": 1
       }
     ],
     "direction": "vertical"
@@ -281,13 +281,13 @@
             "state": {
               "type": "outline",
               "state": {
-                "file": "조선대 테스트.md",
+                "file": "to do/2025-W38.md",
                 "followCursor": false,
                 "showSearch": false,
                 "searchQuery": ""
               },
               "icon": "lucide-list",
-              "title": "Outline of 조선대 테스트"
+              "title": "Outline of 2025-W38"
             }
           }
         ],
@@ -310,14 +310,14 @@
       "obsidian-git:Open Git source control": false
     }
   },
-  "active": "c0ce59b600ece722",
+  "active": "be4a5b6bdff4c769",
   "lastOpenFiles": [
-    "to do/2025-W38.md",
+    "KVM 엔포 기본 설치 테스트.md",
     "조선대 테스트.md",
+    "to do/2025-W38.md",
     "OpeninfarDays2025.md",
     "to do/2025-W37.md",
     "명령어/Linux sed,awk 문법.md",
-    "KVM 엔포 기본 설치 테스트.md",
     "to do/2025-W36.md",
     "명령어/루이지에 명령어.md",
     "쿠버네티스.md",
