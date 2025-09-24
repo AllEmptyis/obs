@@ -556,3 +556,41 @@ listening on ens160, link-type EN10MB (Ethernet), snapshot length 262144 bytes
 12:18:26.858371 IP 192.168.212.239.60119 > 192.168.212.213.8443: Flags [.], seq 23494857:23496305, ack 16256, win 1245, options [nop,nop,TS val 935786 ecr 1322161328], length 1448
 12:18:26.858809 IP 192.168.212.239.60119 > 192.168.212.213.8443: Flags [.], seq 23496305:23497753, ack 16256, win 1245, options [nop,nop,TS val 935786 ecr 1322161328], length 1448
 ```
+# nginx error.log 확인
+- 아래 로그가 error occured 발생 시 나오는 로그 
+	- nginx 포트 1443으로 접속했으나 백엔드(자바)가 아직 올라오지 않아서 프록시가 안 되는 경우
+	- 8888은 서버 포트
+```
+[root@localhost nginx]# tail -f error.log
+2025/09/24 13:27:03 [error] 19687#19687: *4 connect() failed (111: Connection refused) while connecting to upstream, client: 192.168.212.217, server: localhost, request: "GET / HTTP/1.1", upstream: "https://[::1]:8888/", host: "192.168.212.225:1443"
+2025/09/24 13:27:03 [warn] 19687#19687: *4 upstream server temporarily disabled while connecting to upstream, client: 192.168.212.217, server: localhost, request: "GET / HTTP/1.1", upstream: "https://[::1]:8888/", host: "192.168.212.225:1443"
+2025/09/24 13:27:03 [error] 19687#19687: *4 connect() failed (111: Connection refused) while connecting to upstream, client: 192.168.212.217, server: localhost, request: "GET / HTTP/1.1", upstream: "https://127.0.0.1:8888/", host: "192.168.212.225:1443"
+2025/09/24 13:27:03 [warn] 19687#19687: *4 upstream server temporarily disabled while connecting to upstream, client: 192.168.212.217, server: localhost, request: "GET / HTTP/1.1", upstream: "https://127.0.0.1:8888/", host: "192.168.212.225:1443"
+2025/09/24 13:27:03 [error] 19687#19687: *4 no live upstreams while connecting to upstream, client: 192.168.212.217, server: localhost, request: "GET /favicon.ico HTTP/1.1", upstream: "https://localhost/favicon.ico", host: "192.168.212.225:1443", referrer: "https://192.168.212.225:1443/"
+```
+- 400 bad request error
+	- nginx, server port 동일하게 설정한 경우 발생하는 것으로 확인
+```
+2025/09/24 13:39:39 [error] 19985#19985: *4 connect() failed (111: Connection refused) while connecting to upstream, client: 192.168.212.217, server: localhost, request: "GET / HTTP/1.1", upstream: "https://[::1]:443/", host: "192.168.212.225"
+2025/09/24 13:39:39 [warn] 19985#19985: *4 upstream server temporarily disabled while connecting to upstream, client: 192.168.212.217, server: localhost, request: "GET / HTTP/1.1", upstream: "https://[::1]:443/", host: "192.168.212.225"
+2025/09/24 13:39:39 [error] 19986#19986: *25 connect() failed (111: Connection refused) while connecting to upstream, client: 127.0.0.1, server: localhost, request: "GET / HTTP/1.0", upstream: "https://[::1]:443/", host: "192.168.212.225:443"
+2025/09/24 13:39:39 [warn] 19986#19986: *25 upstream server temporarily disabled while connecting to upstream, client: 127.0.0.1, server: localhost, request: "GET / HTTP/1.0", upstream: "https://[::1]:443/", host: "192.168.212.225:443"
+```
+- 해당 경우에는 서버포트(자바)가 활성화 되지 않는 거 같다
+```
+[root@localhost nginx]# ss -lntup
+Netid       State        Recv-Q       Send-Q               Local Address:Port               Peer Address:Port       Process
+udp         UNCONN       0            0                        127.0.0.1:323                     0.0.0.0:*           users:(("chronyd",pid=753,fd=5))
+udp         UNCONN       0            0                            [::1]:323                        [::]:*           users:(("chronyd",pid=753,fd=6))
+tcp         LISTEN       0            511                        0.0.0.0:443                     0.0.0.0:*           users:(("nginx",pid=19986,fd=5),("nginx",pid=19985,fd=5),("nginx",pid=19984,fd=5))
+tcp         LISTEN       0            128                        0.0.0.0:22                      0.0.0.0:*           users:(("sshd",pid=780,fd=3))
+tcp         LISTEN       0            50                               *:9300                          *:*           users:(("java",pid=1140,fd=72))
+tcp         LISTEN       0            50                               *:9200                          *:*           users:(("java",pid=1140,fd=94))
+tcp         LISTEN       0            128                           [::]:22                         [::]:*           users:(("sshd",pid=780,fd=4))
+tcp         LISTEN       0            32                               *:21                            *:*           users:(("vsftpd",pid=1145,fd=3))
+tcp         LISTEN       0            80                               *:3306                          *:*           users:(("mysqld",pid=824,fd=18))
+```
+---------------
+# 참고 일감
+-  https://redmine.piolink.com/issues/49212 리모트 콘솔
+- https://redmine.piolink.com/issues/49696 nginx proxy
