@@ -27,12 +27,12 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "to do/2025-W39.md",
+                "file": "to do/2025-W40.md",
                 "mode": "source",
                 "source": false
               },
               "icon": "lucide-file",
-              "title": "2025-W39"
+              "title": "2025-W40"
             }
           },
           {
@@ -281,13 +281,13 @@
             "state": {
               "type": "outline",
               "state": {
-                "file": "to do/2025-W39.md",
+                "file": "to do/2025-W40.md",
                 "followCursor": false,
                 "showSearch": false,
                 "searchQuery": ""
               },
               "icon": "lucide-list",
-              "title": "Outline of 2025-W39"
+              "title": "Outline of 2025-W40"
             }
           }
         ],
@@ -312,8 +312,10 @@
   },
   "active": "be4a5b6bdff4c769",
   "lastOpenFiles": [
-    "KVM 엔포 기본 설치 테스트.md",
     "to do/2025-W39.md",
+    "to do/2025-W40.md",
+    "산청군청 테스트.md",
+    "KVM 엔포 기본 설치 테스트.md",
     "to do/2025-W38.md",
     "기타/조선대 테스트 (remote console, nginx proxy).md",
     "조선대 테스트.md",
@@ -337,8 +339,6 @@
     "명령어/bing wallpaper 배경 화면 저장.md",
     "엑셀 활용.md",
     "to do/2025-W32.md",
-    "명령어/엑셀 활용.md",
-    "서버 관련/IODD를 사용한 OS 설치.md",
     "기타",
     "에러",
     "서버 관련",
