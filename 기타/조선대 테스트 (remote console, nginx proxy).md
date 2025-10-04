@@ -590,6 +590,12 @@ tcp         LISTEN       0            128                           [::]:22     
 tcp         LISTEN       0            32                               *:21                            *:*           users:(("vsftpd",pid=1145,fd=3))
 tcp         LISTEN       0            80                               *:3306                          *:*           users:(("mysqld",pid=824,fd=18))
 ```
+
+# server port 443으로 변경 시 포트 안올라오는 원인
+- nignx 1443 / server port 443으로 변경 시 443 java port가 안올라옴
+- 컨트롤러 java log 확인 방법
+	- `tail -f /var/log/elasticsearch/ticontroller.log`
+- 
 ---------------
 # 참고 일감
 -  https://redmine.piolink.com/issues/49212 리모트 콘솔
