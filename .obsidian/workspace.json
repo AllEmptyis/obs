@@ -36,6 +36,18 @@
             }
           },
           {
+            "id": "c1844762221f3368",
+            "type": "leaf",
+            "state": {
+              "type": "release-notes",
+              "state": {
+                "currentVersion": "1.9.14"
+              },
+              "icon": "lucide-book-up",
+              "title": "Release Notes 1.9.14"
+            }
+          },
+          {
             "id": "7b30b01b823b6b7f",
             "type": "leaf",
             "state": {
@@ -120,7 +132,7 @@
             }
           }
         ],
-        "currentTab": 1
+        "currentTab": 2
       }
     ],
     "direction": "vertical"
@@ -310,7 +322,7 @@
       "obsidian-git:Open Git source control": false
     }
   },
-  "active": "be4a5b6bdff4c769",
+  "active": "c1844762221f3368",
   "lastOpenFiles": [
     "to do/2025-W39.md",
     "to do/2025-W40.md",
