@@ -106,35 +106,21 @@
             }
           },
           {
-            "id": "c0ce59b600ece722",
-            "type": "leaf",
-            "state": {
-              "type": "markdown",
-              "state": {
-                "file": "조선대 테스트.md",
-                "mode": "source",
-                "source": false
-              },
-              "icon": "lucide-file",
-              "title": "조선대 테스트"
-            }
-          },
-          {
             "id": "1049afeb95e2d79d",
             "type": "leaf",
             "state": {
               "type": "markdown",
               "state": {
-                "file": "서버 원격 접속.md",
+                "file": "to do/2025-W44.md",
                 "mode": "source",
                 "source": false
               },
               "icon": "lucide-file",
-              "title": "서버 원격 접속"
+              "title": "2025-W44"
             }
           }
         ],
-        "currentTab": 8
+        "currentTab": 7
       }
     ],
     "direction": "vertical"
@@ -166,7 +152,7 @@
             "state": {
               "type": "search",
               "state": {
-                "query": "vnc",
+                "query": "",
                 "matchingCase": false,
                 "explainSearch": false,
                 "collapseAll": false,
@@ -197,8 +183,7 @@
               "title": "mk-path-view"
             }
           }
-        ],
-        "currentTab": 1
+        ]
       }
     ],
     "direction": "horizontal",
@@ -296,13 +281,13 @@
             "state": {
               "type": "outline",
               "state": {
-                "file": "서버 원격 접속.md",
+                "file": "to do/2025-W44.md",
                 "followCursor": false,
                 "showSearch": false,
                 "searchQuery": ""
               },
               "icon": "lucide-list",
-              "title": "Outline of 서버 원격 접속"
+              "title": "Outline of 2025-W44"
             }
           }
         ],
@@ -327,6 +312,21 @@
   },
   "active": "1049afeb95e2d79d",
   "lastOpenFiles": [
+    "OpeninfarDays2025.md",
+    "명령어/vscode 명령어.md",
+    "to do/2025-W44.md",
+    "to do/2025-W45.md",
+    "서버 원격 접속.md",
+    "기타 단축키.md",
+    "기능 검증/MLAG.md",
+    "image.png",
+    "기타/SCP 사용 방법.md",
+    "리눅스 원격 접속 해결.md",
+    "to do/2025-W43.md",
+    "to do/2025-W42.md",
+    "RTK Fan Control 정리.md",
+    "기능 검증/IGMP Snooping.md",
+    "기타/패스워드 초기화 방법 정리.md",
     "to do/2025-W40.md",
     "to do/2025-W39.md",
     "산청군청 테스트.md",
@@ -334,31 +334,16 @@
     "to do/2025-W38.md",
     "기타/조선대 테스트 (remote console, nginx proxy).md",
     "조선대 테스트.md",
-    "OpeninfarDays2025.md",
     "to do/2025-W37.md",
     "명령어/Linux sed,awk 문법.md",
     "to do/2025-W36.md",
     "명령어/루이지에 명령어.md",
     "쿠버네티스.md",
-    "to do/2025-W35.md",
-    "기능 검증/QoS.md",
-    "BCM SDK shell 명령어.md",
-    "명령어/vscode 명령어.md",
-    "명령어/윈도우 명령어.md",
-    "서버 관련/엔지니어포털 마이그레이션.md",
-    "to do/2025-W33.md",
-    "to do/2025-W34.md",
-    "Untitled.md",
     "Pasted image 20250610103420.png",
-    "Docker.md",
-    "명령어/bing wallpaper 배경 화면 저장.md",
-    "엑셀 활용.md",
-    "to do/2025-W32.md",
     "기타",
     "에러",
     "서버 관련",
     "개인 용무",
-    "image.png",
     "기능 검증",
     "Case Report",
     "Pasted image 20250609173724.png",

@@ -556,7 +556,7 @@ listening on ens160, link-type EN10MB (Ethernet), snapshot length 262144 bytes
 12:18:26.858371 IP 192.168.212.239.60119 > 192.168.212.213.8443: Flags [.], seq 23494857:23496305, ack 16256, win 1245, options [nop,nop,TS val 935786 ecr 1322161328], length 1448
 12:18:26.858809 IP 192.168.212.239.60119 > 192.168.212.213.8443: Flags [.], seq 23496305:23497753, ack 16256, win 1245, options [nop,nop,TS val 935786 ecr 1322161328], length 1448
 ```
-# nginx error.log 확인
+# nginx error.log 확인 (/var/log/nginx)
 - 아래 로그가 error occured 발생 시 나오는 로그 
 	- nginx 포트 1443으로 접속했으나 백엔드(자바)가 아직 올라오지 않아서 프록시가 안 되는 경우
 	- 8888은 서버 포트
@@ -595,7 +595,256 @@ tcp         LISTEN       0            80                               *:3306   
 - nignx 1443 / server port 443으로 변경 시 443 java port가 안올라옴
 - 컨트롤러 java log 확인 방법
 	- `tail -f /var/log/elasticsearch/ticontroller.log`
-- 
+- 경로
+	- `/etc/systemd/system/ticontroller.service.d/`
+## 원인
+- 리눅스에서는 1024 이하의 포트는 root 권한이 있어야만 프로세스가 바인딩 가능
+- 즉 443 뿐만 아니라 1024 포트는 권한 없으면 다 안 됨
+## 443 포트로만 접속할 수 있도록 하는 방법1
+- 오버라이드 파일 만들기 (override.conf 파일을 먼저 읽음)
+	- edit로 바로 수정하면 저장이 안 돼서 파일을 직접 생성
+```
+mkdir -p /etc/systemd/system/ticontroller.service.d
+vi override.conf
+
+[Service]
+AmbientCapabilities=CAP_NET_BIND_SERVICE   -> 비루트 사용자라도 1024 이하 포트에 바인딩 허용
+CapabilityBoundingSet=CAP_NET_BIND_SERVICE  -> 바인드만 허용하고 나머지 다른 권한은 갖지 못하도록 설정
+NoNewPrivileges=false    ----> 해당 프로세스 및 하위 프로세스들이 root 추가적인 권한 상승을 할 수 있도록 설정 
+
+sytstemctl daemon-reload
+systemctl restart ticontroller.service
+```
+- 설정 확인
+```
+[root@localhost ticontroller.service.d]# systemctl cat ticontroller.service
+# /usr/lib/systemd/system/ticontroller.service
+[Unit]
+Description=TiController
+Documentation=http://www.piolink.com
+Wants=network-online.target
+After=network-online.target
+
+[Service]
+
+User=ticontroller
+Group=controller
+EnvironmentFile=/cproject/conf/restore.properties
+ExecStart=/bin/bash /cproject/scripts/ticontroller.sh $MODE
+
+# Connects standard output to /dev/null
+StandardOutput=null
+
+# Connects standard error to journal
+StandardError=journal
+
+# When a JVM receives a SIGTERM signal it exits with code 143
+SuccessExitStatus=143
+
+# Specifies the maximum file descriptor number that can be opened by this process
+LimitNOFILE=65535
+
+
+# Shutdown delay in seconds, before process is tried to be killed with KILL (if configured)
+TimeoutStopSec=20
+
+[Install]
+WantedBy=multi-user.target
+
+# /etc/systemd/system/ticontroller.service.d/override.conf
+[Service]
+AmbientCapabilities=CAP_NET_BIND_SERVICE
+CapabilityBoundingSet=CAP_NET_BIND_SERVICE
+NoNewPrivileges=false
+```
+- 추가
+	- systemctl edit 기본 편집기 vi로 설정 방법
+```
+echo 'export SYSTEMD_EDITOR=vi' >> ~/.bashrc
+source ~/.bashrc
+```
+- 포트 확인
+```
+[root@localhost ticontroller.service.d]# ss -lntup
+Netid       State        Recv-Q       Send-Q             Local Address:Port                Peer Address:Port       Process
+udp         UNCONN       0            0                      127.0.0.1:323                      0.0.0.0:*           users:(("chronyd",pid=755,fd=5))
+udp         UNCONN       0            0                          [::1]:323                         [::]:*           users:(("chronyd",pid=755,fd=6))
+udp         UNCONN       0            0                              *:54328                          *:*           users:(("java",pid=1129,fd=74))
+tcp         LISTEN       0            128                      0.0.0.0:22                       0.0.0.0:*           users:(("sshd",pid=786,fd=3))
+tcp         LISTEN       0            511                      0.0.0.0:1443                     0.0.0.0:*           users:(("nginx",pid=4216,fd=5),("nginx",pid=4215,fd=5),("nginx",pid=4214,fd=5))
+tcp         LISTEN       0            4096                           *:9000                           *:*           users:(("java",pid=4464,fd=144))
+tcp         LISTEN       0            4096                           *:9001                           *:*           users:(("java",pid=4464,fd=145))
+tcp         LISTEN       0            50                             *:9200                           *:*           users:(("java",pid=1129,fd=120))
+tcp         LISTEN       0            100                            *:443                            *:*           users:(("java",pid=4464,fd=18))
+tcp         LISTEN       0            32                             *:21                             *:*           users:(("vsftpd",pid=1141,fd=3))
+tcp         LISTEN       0            128                         [::]:22                          [::]:*           users:(("sshd",pid=786,fd=4))
+tcp         LISTEN       0            50                             *:9300                           *:*           users:(("java",pid=1129,fd=72))
+tcp         LISTEN       0            80                             *:3306                           *:*           users:(("mysqld",pid=831,fd=19))
+```
+## 443 포트만으로 접속할 수 있는 방법2
+- reverse proxy 포트를 443으로 두고 백엔드 포트를 로컬호스트 리슨으로 돌리기
+- /cproject/conf/application.properties 파일 수정
+```
+# tomcat
+server.port=8443
+server.address=127.0.0.1 <---- 해당 부분 추가
+server.session.timeout=1800
+server.tomcat.accesslog.enabled=false
+server.tomcat.protocol-header=x-forwarded-proto
+server.tomcat.remote-ip-header=x-forwarded-for
+server.tomcat.max-threads=300
+server.tomcat.uri-encoding=UTF-8
+```
+- 데몬 재시작 후 포트 리스닝 확인
+```
+[root@localhost ~]# ss -lntup
+Netid      State        Recv-Q       Send-Q                  Local Address:Port              Peer Address:Port      Process
+udp        UNCONN       0            0                           127.0.0.1:323                    0.0.0.0:*          users:(("chronyd",pid=758,fd=5))
+udp        UNCONN       0            0                               [::1]:323                       [::]:*          users:(("chronyd",pid=758,fd=6))
+udp        UNCONN       0            0                                   *:54328                        *:*          users:(("java",pid=1142,fd=74))
+tcp        LISTEN       0            128                           0.0.0.0:22                     0.0.0.0:*          users:(("sshd",pid=781,fd=3))
+tcp        LISTEN       0            511                           0.0.0.0:443                    0.0.0.0:*          users:(("nginx",pid=2055,fd=5),("nginx",pid=2054,fd=5),("nginx",pid=2053,fd=5))
+tcp        LISTEN       0            80                                  *:3306                         *:*          users:(("mysqld",pid=825,fd=23))
+tcp        LISTEN       0            128                              [::]:22                        [::]:*          users:(("sshd",pid=781,fd=4))
+tcp        LISTEN       0            32                                  *:21                           *:*          users:(("vsftpd",pid=1149,fd=3))
+tcp        LISTEN       0            50                                  *:9200                         *:*          users:(("java",pid=1142,fd=118))
+tcp        LISTEN       0            50                                  *:9300                         *:*          users:(("java",pid=1142,fd=72))
+tcp        LISTEN       0            100                [::ffff:127.0.0.1]:8443                         *:*          users:(("java",pid=3408,fd=58))
+
+----> 로컬 호스트만 리스닝 하도록 됨
+```
+- 443 포트로만 접속 가능 확인
+# server/reverse proxy 동일하게 443으로 설정
+- 포트 변경
+```
+[root@localhost scripts]# ./config_reverse_proxy.sh
+Install reverse proxy
+httpd_can_network_connect, httpd_setrlimit enabling...
+./config_reverse_proxy.sh: line 41: chkconfig: command not found
+Configure reverse proxy start
+
+Server port (default: 8443) : 443
+Reverse proxy port (default: 443) : 443
+http_port_t                    tcp      8888, 1443, 222, 2222, 1111, 5555, 80, 81, 443, 488, 8008, 8009, 8443, 9000
+Port 443 already exists in http_port_t
+Redirecting to /bin/systemctl restart nginx.service
+```
+- 데몬 재시작 후 프로세스 확인
+	- 백엔드 안올라오고 443으로 접속하면 nginx 400 bad request 발생
+```
+[root@localhost conf.d]# ss -lntup
+Netid       State        Recv-Q       Send-Q             Local Address:Port                Peer Address:Port       Process
+udp         UNCONN       0            0                      127.0.0.1:323                      0.0.0.0:*           users:(("chronyd",pid=729,fd=5))
+udp         UNCONN       0            0                              *:54328                          *:*           users:(("java",pid=1133,fd=74))
+udp         UNCONN       0            0                          [::1]:323                         [::]:*           users:(("chronyd",pid=729,fd=6))
+tcp         LISTEN       0            511                      0.0.0.0:443                      0.0.0.0:*           users:(("nginx",pid=8582,fd=5),("nginx",pid=8581,fd=5),("nginx",pid=8580,fd=5))
+tcp         LISTEN       0            128                      0.0.0.0:22                       0.0.0.0:*           users:(("sshd",pid=763,fd=3))
+tcp         LISTEN       0            80                             *:3306                           *:*           users:(("mysqld",pid=820,fd=18))
+tcp         LISTEN       0            50                             *:9300                           *:*           users:(("java",pid=1133,fd=72))
+tcp         LISTEN       0            50                             *:9200                           *:*           users:(("java",pid=1133,fd=116))
+tcp         LISTEN       0            32                             *:21                             *:*           users:(("vsftpd",pid=1143,fd=3))
+tcp         LISTEN       0            128                         [::]:22                          [::]:*           users:(("sshd",pid=763,fd=4))
+```
+- nginx 설정파일 (/etc/nignx/conf.d/default.conf)
+```
+server {
+    listen       443 ssl;
+    server_name  localhost;
+
+    #charset koi8-r;
+    #access_log  /var/log/nginx/host.access.log  main;
+
+    ssl_certificate    /etc/nginx/ticontroller.crt;
+    ssl_certificate_key    /etc/nginx/ticontroller.key;
+    ssl_protocols TLSv1.2 TLSv1.3;
+
+    location / {
+        proxy_pass https://localhost:443;  ---> gui에서 처리하는 부분
+
+        proxy_set_header Host $host:$server_port;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header X-Forwarded-Proto $scheme;
+        proxy_set_header X-Forwarded-Port $server_port;
+```
+- defualt.conf 파일에서 프록시 하는 포트를 8443으로 변경
+	- 연결할 백엔드가 활성화 되지 않아서 연결 불가
+```
+[root@localhost conf.d]# cat default.conf
+server {
+    listen       443 ssl;
+    server_name  localhost;
+
+    #charset koi8-r;
+    #access_log  /var/log/nginx/host.access.log  main;
+
+    ssl_certificate    /etc/nginx/ticontroller.crt;
+    ssl_certificate_key    /etc/nginx/ticontroller.key;
+    ssl_protocols TLSv1.2 TLSv1.3;
+
+    location / {
+        proxy_pass https://localhost:8443;
+```
+- 1022 이하 포트로 설정 시 -> 백엔드 프로세스 안올라옴
+- 프록시, 서버 포트 동일하게 설정 시 -> 백엔드 프로세스 안올라옴
+```
+/var/log/nginx/error.log
+
+2025/10/15 14:22:40 [warn] 9792#9792: *7450 upstream server temporarily disabled while connecting to upstream, client: 127.0.0.1, server: localhost, request: "POST /tiscreen/getAllEventSummaryDataByNetworkAll.json HTTP/1.0", upstream: "https://[::1]:8443/tiscreen/getAllEventSummaryDataByNetworkAll.json", host: "192.168.212.225:8443", referrer: "https://192.168.212.225:8443/configure/cswitch_settings.do"
+2025/10/15 14:22:40 [error] 9791#9791: *7453 connect() failed (111: Connection refused) while connecting to upstream, client: 127.0.0.1, server: localhost, request: "POST /tiscreen/getAllEventSummaryDataByNetworkAll.json HTTP/1.0", upstream: "https://[::1]:8443/tiscreen/getAllEventSummaryDataByNetworkAll.json", host: "192.168.212.225:8443", referrer: "https://192.168.212.225:8443/configure/cswitch_settings.do"
+2025/10/15 14:22:40 [warn] 9791#9791: *7453 upstream server temporarily disabled while connecting to upstream, client: 127.0.0.1, server: localhost, request: "POST /tiscreen/getAllEventSummaryDataByNetworkAll.json HTTP/1.0", upstream: "https://[::1]:8443/tiscreen/getAllEventSummaryDataByNetworkAll.json", host: "192.168.212.225:8443", referrer: "https://192.168.212.225:8443/configure/cswitch_settings.do"
+^C
+```
+# 설정파일을 통해서만 포트 변경
+- 서버 포트 변경 가능, 리버스 프록시 포트는 적용 안됨
+	- 리버스 프록시 설정은 스크립트를 거쳐야 하는 거 같음 (nginx 설정 파일 변경도 안됨)
+- well known 포트로 서버 포트 변경 불가
+# CAP_NET_BIND_SERVICE 설명
+- 컨트롤러 데몬에 CAP_NET_BIND_SERVICE 권한을 직접 부여해주는 방식
+- 경로
+	- `/usr/lib/systemd/system/ticontroller.service`
+		- rpm(패키지)에서 제공하는 기본 유닛 파일
+	- `/etc/systemd/system/ticontroller.service.d/override.conf`
+		- 관리자가 데몬 유닛을 수정할 수 있도록 하는 용도
+## systemd
+- 데몬
+	- 백그라운드에서 계속 동작하는 프로그램
+- systemd
+	- 서비스 전체의 서비스/프로세스를 관리하는 데몬
+		- pid 1으로 실행된다
+		- systemctl  start, stop 같은 명령을 제어할 수 있도록 함
+	- 여러 unit으로 나뉘어져 있음
+		- 각 서비스는 unit 파일로 정의되어 있다
+```
+unit 예시
+
+service: 프로그램/데몬 실행   ---> 컨트롤러도 systemd가 관리하는 service 유닛
+socket: 소켓(포트) 활성화 관리
+target: 여러 유닛을 묶는 그룹
+mount: 파일 시스템 마운트 관리
+timer: 스케줄러, 예약 실행
+device: 커널 디바이스 트리거
+```
+- 즉 systemd 유닛인 ticontroller 데몬 서비스에 직접 root 권한 추가 설정을 하는 것
+## 권한 설명
+- 리눅스에는 root 권한을 세분화한 capability 라는 개념이 있음 (약 30여가지)
+	- cap_net_bind_service: 1024 미만 포트 열 수 있도록 하는 권한
+	- cap_sys_admin: 시스템 관리
+	- cap_chown: 파일 소유자 변경 등등
+- CAP_NET_BIND_SERVICE
+	- 1024 미만의 포트를 열 수 있도록 하는 세분화된 권한
+- AmbientCapabilities
+	- 서비스 프로세스에 특정 linux capability를 환경처럼 상속 시켜주는 기능
+- CapabilityBoundingSet
+	- systemd 서비스가 가질 수 있는 capability 허용 범위 제한
+	- 즉 컨트롤러가 가질 수 있는 cap 권한을 cap_net_bind로 제한
+- NoNewPrivileges=false
+	- 커널이 새로운 권한을 부여할 수 있도록 함
+```
+AmbientCapabilities=CAP_NET_BIND_SERVICE
+CapabilityBoundingSet=CAP_NET_BIND_SERVICE
+NoNewPrivileges=false
+```
 ---------------
 # 참고 일감
 -  https://redmine.piolink.com/issues/49212 리모트 콘솔
