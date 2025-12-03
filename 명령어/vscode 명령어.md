@@ -6,3 +6,5 @@
  
  (?=.*Jul 24)(?=.*Scanning devices).*
  ```
+ - 페이지 이동
+	 - `ctrl + pg up/down`

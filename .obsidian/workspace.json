@@ -125,12 +125,12 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "기타/Bash 쉘스크립트.md",
+                "file": "to do/2025-W47.md",
                 "mode": "source",
                 "source": false
               },
               "icon": "lucide-file",
-              "title": "Bash 쉘스크립트"
+              "title": "2025-W47"
             }
           }
         ],
@@ -295,13 +295,13 @@
             "state": {
               "type": "outline",
               "state": {
-                "file": "기타/Bash 쉘스크립트.md",
+                "file": "to do/2025-W47.md",
                 "followCursor": false,
                 "showSearch": false,
                 "searchQuery": ""
               },
               "icon": "lucide-list",
-              "title": "Outline of Bash 쉘스크립트"
+              "title": "Outline of 2025-W47"
             }
           }
         ],
@@ -324,11 +324,16 @@
       "obsidian-git:Open Git source control": false
     }
   },
-  "active": "b8befef284db0e58",
+  "active": "1ceaa735fc02bd16",
   "lastOpenFiles": [
+    "기타/Bash 쉘스크립트.md",
+    "to do/2025-W47.md",
+    "기타/시험망 서버 vm 옮기는 과정 정리 (centos v6.8).md",
+    "to do/2025-W46.md",
+    "기타/엑셀 한글 깨짐 해결.md",
+    "서버 관련/리눅스 원격 접속 해결.md",
     "KVM 엔포 기본 설치 테스트.md",
     "명령어/vscode 명령어.md",
-    "기타/Bash 쉘스크립트.md",
     "to do/2025-W44.md",
     "OpeninfarDays2025.md",
     "to do/2025-W45.md",
@@ -348,11 +353,6 @@
     "산청군청 테스트.md",
     "to do/2025-W38.md",
     "기타/조선대 테스트 (remote console, nginx proxy).md",
-    "조선대 테스트.md",
-    "to do/2025-W37.md",
-    "명령어/Linux sed,awk 문법.md",
-    "to do/2025-W36.md",
-    "명령어/루이지에 명령어.md",
     "Pasted image 20250610103420.png",
     "기타",
     "에러",
