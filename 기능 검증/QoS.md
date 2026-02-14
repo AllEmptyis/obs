@@ -359,7 +359,7 @@ TiFRONT# sh sw-fabric-resource filter
  -----------+------------------+-----------+-------------+--------
 ```
 - 의문
-	- acl과 같은 fp group에 적용되는것인지? acl 설정 했을 때는 fp group에서 use가 안올라감
+	- acl과 같은 fp group에 적용되는 것인지? acl 설정 했을 때는 fp group에서 use가 안올라감
 ## qos 설정 적용 / Cloud
 - fp 그룹명 ACLIPv4(2)
 ```
