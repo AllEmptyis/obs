@@ -3,6 +3,9 @@
 - os-update `<arguments>` `[mgmt]` 
 	- os-update ftp://test:test123@192.168.212.225/PLOS-PASK-v2.2.7.4.0
 - reboot
+# 서비스 관리 (원격 접속)
+- management-access
+	- ssh status enable /apply
 -----------------
 # 기본 네트워크 설정
 ## IP 주소/라우팅 설정

@@ -14,7 +14,7 @@
 	- outer IP: 캡슐화 되는 IP, 터널을 지날 때 사용 
 #### 사용 이유
 - 사설망으로 통신 (VPN, IPsec 등)
-- 네트워크 경로를 숨기기 위해
+- 네트워크 경로를 숨기기 위해.
 
 ## IP Tunnel 방식의 DSR
 - DSR 구현 방식 중 하나, IP in IP encapsulation

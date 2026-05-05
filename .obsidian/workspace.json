@@ -125,12 +125,12 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "KVM-Bridge 모드.md",
+                "file": "기능 검증/ACL.md",
                 "mode": "source",
                 "source": false
               },
               "icon": "lucide-file",
-              "title": "KVM-Bridge 모드"
+              "title": "ACL"
             }
           }
         ],
@@ -157,7 +157,7 @@
                 "autoReveal": false
               },
               "icon": "lucide-folder-closed",
-              "title": "Files"
+              "title": "파일 탐색기"
             }
           },
           {
@@ -166,7 +166,7 @@
             "state": {
               "type": "search",
               "state": {
-                "query": "eno1",
+                "query": "",
                 "matchingCase": false,
                 "explainSearch": false,
                 "collapseAll": false,
@@ -197,8 +197,7 @@
               "title": "mk-path-view"
             }
           }
-        ],
-        "currentTab": 1
+        ]
       }
     ],
     "direction": "horizontal",
@@ -296,13 +295,13 @@
             "state": {
               "type": "outline",
               "state": {
-                "file": "KVM-Bridge 모드.md",
+                "file": "기능 검증/ACL.md",
                 "followCursor": false,
                 "showSearch": false,
                 "searchQuery": ""
               },
               "icon": "lucide-list",
-              "title": "KVM-Bridge 모드 의 개요"
+              "title": "ACL 의 개요"
             }
           }
         ],
@@ -327,33 +326,40 @@
   },
   "active": "1ceaa735fc02bd16",
   "lastOpenFiles": [
-    "KVM-NAT 모드.md",
-    "기능 검증/IGMP Snooping.md",
-    "신규기능/IP Tunnel DSR_HC 실습.md",
-    "to do/2025-W48.md",
-    "to do/2025-W47.md",
-    "image.png",
-    "기타/TiController v1.2.1.5.15 업그레이드.md",
-    "nmcli 명령어 정리.md",
-    "Tagged untagged vlan 정리.md",
-    "신규기능/PAS-KS-session sync.md",
-    "Spanning Tree 정리.md",
-    "기타/Bash 쉘스크립트.md",
-    "기타/시험망 서버 vm 옮기는 과정 정리 (centos v6.8).md",
-    "to do/2025-W46.md",
-    "기타/엑셀 한글 깨짐 해결.md",
-    "서버 관련/리눅스 원격 접속 해결.md",
-    "KVM 엔포 기본 설치 테스트.md",
-    "명령어/vscode 명령어.md",
-    "to do/2025-W44.md",
-    "OpeninfarDays2025.md",
-    "to do/2025-W45.md",
-    "서버 원격 접속.md",
-    "기타 단축키.md",
-    "기능 검증/MLAG.md",
     "기타/SCP 사용 방법.md",
-    "리눅스 원격 접속 해결.md",
-    "to do/2025-W43.md",
+    "2026_todo/2026-W06.md",
+    "2026_todo/2026-W07.md",
+    "image-3.png",
+    "vlan 정리.md",
+    "KVM-Bridge 모드.md",
+    "image-5.png",
+    "image-4.png",
+    "image-2.png",
+    "image-1.png",
+    "DB-HA 구성.md",
+    "cloud/쿠버네티스.md",
+    "self loop 정리.md",
+    "2026_todo/2026-W01.md",
+    "쿠버네티스 스터디 - 오류 모음.md",
+    "cloud/packstack 설치.md",
+    "2026_todo/2026-W05.md",
+    "2026_todo/2026-W03.md",
+    "2026_todo/2026-W04.md",
+    "2026_todo/2026-W02.md",
+    "2025_todo/2025-W39.md",
+    "2025_todo/2025-W48.md",
+    "2025_todo/2025-W51.md",
+    "2025_todo/2025-W52.md",
+    "2025_todo/2025-W44.md",
+    "2025_todo/2025-W50.md",
+    "2025_todo/2025-W49.md",
+    "2025_todo/2025-W47.md",
+    "2025_todo/2025-W46.md",
+    "2025_todo/2025-W30.md",
+    "2025_todo/2025-W45.md",
+    "2025_todo",
+    "2026_todo",
+    "image.png",
     "Pasted image 20250610103420.png",
     "기타",
     "에러",
@@ -365,13 +371,6 @@
     "Linux",
     "첨부파일/Pasted image 20250515173108.png",
     "Tags",
-    "첨부파일/Pasted image 20250515172853.png",
-    "명령어",
-    "Bass",
-    "첨부파일/Pasted image 20250430104724.png",
-    "첨부파일/Pasted image 20250430102557.png",
-    "첨부파일/Pasted image 20250429180735.png",
-    "첨부파일/Pasted image 20250430110533.png",
-    "첨부파일/Pasted image 20250430103010.png"
+    "첨부파일/Pasted image 20250515172853.png"
   ]
 }

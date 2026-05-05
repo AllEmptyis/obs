@@ -109,3 +109,6 @@ TiFRONT# show fan
 
 부하가 없는 경우: 50도 이상부터 level 1
 ```
+
+# FAN PWM range 확인 방법
+- cat /tmp/hwmon_sensors
