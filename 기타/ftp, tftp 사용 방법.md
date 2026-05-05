@@ -33,6 +33,12 @@ Using ascii mode to transfer files.
 ftp> binary
 200 Type set to I
 ```
+## ftp 계정 정보
+- admin /Admin123!@#
+- firmware / ?
+## ftp gui 경로
+- C:\Program Files\FileZilla Server
+
 # tftp PLOS update 방법
 - auto: 현재 설치 된 os의 반대편에 설치
 - 주의 **펌웨어 다운로드 후 반드시 reload**

@@ -6,8 +6,13 @@
 	- IGMP (L2)
 - 사용 주소 범위 (IP)
 	- `224.0.0.0 ~ 239.255.255.255` (일부 주소는 예약되어 있음)
+```
+224.0.0.0   ~ 224.0.0.255    → 링크 로컬 (라우터 제어용, 라우터 넘어 못감)
+224.0.1.0   ~ 238.255.255.255 → 글로벌 멀티캐스트 (인터넷용, IANA 할당)
+239.0.0.0   ~ 239.255.255.255 → 사설 멀티캐스트 (조직 내부용)
+```
 - 사용 주소 (MAC)
-	- `01:00:0E` 로 시작
+	- `01:00:5E` 로 시작
 	- 나머지 뒷자리는 igmp group ip를 mac 변환하여 사용
 - 장점, 특징
 	- 하나의 패킷이 전달되어 필요에 따라 복제, 분할 되어 전송
@@ -27,6 +32,12 @@
 		- 보통 ip:port 로 관리 / 포트넘버까지 겹치면 멀티캐스팅 충돌
 	- L3/라우터에서 igmp 쿼리 전송
 	- 호스트에서 join/leave/report 응답을 전송
+
+```
+요약
+IGMP: L2구간에서 호스트가 멀티캐스트 그룹에 가입/탈퇴 할 때 사용하는 프로토콜
+PIM: L3구간에서의 멀티캐스트 라우팅
+```
 ## igmp 메시지
 - membership query
 	- 라우터에서 특정 그룹에 가입한 호스트를 확인 할 때
@@ -36,8 +47,11 @@
 - membership report
 	- 호스트가 그룹에 가입하고자 할 때 보냄
 	- 수신/제외할 송신자 목록을 함께 보낼 수 있음 (v3)
+	- 239.1.1.1 (지정한 igmp group ip)
 - Leave group
 	- 호스트가 그룹을 탈퇴할 때 보냄
+	- 224.0.0.2
+		- 모든 라우터에게 보냄
 ### 메시지 동작 흐름
 1. 라우터 -> 멤버십 쿼리 송신
 	- 네트워크 내 활성 그룹 멤버를 주기적으로 확인
@@ -75,11 +89,19 @@
 		- 쿼리어는 쿼리 메시지를 생성
 		- 프록시는 igmp report/leave 메시지를 대신 처리
 ## 설정
-# 실습
+# 실습 (L2구간)
 - VLC 설치해서 멀티캐스팅 스트리밍 서버 구성
 - 서버: 리눅스
 - 클라이언트: 윈도우
 ## 멀티캐스팅 스트리밍 서버 구성
+- 미니멀 버전인 경우 사전 구성
+```
+sudo dnf install -y epel-release
+sudo dnf config-manager --set-enabled crb
+
+sudo dnf install -y https://mirrors.rpmfusion.org/free/el/rpmfusion-free-release-9.noarch.rpm
+sudo dnf install -y https://mirrors.rpmfusion.org/nonfree/el/rpmfusion-nonfree-release-9.noarch.rpm
+```
 - vlc 설치 / 확인
 ```
 //vlc는 루트 계정으로는 동작 안함 (내부적으로 네트워크 소켓 등을 사용해서 보안적인 목적 때문)
@@ -88,18 +110,18 @@ dnf install vlc -y
 dnf install vlc-core vlc -y //console vlc
 
 [test@localhost ~]$ vlc --version
-VLC media player 3.0.21 Vetinari (revision 3.0.21-0-gdd8bfdbabe8)
-VLC 버전 3.0.21 Vetinari (3.0.21-0-gdd8bfdbabe8)
-mockbuild 가 buildhw-x86-08.iad2.fedoraproject.org (Jun 25 2025 00:00:00) 에 컴파일됨
-컴파일러: gcc version 11.5.0 20240719 (Red Hat 11.5.0-5) (GCC)
-이 프로그램은 법률의 허용 범위 내에서 어떤 보증도 제공하지 않습니다.
-이 프로그램은 GNU GPL 조항에 근거해 재배포할 수 있습니다;
-자세한 내용은 COPYING 파일을 참조해 주십시오.
-이 프로그램은 VideoLAN 팀에서 만들었습니다; AUTHORS 파일을 확인하십시오.
+VLC media player 3.0.23 Vetinari (revision 3.0.23-2-0-g79128878dd)
+VLC version 3.0.23 Vetinari (3.0.23-2-0-g79128878dd)
+Compiled by mockbuild on buildhw-x86-10.rdu3.fedoraproject.org (Jan 19 2026 00:00:00)
+Compiler: gcc version 11.5.0 20240719 (Red Hat 11.5.0-11) (GCC)
+This program comes with NO WARRANTY, to the extent permitted by law.
+You may redistribute it under the terms of the GNU General Public License;
+see the file named COPYING for details.
+Written by the VideoLAN team; see the AUTHORS file.
 ```
 - 스트리밍 할 영상 다운로드
 ```
-sudo wget https://github.com/yt-dlp/yt-dlp/releases/latest/download/yt-dlp -O /usr/local/bin/yt-dlp
+sudo wget https://github.com/yt-dlp/yt-dlp/releases/latest/download/yt-dlp_linux -O /usr/local/bin/yt-dlp
 
 sudo chmod a+rx /usr/local/bin/yt-dlp
 
@@ -109,68 +131,41 @@ sudo chmod a+rx /usr/local/bin/yt-dlp
 [test@localhost ~]$ yt-dlp https://youtu.be/eMd5dZBzpfY?si=AwNzb1TzUe9m4VtF
 
 [test@localhost ~]$ file bassdemo.mp4
-bassdemo.mp4: MPEG transport stream data
+bassdemo.mp4: ISO Media, MP4 v2 [ISO 14496-14]
 //포맷 확인
 ```
-- 멀티캐스팅
+- 송출 명령어
+	- 송출 중지할 때는 kill -9 프로세스 번호
 ```
-cvlc bassdemo.mp4 \
- --no-audio --intf dummy \
- --sout '#rtp{dst=239.1.1.1,port=5000,mux=ts}' --ttl=5 --loop --miface=br0 >/dev/null 2>&1 &
-
-
---sout-rtp-bind-ip=192.168.212.150
-
-dst=239.1.1.1 <- igmp group id
-port=5000
-mux=ts 
-ttl: 멀티캐스팅 구간에서 라우팅이 있는 경우
---loop: 반복 재생
+[test@localhost ~]$ cvlc bassdemo.mp4 \
+ --intf dummy \
+ --sout '#rtp{dst=239.1.1.1,port=5000,mux=ts}' \
+ --loop --miface=ens160 &
+[1] 84852
+[test@localhost ~]$ VLC media player 3.0.23 Vetinari (revision 3.0.23-2-0-g79128878dd)
+[0000561f5b560ef0] pipewire audio output error: PipeWire context connection error: Host is down
+[0000561f5b560ef0] vlcpulse audio output error: PulseAudio server connection failure: Connection refused
+[0000561f5b600990] dbus interface error: Failed to connect to the D-Bus session daemon: Unable to autolaunch a dbus-daemon without a $DISPLAY for X11
+[0000561f5b600990] main interface error: no suitable interface module
+[0000561f5b550b20] main libvlc error: interface "dbus,none" initialization failed
+[0000561f5b62cfa0] main interface error: no suitable interface module
+[0000561f5b550b20] main libvlc error: interface "globalhotkeys,none" initialization failed
+[0000561f5b62cfa0] dummy interface: using the dummy interface module...
+^C
 ```
-- 같은 서버에서 테스트
+## 클라이언트
+- vlc 플레이어가 모종의 이유로 tx 스트림을 dmux 하지 못하여 mpv 사용
+	- https://github.com/shinchiro/mpv-winbuild-cmake/releases
 ```
-[test@localhost ~]$ cvlc udp://@239.1.1.1:5000 //클라이언트로 접속
-VLC media player 3.0.21 Vetinari (revision 3.0.21-0-gdd8bfdbabe8)
-MoTTY X11 proxy: No authorisation provided
-[000055ba235a9530] main interface error: no suitable interface module
-[000055ba23515b80] main libvlc error: interface "globalhotkeys,none" initializat       ion failed
-[000055ba235a9530] dummy interface: using the dummy interface module...
+mpv-x86_64-20260306-git-3b55bc9.7z
+이 파일 다운로드 받고 mpv.exe 실행
+```
+- cmd에서 mpv가 설치된 경로로 이동 후 명령어 실행
+	- 성공하면 알아서 재생된다
+```
+C:\Users\USER\Downloads\mpv-x86_64-20260306-git-3b55bc9>
+mpv.exe udp://@239.1.1.1:5000?localaddr=192.168.212.237
+```
 
-
-[root@localhost ~]# tcpdump -nn udp and host 239.1.1.1 and port 5000
-dropped privs to tcpdump
-tcpdump: verbose output suppressed, use -v[v]... for full protocol decode
-listening on eno1, link-type EN10MB (Ethernet), snapshot length 262144 bytes
-16:17:09.515196 IP 192.168.193.105.40097 > 239.1.1.1.5000: UDP, length 1328
-16:17:09.521287 IP 192.168.193.105.40097 > 239.1.1.1.5000: UDP, length 1328
-16:17:09.527372 IP 192.168.193.105.40097 > 239.1.1.1.5000: UDP, length 1328
-16:17:09.533464 IP 192.168.193.105.40097 > 239.1.1.1.5000: UDP, length 1328
-```
-- 멀티캐스트 라우팅 추가
-	- 일반적인 상황에서는 필요가 없지만 현재 내 서버에서는 인터페이스가 너무 많아서 송출 될 인터페이스 지정 / 라우팅 필요
-```
-ip route add 239.0.0.0/8 dev br0
-
------
-[test@localhost ~]$ sudo tcpdump -nn -i any host 239.1.1.1 and udp port 5000
-tcpdump: data link type LINUX_SLL2
-dropped privs to tcpdump
-tcpdump: verbose output suppressed, use -v[v]... for full protocol decode
-listening on any, link-type LINUX_SLL2 (Linux cooked v2), snapshot length 262144 bytes
-11:08:17.547457 br0   Out IP 192.168.193.105.38099 > 239.1.1.1.5000: UDP, length 1328
-11:08:17.547460 vnet24 Out IP 192.168.193.105.38099 > 239.1.1.1.5000: UDP, length 1328
-11:08:17.547461 eno1  Out IP 192.168.193.105.38099 > 239.1.1.1.5000: UDP, length 1328
-11:08:17.548613 br0   Out IP 192.168.193.105.38099 > 239.1.1.1.5000: UDP, length 1328
-```
-- 다른 서버에서 테스트
-	- 다른 사용자 계정 만드는 방법
-```
-useradd -m -s /bin/bash test
-passwd test
-
-삭제
-userdel test
-
-모드 변경 (쉘 변경)
-usermod -s /bin/bash test
-```
+## 스위치
+- igmp 쿼리어만 활성화

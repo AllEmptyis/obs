@@ -1,5 +1,8 @@
 {
   "showLineNumber": false,
   "readableLineLength": true,
-  "alwaysUpdateLinks": true
+  "alwaysUpdateLinks": true,
+  "promptDelete": false,
+  "attachmentFolderPath": "첨부파일",
+  "useMarkdownLinks": true
 }

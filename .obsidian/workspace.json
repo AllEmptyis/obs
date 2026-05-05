@@ -97,44 +97,16 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "OpeninfarDays2025.md",
+                "file": "HCI std 교육.md",
                 "mode": "source",
                 "source": false
               },
               "icon": "lucide-file",
-              "title": "OpeninfarDays2025"
-            }
-          },
-          {
-            "id": "1049afeb95e2d79d",
-            "type": "leaf",
-            "state": {
-              "type": "markdown",
-              "state": {
-                "file": "to do/2025-W44.md",
-                "mode": "source",
-                "source": false
-              },
-              "icon": "lucide-file",
-              "title": "2025-W44"
-            }
-          },
-          {
-            "id": "1ceaa735fc02bd16",
-            "type": "leaf",
-            "state": {
-              "type": "markdown",
-              "state": {
-                "file": "기능 검증/ACL.md",
-                "mode": "source",
-                "source": false
-              },
-              "icon": "lucide-file",
-              "title": "ACL"
+              "title": "HCI std 교육"
             }
           }
         ],
-        "currentTab": 8
+        "currentTab": 6
       }
     ],
     "direction": "vertical"
@@ -295,13 +267,13 @@
             "state": {
               "type": "outline",
               "state": {
-                "file": "기능 검증/ACL.md",
+                "file": "HCI std 교육.md",
                 "followCursor": false,
                 "showSearch": false,
                 "searchQuery": ""
               },
               "icon": "lucide-list",
-              "title": "ACL 의 개요"
+              "title": "HCI std 교육 의 개요"
             }
           }
         ],
@@ -324,53 +296,53 @@
       "obsidian-git:Open Git source control": false
     }
   },
-  "active": "1ceaa735fc02bd16",
+  "active": "559804cba8fd131f",
   "lastOpenFiles": [
-    "기타/SCP 사용 방법.md",
-    "2026_todo/2026-W06.md",
-    "2026_todo/2026-W07.md",
-    "image-3.png",
-    "vlan 정리.md",
-    "KVM-Bridge 모드.md",
+    "첨부파일/Pasted image 20260505120858.png",
+    "첨부파일/Pasted image 20260505120716.png",
+    "HCI std 교육.md",
+    "첨부파일/Pasted image 20260505120819.png",
+    "Pasted image 20260505120404.png",
+    "KVM - 디스크 용량 부족 문제.md",
+    "IPTABLES & nftables.md",
     "image-5.png",
-    "image-4.png",
-    "image-2.png",
-    "image-1.png",
+    "image-7.png",
+    "image-8.png",
+    "image-6.png",
     "DB-HA 구성.md",
-    "cloud/쿠버네티스.md",
-    "self loop 정리.md",
-    "2026_todo/2026-W01.md",
-    "쿠버네티스 스터디 - 오류 모음.md",
-    "cloud/packstack 설치.md",
-    "2026_todo/2026-W05.md",
-    "2026_todo/2026-W03.md",
-    "2026_todo/2026-W04.md",
-    "2026_todo/2026-W02.md",
-    "2025_todo/2025-W39.md",
-    "2025_todo/2025-W48.md",
-    "2025_todo/2025-W51.md",
-    "2025_todo/2025-W52.md",
-    "2025_todo/2025-W44.md",
-    "2025_todo/2025-W50.md",
-    "2025_todo/2025-W49.md",
-    "2025_todo/2025-W47.md",
-    "2025_todo/2025-W46.md",
-    "2025_todo/2025-W30.md",
-    "2025_todo/2025-W45.md",
+    "image-4.png",
+    "image-3.png",
+    "image-2.png",
+    "cloud/클라우드 이미지.md",
+    "파일 시스템.md",
+    "파티션.md",
+    "cloud/쿠버네티스 스터디 - 오류 모음.md",
+    "Linux/컨테이너.md",
+    "인천국제 테스트 정리 (ipv6 routing).md",
+    "Linux/스토리지.md",
+    "서버 원격 접속.md",
+    "산청군청 테스트.md",
+    "Linux/메일 서버.md",
+    "Linux/가상화 방식.md",
+    "도커 레이어 구조.md",
+    "기타 단축키.md",
+    "Linux/가상 디스크 이미지.md",
+    "명령어/BCM SDK shell 명령어.md",
+    "기타/Bash 쉘스크립트.md",
+    "2026_todo/2026-W18.md",
+    "기능 검증/ACL.md",
+    "dhcp 테스트.md",
+    "명령어/R플랫폼 명령어.md",
+    "2026_todo/2026-W17.md",
     "2025_todo",
     "2026_todo",
-    "image.png",
-    "Pasted image 20250610103420.png",
     "기타",
     "에러",
     "서버 관련",
     "개인 용무",
     "기능 검증",
     "Case Report",
-    "Pasted image 20250609173724.png",
     "Linux",
-    "첨부파일/Pasted image 20250515173108.png",
-    "Tags",
-    "첨부파일/Pasted image 20250515172853.png"
+    "Tags"
   ]
 }

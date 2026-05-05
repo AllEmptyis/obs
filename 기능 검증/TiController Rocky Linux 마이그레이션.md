@@ -137,10 +137,7 @@
 		subprocess.CalledProcessError: Command 'dnf -y install /root/ticontroller/local_rpm/base_tools/pciutils_3.7.0/*.rpm --disablerepo=*' returned non-zero exit status 1.
 		```
 - 해결
-	- 엔지니어 포털에 있는 ISO 사용
-	- dnf update X
-	- rpm usb에 담지 않고 wget으로 직접 다운로드
-	- 원인 무엇인지 확인해 봐야 할 거 같다
+	- 해당 에러는 서버 설치할 때 minimal 서버> 스탠다드 구성 선택 안해서 발생
 ### 백업
 - 백업 파일이 들어있는 usb 마운트 후 mysql 복구
 	- mysql -u test -p < backup.sql
