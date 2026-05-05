@@ -97,12 +97,12 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "HCI std 교육.md",
+                "file": "vlan 정리.md",
                 "mode": "source",
                 "source": false
               },
               "icon": "lucide-file",
-              "title": "HCI std 교육"
+              "title": "vlan 정리"
             }
           }
         ],
@@ -267,13 +267,13 @@
             "state": {
               "type": "outline",
               "state": {
-                "file": "HCI std 교육.md",
+                "file": "vlan 정리.md",
                 "followCursor": false,
                 "showSearch": false,
                 "searchQuery": ""
               },
               "icon": "lucide-list",
-              "title": "HCI std 교육 의 개요"
+              "title": "vlan 정리 의 개요"
             }
           }
         ],
@@ -298,9 +298,9 @@
   },
   "active": "559804cba8fd131f",
   "lastOpenFiles": [
+    "HCI std 교육.md",
     "첨부파일/Pasted image 20260505120858.png",
     "첨부파일/Pasted image 20260505120716.png",
-    "HCI std 교육.md",
     "첨부파일/Pasted image 20260505120819.png",
     "Pasted image 20260505120404.png",
     "KVM - 디스크 용량 부족 문제.md",
@@ -312,7 +312,6 @@
     "DB-HA 구성.md",
     "image-4.png",
     "image-3.png",
-    "image-2.png",
     "cloud/클라우드 이미지.md",
     "파일 시스템.md",
     "파티션.md",
