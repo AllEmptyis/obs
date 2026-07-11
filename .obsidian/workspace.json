@@ -104,9 +104,21 @@
               "icon": "lucide-file",
               "title": "vlan 정리"
             }
+          },
+          {
+            "id": "914e320e9612df7d",
+            "type": "leaf",
+            "state": {
+              "type": "release-notes",
+              "state": {
+                "currentVersion": "1.12.7"
+              },
+              "icon": "lucide-book-up",
+              "title": "릴리즈 노트 1.12.7"
+            }
           }
         ],
-        "currentTab": 6
+        "currentTab": 7
       }
     ],
     "direction": "vertical"
@@ -296,7 +308,7 @@
       "obsidian-git:Open Git source control": false
     }
   },
-  "active": "559804cba8fd131f",
+  "active": "914e320e9612df7d",
   "lastOpenFiles": [
     "HCI std 교육.md",
     "첨부파일/Pasted image 20260505120858.png",
