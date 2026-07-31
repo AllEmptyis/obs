@@ -1,0 +1,28 @@
+# CaseReport 리스트
+- 대전시청 / account password-set 패스워드 변경 시 재부팅 / 240930-002
+	- 유사 케이스 없음 
+-  스마트부대 / 네트워크 장비 보안 기능 문의 / 241213-004
+	- 미지원 항목에 대한 공문 요청
+	- 유사 케이스 없음
+- LG U+ / HTTPS GUI 접속 불가 현상 / 250213-005
+	-  유사 케이스 없음
+- SK텔링크 / (err) access_log_processor: file create or update failed 로그 발생 문의 / 250307-011
+	- site_tree에 의해 경로 생성 실패한 경우 발생
+	-  유사 케이스 없음
+- 다우기술 / regex_performance 관련 에러로그 확인 요청건(v3.0.61.0.26) / 250307-010
+	- 유사 케이스 없음
+- 엔투시스 / 전면부 LCD 패널에 의한 패스워드 초기화 불가 현상 / 유선
+	- 개선 내용 https://redmine.piolink.com/issues/167657
+	- 루트의 pw가 admin인 경우 패스워드 초기화 실패 / PLOS 2.2.7.4.0 개선 완료
+	- 유사 케이스 없음
+- KTOA한국통신사업자연합회 / sure 페이지 수정 요청 / 250331-007
+	- 로고 변경 커스텀 페이지 및 예상 대기 시간 삭제 요청
+	- 유사 케이스 없음
+- 주택도시보증공사 / config-sync에 의해 master 장비 설정이 삭제된 현상(v2.2.7.1.0) / 250402-005
+	- 설정 삭제 중 management-access, http, ssl 설정이 삭제되지 못해 에러 발생 / PLOS 수정 필요
+	- EntryBusy:ssl profile id=1
+	- 유사 케이스 아마 없음?
+- MG새마을금고 / 운영 중 Failover 발생(v2.2.5.7.5) / 250411-006
+	- https://redmine.piolink.com/issues/174184
+	- VRRP 사용 중 failover 발생 (백업-마스터 변동)
+	- 원인 버퍼드랍?

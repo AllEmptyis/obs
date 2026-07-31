@@ -1,5 +1,9 @@
 [
   "calendar",
-  "obsidian-custom-frames",
-  "editing-toolbar"
+  "remotely-save",
+  "obsidian-plugin-toc",
+  "periodic-notes",
+  "mousewheel-image-zoom",
+  "image-converter",
+  "omnisearch"
 ]
