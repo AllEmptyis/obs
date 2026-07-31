@@ -1,10 +1,9 @@
 [
   "calendar",
-  "obsidian-custom-frames",
-  "obsidian-git",
-  "obsidian-hover-editor",
-  "periodic-notes",
   "remotely-save",
   "obsidian-plugin-toc",
-  "editing-toolbar"
+  "periodic-notes",
+  "mousewheel-image-zoom",
+  "image-converter",
+  "omnisearch"
 ]

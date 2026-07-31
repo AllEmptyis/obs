@@ -7,7 +7,7 @@
 		- 컨트롤러에서 팬 제어 설정하게 되면 auto-low, 그 전에는 auto-normal
 		- 컨트롤러에서 직접 설정하는 값은 실제로는 적용 안 됨 (내장된 auto-low 값으로 적용)
 - **cloud mode에서는 show fan 명령어 동작X**
-- 팬컨트롤은 RTK에서만 지원, 따라서 팬컨트롤을 지원하는 RTK 장비에만 pwm_table이 있는 거 같다 (bcm,23모델 없음)
+- 팬컨트롤은 RTK에서만 지원, 따라서 팬컨트롤을 지원하는 RTK 장비에만 pwm_table이 있는 거 같다 (bcm,2328모델 없음)
 ## rpm/pwm 차이
 - pwm
 	- 듀티 사이클, 즉 fan 속도를 제어하는 값
@@ -114,7 +114,7 @@ TiFRONT# show fan
 # FAN PWM range 확인 방법
 - cat /tmp/hwmon_sensors
 
-# CS2254GXP
+# CS2254GXP (2354GXP와 동일)
 - hardware status
 ```
 TiFRONT% sh hardware-status

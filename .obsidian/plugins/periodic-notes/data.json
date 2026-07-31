@@ -10,11 +10,7 @@
   "weekly": {
     "format": "",
     "template": "",
-<<<<<<< HEAD
-    "folder": "to do",
-=======
-    "folder": "",
->>>>>>> 0afb85c (command)
+    "folder": "2026_todo",
     "enabled": true
   },
   "monthly": {

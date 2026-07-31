@@ -1,7 +1,9 @@
 {
-  "theme": "obsidian",
+  "theme": "moonstone",
   "interfaceFontFamily": "Noto Sans KR",
-  "textFontFamily": "Noto Sans KR,나눔고딕",
-  "baseFontSize": 14,
-  "cssTheme": "GitHub Theme"
+  "textFontFamily": "나눔고딕",
+  "baseFontSize": 17,
+  "cssTheme": "GitHub Theme",
+  "monospaceFontFamily": "Consolas,Cascadia Code",
+  "baseFontSizeAction": true
 }

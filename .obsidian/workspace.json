@@ -116,9 +116,23 @@
               "icon": "lucide-book-up",
               "title": "릴리즈 노트 1.12.7"
             }
+          },
+          {
+            "id": "00d8f19296ed225f",
+            "type": "leaf",
+            "state": {
+              "type": "markdown",
+              "state": {
+                "file": "conflict-files-obsidian-git.md",
+                "mode": "source",
+                "source": false
+              },
+              "icon": "lucide-file",
+              "title": "conflict-files-obsidian-git"
+            }
           }
         ],
-        "currentTab": 7
+        "currentTab": 8
       }
     ],
     "direction": "vertical"
@@ -279,21 +293,21 @@
             "state": {
               "type": "outline",
               "state": {
-                "file": "vlan 정리.md",
+                "file": "conflict-files-obsidian-git.md",
                 "followCursor": false,
                 "showSearch": false,
                 "searchQuery": ""
               },
               "icon": "lucide-list",
-              "title": "vlan 정리 의 개요"
+              "title": "conflict-files-obsidian-git 의 개요"
             }
           }
         ],
-        "currentTab": 6
+        "currentTab": 5
       }
     ],
     "direction": "horizontal",
-    "width": 285.5
+    "width": 354.5
   },
   "left-ribbon": {
     "hiddenItems": {
@@ -308,43 +322,45 @@
       "obsidian-git:Open Git source control": false
     }
   },
-  "active": "914e320e9612df7d",
+  "active": "4770c888ff7ad9b5",
   "lastOpenFiles": [
-    "HCI std 교육.md",
+    "conflict-files-obsidian-git.md",
+    "컨테이너.md",
+    "첨부파일/tifront tcpdump.png",
+    "첨부파일/image.png",
+    "첨부파일/image-4.png",
+    "첨부파일/image-3.png",
+    "첨부파일/image-2.png",
+    "첨부파일/image-1.png",
+    "신규기능/PAS-KS 점포프레임 제거 및 mtu 변경 신규 기능.md",
+    "스토리지.md",
+    "무제.md",
+    "메일 서버.md",
+    "기타 단축키.md",
+    "cloud/가상화 방식.md",
+    "cloud/QCOW2.md",
+    "cloud/Libvirt 네트워크 설정.md",
+    "Standard 교육.md",
+    "PAS-K/PAS-K Standard_SLB.md",
+    "Linux/nmcli 명령어.md",
+    "Linux/nmcli 명령어 정리.md",
+    "Linux/NAT모드-포트포워딩 설정.md",
+    "Linux/IPTABLES & nftables.md",
+    "HCI/스토리지.md",
+    "HCI/디스크 버스 관련.md",
+    "HCI/HCI 아키텍처.md",
+    "HCI/HCI.md",
+    "HCI",
+    "2026_todo/2026-W31.md",
+    "2026_todo/2026-W30.md",
+    "2026_todo/2026-W29.md",
+    "2026_todo/2026-W28.md",
+    "2026_todo/2026-W27.md",
+    "2026_todo/2026-W26.md",
     "첨부파일/Pasted image 20260505120858.png",
     "첨부파일/Pasted image 20260505120716.png",
     "첨부파일/Pasted image 20260505120819.png",
     "Pasted image 20260505120404.png",
-    "KVM - 디스크 용량 부족 문제.md",
-    "IPTABLES & nftables.md",
-    "image-5.png",
-    "image-7.png",
-    "image-8.png",
-    "image-6.png",
-    "DB-HA 구성.md",
-    "image-4.png",
-    "image-3.png",
-    "cloud/클라우드 이미지.md",
-    "파일 시스템.md",
-    "파티션.md",
-    "cloud/쿠버네티스 스터디 - 오류 모음.md",
-    "Linux/컨테이너.md",
-    "인천국제 테스트 정리 (ipv6 routing).md",
-    "Linux/스토리지.md",
-    "서버 원격 접속.md",
-    "산청군청 테스트.md",
-    "Linux/메일 서버.md",
-    "Linux/가상화 방식.md",
-    "도커 레이어 구조.md",
-    "기타 단축키.md",
-    "Linux/가상 디스크 이미지.md",
-    "명령어/BCM SDK shell 명령어.md",
-    "기타/Bash 쉘스크립트.md",
-    "2026_todo/2026-W18.md",
-    "기능 검증/ACL.md",
-    "dhcp 테스트.md",
-    "명령어/R플랫폼 명령어.md",
-    "2026_todo/2026-W17.md",
     "2025_todo",
     "2026_todo",
     "기타",
@@ -353,7 +369,6 @@
     "개인 용무",
     "기능 검증",
     "Case Report",
-    "Linux",
-    "Tags"
+    "Linux"
   ]
 }
