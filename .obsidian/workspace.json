@@ -90,9 +90,23 @@
               "icon": "lucide-file",
               "title": "Ceph"
             }
+          },
+          {
+            "id": "d1fa8b0744a54b64",
+            "type": "leaf",
+            "state": {
+              "type": "markdown",
+              "state": {
+                "file": "서버 관련/Rocky linux9.3 DUD 생성.md",
+                "mode": "source",
+                "source": false
+              },
+              "icon": "lucide-file",
+              "title": "Rocky linux9.3 DUD 생성"
+            }
           }
         ],
-        "currentTab": 5
+        "currentTab": 6
       }
     ],
     "direction": "vertical"
@@ -215,7 +229,7 @@
             "state": {
               "type": "outline",
               "state": {
-                "file": "HCI/Ceph.md",
+                "file": "서버 관련/Rocky linux9.3 DUD 생성.md",
                 "followCursor": true,
                 "showSearch": true,
                 "searchQuery": ""
@@ -266,10 +280,10 @@
       "obsidian-git:Open Git source control": false
     }
   },
-  "active": "6d60a46419d1e575",
+  "active": "d1fa8b0744a54b64",
   "lastOpenFiles": [
-    "첨부파일/image-5.png",
     "HCI/Ceph.md",
+    "첨부파일/image-5.png",
     "서버 원격 접속.md",
     "2026_todo/2026-W32.md",
     "2026_todo/2026-W31.md",
@@ -304,7 +318,6 @@
     "HCI",
     "image-8.png",
     "image-7.png",
-    "image-6.png",
     "무제.base",
     "2026_todo",
     "서버 관련",
