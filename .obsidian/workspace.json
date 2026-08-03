@@ -112,7 +112,9 @@
               "type": "file-explorer",
               "state": {
                 "sortOrder": "alphabetical",
-                "autoReveal": false
+                "autoReveal": false,
+                "showSearch": false,
+                "searchQuery": ""
               },
               "icon": "lucide-folder-closed",
               "title": "파일 탐색기"
@@ -219,7 +221,7 @@
                 "searchQuery": ""
               },
               "icon": "lucide-list",
-              "title": "디스크 버스 관련 의 개요"
+              "title": "개요"
             }
           },
           {
