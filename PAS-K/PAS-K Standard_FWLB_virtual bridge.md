@@ -20,7 +20,7 @@ ip 대역 하나만 사용하기 위해 fw과 연결되는 인터페이스를 /3
 - 
 
 # 설정
-## pas-k
+## pas-k (ext)
 - host routing, proxy arp 설정 필요
 
 - 포트 바운더리
@@ -307,3 +307,248 @@ ext_1(config)# show info fwlb ext
 
 ================================================================================
 ```
+
+## pas-k (int)
+- vlan, 인터페이스
+```
+int_1# show vlan
+
+================================================================================
+VLAN Configuration
+--------------------------------------------------------------------------------
+          |         | ge                              |          |
+          |         |                   1 1 1 1 1 1 1 |          |
+VLAN Name | VLAN ID | 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 | TBM      | Description
+--------------------------------------------------------------------------------
+default   | 1       | u u u u u u u u . u u . u u u . | disable  |
+int       | 10      | . . . . . . . . u . . . . . . t | disable  |
+fw1       | 20      | . . . . . . . . . . . u . . . t | disable  |
+fw2       | 30      | . . . . . . . . . . . . . . . t | disable  |
+================================================================================
+
+int_1# show int
+
+================================================================================
+INTERFACE Configuration
+ ------------------------------------------------------------------------------
+  Name    Status MAC Address       IPv4 Address     Broadcast       RPF     Description
+  fw1     up     00:06:c4:84:10:23 2.2.2.1/32       2.2.2.1         default
+  fw2     up     00:06:c4:84:10:23 2.2.2.1/32       2.2.2.1         default
+  int     up     00:06:c4:84:10:23 2.2.2.1/24       2.2.2.255       default
+  default down   00:06:c4:84:10:23                                  default
+  mgmt    up     00:06:c4:84:10:22 192.168.100.1/24 192.168.100.255 default
+================================================================================
+```
+
+- fwlb 서비스
+```
+int_1# show info fwlb int
+
+================================================================================
+  FWLB: int
+ ------------------------------------------------------------------------------
+    Name                 : int
+    Status               : enable
+    Priority             : 100
+    LB Method            : rr
+    VPNLB                : disable
+    Multi Tunnel         : disable
+    Branch Relay         : disable
+    Position             : internal
+    Fail Skip            : none
+    Session Timeout Mode : global
+    Session Reset        : none
+    Session-sync         : none
+    H/C Condition        : all
+    Health Check         : 1
+    Passive Health Check :
+    Service Health       : ACT
+    Description          :
+
+    Filter
+       ID    Type    Protocol Src IP    Dst IP      Status Hit   Description
+       1     include all      0.0.0.0/0 1.1.1.0/24  enable 0
+       2     exclude all      0.0.0.0/0 1.1.1.11/32 enable 0
+       3     exclude all      0.0.0.0/0 1.1.1.12/32 enable 0
+
+    Sticky
+        Time             : 60
+        Src subnet       : 255.255.255.255
+        Dst subnet       : 255.255.255.255
+
+    Keep-Backup
+        Service          : disable
+        Real             : disable
+
+    Backup               :
+
+    Dynamic-Filter       :
+
+    Real
+       ID    Name  RIP      Rport Backup Status G-SHDN  Health Cause State-Time      Description
+       1     fw1   2.2.2.11              enable disable ACT          0 days 01:11:45
+       2     fw2   2.2.2.12              enable disable ACT          0 days 00:59:46
+
+    Health-Check-Info
+       ID    Type  Port  Status
+       1     icmp  0     enable
+
+    Health-Check-Result
+        ID Name Total Active: 1
+        1  fw1      O         O (1 ms)
+        2  fw2      O         O (1 ms)
+
+    Real Health-Check-Result
+        ID Total
+        1      D
+        2      D
+
+    Statistics
+        Real
+           ID    Name  Current sessions Total sessions
+           1     fw1   0                0
+           2     fw2   0                0
+
+        Current sessions : 0
+        Total sessions   : 0
+
+================================================================================
+```
+
+## real (서버)
+- 인터페이스, vlan
+	- management access 8080 open
+```
+server# show int
+
+================================================================================
+INTERFACE Configuration
+ ------------------------------------------------------------------------------
+  Name    Status MAC Address       IPv4 Address Broadcast RPF     Description
+  lan     up     00:06:c4:84:0c:4b 2.2.2.101/24 2.2.2.255 default
+  default down   00:06:c4:84:0c:4b                        default
+  mgmt    up     00:06:c4:84:0c:4a                        default
+================================================================================
+
+server# sho vlan
+
+================================================================================
+VLAN Configuration
+--------------------------------------------------------------------------------
+          |         | ge                              |          |
+          |         |                   1 1 1 1 1 1 1 |          |
+VLAN Name | VLAN ID | 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 | TBM      | Description
+--------------------------------------------------------------------------------
+default   | 1       | u u u u u u u u . u u u u u u u | disable  |
+lan       | 60      | . . . . . . . . u . . . . . . . | disable  |
+================================================================================
+```
+
+- 라우팅
+	- 클라이언트가 다른 대역에 있기 때문에 gw를 통해 나간다
+	- 상단의 pask vrrp vip로 지정
+```
+server# show route
+
+================================================================================
+  ROUTE
+ ------------------------------------------------------------------------------
+    Default-Gateway      : 2.2.2.250
+
+    Network
+       Destination Gateway Interface HC-ID HC-Type HC-Result Description
+       2.2.2.0/24  0.0.0.0 lan
+================================================================================
+```
+
+## FW(방화벽)
+- 테스트 구성을 위해 방화벽을 pask 대신 사용
+- 실제로는 라우팅 때문에 port boundary 설정이 필요하지만,
+  1516 장비 모델 특성으로 인해 포트 바운더리가 없어도 정상적으로 동작함
+```
+fw1# show vlan
+
+================================================================================
+VLAN Configuration
+--------------------------------------------------------------------------------
+          |         | ge                              |          |
+          |         |                   1 1 1 1 1 1 1 |          |
+VLAN Name | VLAN ID | 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 | TBM      | Description
+--------------------------------------------------------------------------------
+default   | 1       | u u u u u u u u u u . . u u u u | disable  |
+ext       | 20      | . . . . . . . . . . u . . . . . | disable  |
+int       | 30      | . . . . . . . . . . . u . . . . | disable  |
+================================================================================
+
+fw1#
+fw1# show int
+
+================================================================================
+INTERFACE Configuration
+ ------------------------------------------------------------------------------
+  Name    Status MAC Address       IPv4 Address     Broadcast       RPF     Description
+  ext     up     00:06:c4:84:09:b7 1.1.1.11/24      1.1.1.255       default
+  int     up     00:06:c4:84:09:b7 2.2.2.11/24      2.2.2.255       default
+  default down   00:06:c4:84:09:b7                                  default
+  mgmt    up     00:06:c4:84:09:b6 192.168.100.1/24 192.168.100.255 default
+================================================================================
+
+fw1#
+fw1# show route
+
+================================================================================
+  ROUTE
+ ------------------------------------------------------------------------------
+    Default-Gateway      : 1.1.1.254
+
+    Network
+       Destination Gateway Interface HC-ID HC-Type HC-Result Description
+       1.1.1.0/24  0.0.0.0 ext
+       2.2.2.0/24  0.0.0.0 int
+================================================================================
+```
+- fw2
+```
+fw2# show int
+
+================================================================================
+INTERFACE Configuration
+ ------------------------------------------------------------------------------
+  Name    Status MAC Address       IPv4 Address     Broadcast       RPF     Description
+  ext     up     00:06:c4:84:0a:63 1.1.1.12/24      1.1.1.255       default
+  int     up     00:06:c4:84:0a:63 2.2.2.12/24      2.2.2.255       default
+  default down   00:06:c4:84:0a:63                                  default
+  mgmt    up     00:06:c4:84:0a:62 192.168.100.1/24 192.168.100.255 default
+================================================================================
+
+fw2# show vlan
+
+================================================================================
+VLAN Configuration
+--------------------------------------------------------------------------------
+          |         | ge                              |          |
+          |         |                   1 1 1 1 1 1 1 |          |
+VLAN Name | VLAN ID | 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 | TBM      | Description
+--------------------------------------------------------------------------------
+default   | 1       | u u u u u u u u u u . . u u u u | disable  |
+ext       | 20      | . . . . . . . . . . u . . . . . | disable  |
+int       | 30      | . . . . . . . . . . . u . . . . | disable  |
+================================================================================
+```
+
+# 동작 확인
+- 엔트리 확인
+	- entry는 장비에서 하단으로 부하분산하면서 나가는 순간 기록된다
+- ext
+```
+ext_1# show entry
+================================================================================
+Prot [Org]Sip:Sport Dip:Dport      - [Rep]Sip:Sport Dip:Dport      Svc:Real   [R]Svc:Real  ND
+--------------------------------------------------------------------------------
+tcp  1.1.1.50:18528 2.2.2.101:8080 - 2.2.2.101:8080 1.1.1.50:18528 fwlb.ext:2              1
+tcp  1.1.1.50:11305 2.2.2.101:8080 - 2.2.2.101:8080 1.1.1.50:11305 fwlb.ext:2              1
+================================================================================
+```
+- int
+
+
