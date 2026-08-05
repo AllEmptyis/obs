@@ -13,6 +13,7 @@ ip 대역 하나만 사용하기 위해 fw과 연결되는 인터페이스를 /3
 ![[image-6.png|659]]
 
 - 방화벽과 연결되는 구간- untag
+- 여러 vlan이 지나가야 되는 구간을 tag로 설정해주면 된다
 
 # 동작 요약
 - 
@@ -55,37 +56,97 @@ INTERFACE Configuration
 ```
 
 - vrrp
+	- vrrp는 3개의 인터페이스에 대해 모두 같은 vip(1.1.1.250) 설정
+		- 왜냐하면 어차피 장비가 하나의 대역(1.1.1.x)만 가지고 있기 때문
+	- vrrp vip로 H/C 설정함 (이중화인 경우), 혹은 환경에 따라 gw 등으로 설정하기도 함
+	- vrrp가 advertisement 보낼 때는 자신의 인터페이스 ip로 전송, failover 되었을 때 garp 보낼 때만 vrrp vip로 전송한다
 ```
-ext_1# show failover
+failover
+  delay-time 10
+  session-sync status disable
+  session-sync interval 100
+  session-sync full-interval 30
+  session-sync update live
+  session-sync peer node2
+  session-sync interface hc-retry 3
+  active-active-failover method disable
+  apply
+  vrrp 1
+    ndomain 1
+    mode active-standby
+    status enable
+    priority 100
+    send-garp-all-svip disable
+    interface fw vip 1.1.1.250
+    interface fw advertise-send enable
+    interface ext vip 1.1.1.250
+    interface ext advertise-send enable
+    interface fw2 vip 1.1.1.250
+    interface fw2 advertise-send enable
+    advertise-interval 10
+    retry 3
+    arp-count 0
+    vmac enable
+    preemption enable
+    track single-port 1 port ge11
+    apply
+  apply
+  ha
+    status disable
+    default-state master
+    heartbeat-interval 10
+    retry 3
+    vmac enable
+    apply
+  apply
+  ssl-session-cache-sync
+    status disable
+    apply
+  forwarding-standby disable
+  apply
+  exit
+```
+
+- real
+	- real 설정 시 중요한 것은 실제 방화벽이 연결되어 있는 인터페이스를 지정하는 것
+	- fwlb 수행
+```
+ext_1(config)# show real
 
 ================================================================================
-  FAILOVER
+REAL Configuration
  ------------------------------------------------------------------------------
-    Delay-Time             : 10
-
-    Session-Sync
-        Status                     : disable
-        Live update interval (10 msec) : 100
-        Full update interval (sec) : 30
-        Update method              : live
-        Peer                       : node2
-
-        Interface
-            Name                   :
-            IPv4 Address           :
-            Peer IP Address        :
-            Hc-Retry               : 3
-            Health                 : inact
-
-    A-A Failover
-        Method             : disable
-
-    Vrrp
-       VRID  Mode           Running Status Total Priority VLAN  VIP       VMAC              Description
-       1     active-standby master  enable 101   100      fw    1.1.1.250 00:00:5e:00:01:01
-                                                          ext   1.1.1.250 00:00:5e:00:01:01
-                                                          fw2   1.1.1.250 00:00:5e:00:01:01
-
-
-
+  ID    Name  RIP      Rport SSL-Rport Weight Backup SVC-IP Status Description
+  1     fw1   1.1.1.11                 1                    enable
+  2     fw2   1.1.1.12                 1                    enable
+================================================================================
 ```
+
+- health check
+	- tip: target ip
+		- internal의 vrrp vip로 설정
+		- 보통 각 
+```
+ext_1(config)# show health-check 1
+
+================================================================================
+  HEALTH-CHECK: 1
+ ------------------------------------------------------------------------------
+    ID                   : 1
+    Type                 : icmp
+    Timeout              : 3
+    Interval             : 5
+    Retry                : 3
+    Recover              : 0
+    Status               : enable
+    Graceful Shutdown    : disable
+    Description          :
+
+    --- Option ---------------------------------------------------------------
+    SIP                  :
+    TIP                  : 2.2.2.250
+    DIP                  :
+    Increase ICMP ID     : disable
+================================================================================
+```
+
