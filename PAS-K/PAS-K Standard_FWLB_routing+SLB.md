@@ -5,7 +5,7 @@
 ![[image-7.png|704]]
 
 # 설정
-## pas-k
+## pas-k (EXT)
 - vlan
 ```
 ext_1# show vlan
@@ -23,30 +23,68 @@ fw1       | 20      | t . . . . . . . . . u . . . . . . . . . | . . | disable  |
 fw2       | 30      | t . . . . . . . . . . . . . . . . . . . | . . | disable  | 1       |
 ================================================================================
 
-```
-
-- 인터페이스
-```
-ext_1# show vlan
+ext_2# show vlan
 
 ================================================================================
 VLAN Configuration
 --------------------------------------------------------------------------------
-          |         | ge                                      | xg  |          |         |
-          |         |                   1 1 1 1 1 1 1 1 1 1 2 |     |          |         |
-VLAN Name | VLAN ID | 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 | 1 2 | TBM      | ND      | Description
+          |         | ge                                      | xg  |          |
+          |         |                   1 1 1 1 1 1 1 1 1 1 2 |     |          |
+VLAN Name | VLAN ID | 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 | 1 2 | TBM      | Description
 --------------------------------------------------------------------------------
-default   | 1       | . u u u u u u u . u . u u u u u u u u u | u u | disable  | 1       |
-ext       | 10      | t . . . . . . . u . . . . . . . . . . . | . . | disable  | 1       |
-fw1       | 20      | t . . . . . . . . . u . . . . . . . . . | . . | disable  | 1       |
-fw2       | 30      | t . . . . . . . . . . . . . . . . . . . | . . | disable  | 1       |
+default   | 1       | . u u u u u u u u u . u u u u u u u u u | u u | disable  |
+ext       | 10      | t . . . . . . . . . . . . . . . . . . . | . . | disable  |
+fw1       | 20      | t . . . . . . . . . . . . . . . . . . . | . . | disable  |
+fw2       | 30      | t . . . . . . . . . u . . . . . . . . . | . . | disable  |
+================================================================================
+```
+
+- 인터페이스
+```
+ext_1# show int
+
+================================================================================
+INTERFACE Configuration
+ ------------------------------------------------------------------------------
+  Name    Status MAC Address       IPv4 Address     Broadcast       RPF     ND    Description
+  ext     up     00:06:c4:94:1c:0f 1.1.1.1/24       1.1.1.255       default 1
+  fw1     up     00:06:c4:94:1c:0f 2.2.2.1/24       2.2.2.255       default 1
+  fw2     up     00:06:c4:94:1c:0f 3.3.3.1/24       3.3.3.255       default 1
+  default down   00:06:c4:94:1c:0f                                  default 1
+  mgmt    up     00:06:c4:94:1c:0e 192.168.100.1/24 192.168.100.255 default 0
 ================================================================================
 
+ext_2# show int
+
+================================================================================
+INTERFACE Configuration
+ ------------------------------------------------------------------------------
+  Name    Status MAC Address       IPv4 Address     Broadcast       RPF     Description
+  ext     up     00:06:c4:94:1c:03 1.1.1.2/24       1.1.1.255       default
+  fw1     up     00:06:c4:94:1c:03 2.2.2.2/24       2.2.2.255       default
+  fw2     up     00:06:c4:94:1c:03 3.3.3.2/24       3.3.3.255       default
+  default down   00:06:c4:94:1c:03                                  default
+  mgmt    up     00:06:c4:94:1c:02 192.168.100.1/24 192.168.100.255 default
+================================================================================
 ```
 
 - 라우팅
 ```
 ext_1# show route
+
+================================================================================
+  ROUTE
+ ------------------------------------------------------------------------------
+    Default-Gateway      : 1.1.1.250
+
+    Network
+       Destination Gateway Interface Priority HC-ID HC-Type HC-Result Description
+       1.1.1.0/24  0.0.0.0 ext
+       2.2.2.0/24  0.0.0.0 fw1
+       3.3.3.0/24  0.0.0.0 fw2
+================================================================================
+
+ext_2# show route
 
 ================================================================================
   ROUTE
@@ -71,9 +109,18 @@ PORT-BOUNDARY Configuration
   ID    Status Type    Boundary Promisc Include MAC Port List    Description
   1     enable include all      off     none        ge1,ge9,ge11
 ================================================================================
+
+ext_2# show port-boundary
+
+================================================================================
+PORT-BOUNDARY Configuration
+ ------------------------------------------------------------------------------
+  ID    Status Type    Boundary Promisc Include MAC Port List    Description
+  1     enable include all      off     none        ge1,ge9,ge11
+================================================================================
 ```
 
-- 이중화
+- 이중화 //백업도 동일
 ```
 failover
   delay-time 10
@@ -127,9 +174,255 @@ REAL Configuration
   2           3.3.3.11                 1                    enable
 ================================================================================
 
+ext_2# show real
+
+================================================================================
+REAL Configuration
+ ------------------------------------------------------------------------------
+  ID    Name  RIP      Rport SSL-Rport Weight Backup SVC-IP Status Description
+  1           2.2.2.11                 1                    enable
+  2           3.3.3.11                 1                    enable
+================================================================================
+
+ext_2# show health-check 1
+
+================================================================================
+  HEALTH-CHECK: 1
+ ------------------------------------------------------------------------------
+    ID                   : 1
+    Type                 : icmp
+    Timeout              : 3
+    Interval             : 5
+    Retry                : 3
+    Recover              : 0
+    Status               : enable
+    Graceful Shutdown    : disable
+    Description          :
+
+    --- Option ---------------------------------------------------------------
+    SIP                  :
+    TIP                  : 6.6.6.250
+    DIP                  :
+    Increase ICMP ID     : disable
+================================================================================
 ```
 
 - FWLB
+	- fwlb H/C는 방화벽으로의 ping과는 상관 없음
+	- H/C가 검사하는 것은 tip (그렇기 때문에 h/c가 실패한다면 구간 별로 확인 필요)
+```
+ext_2# show info fwlb ext
+
+================================================================================
+  FWLB: ext
+ ------------------------------------------------------------------------------
+    Name                 : ext
+    IP Version           : ipv4
+    Status               : enable
+    Priority             : 100
+    LB Method            : rr
+    VPNLB                : disable
+    Multi Tunnel         : disable
+    Branch Relay         : disable
+    Position             : internal
+    Fail Skip            : none
+    Session Timeout Mode : global
+    Session Reset        : none
+    Session-sync         : none
+    H/C Condition        : all
+    Health Check         : 1
+    Passive Health Check :
+    Service Health       : ACT
+    Description          :
+
+    Filter
+       ID    Type    Protocol Src IP    Dst IP      Status Hit   Description
+       1     include all      0.0.0.0/0 6.6.6.0/24  enable 186
+       2     exclude all      0.0.0.0/0 2.2.2.11/32 enable 0
+       3     exclude all      0.0.0.0/0 3.3.3.11/32 enable 0
+
+    Sticky
+        Time             : 60
+
+        --- Option -----------------------------------------------------------
+        Src subnet       : 255.255.255.255
+        Dst subnet       : 255.255.255.255
+
+    Keep-Backup
+        Service          : disable
+        Real             : disable
+
+    Backup               :
+
+    Dynamic-Filter       :
+
+    Real
+       ID    Name  RIP      Rport Backup Status G-SHDN  Health Cause State-Time      Description
+       1           2.2.2.11              enable disable ACT          0 days 00:49:35
+       2           3.3.3.11              enable disable ACT          0 days 01:11:22
+
+    Health-Check-Info
+       ID    Type  Port  Status
+       1     icmp  0     enable
+
+    Health-Check-Result
+        ID Name Total Active: 1
+        1           O         O (1 ms)
+        2           O         O (1 ms)
+
+    Real Health-Check-Result
+        ID Total
+        1      D
+        2      D
+
+    Statistics
+        Real
+           ID    Name  Current sessions Total sessions
+           1           0                21
+           2           0                60
+
+        CPS              : 0
+        Current sessions : 0
+        Total sessions   : 81
+
+    Service-Chain-Info   :
+
+================================================================================
 ```
 
+## FW(방화벽)
+- 인터페이스, vlan
 ```
+fw1# show vlan
+
+================================================================================
+VLAN Configuration
+--------------------------------------------------------------------------------
+          |         | ge                              |          |
+          |         |                   1 1 1 1 1 1 1 |          |
+VLAN Name | VLAN ID | 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 | TBM      | Description
+--------------------------------------------------------------------------------
+default   | 1       | u u u u u u u u u u . . u u u u | disable  |
+ext       | 10      | . . . . . . . . . . u . . . . . | disable  |
+int       | 20      | . . . . . . . . . . . u . . . . | disable  |
+================================================================================
+
+fw1# show int
+
+================================================================================
+INTERFACE Configuration
+ ------------------------------------------------------------------------------
+  Name    Status MAC Address       IPv4 Address     Broadcast       RPF     Description
+  ext     up     00:06:c4:84:09:b7 2.2.2.11/24      2.2.2.255       default
+  int     up     00:06:c4:84:09:b7 4.4.4.11/24      4.4.4.255       default
+  default down   00:06:c4:84:09:b7                                  default
+  mgmt    up     00:06:c4:84:09:b6 192.168.100.1/24 192.168.100.255 default
+================================================================================
+```
+
+- 라우팅
+	- gw 잡는 것 주의 - 연결되는 인터페이스의 vrrp vip로 설정
+```
+fw1# show route
+
+================================================================================
+  ROUTE
+ ------------------------------------------------------------------------------
+    Default-Gateway      : 2.2.2.250
+
+    Network
+       Destination Gateway   Interface HC-ID HC-Type HC-Result Description
+       1.1.1.0/24  2.2.2.250 ext
+       2.2.2.0/24  0.0.0.0   ext
+       4.4.4.0/24  0.0.0.0   int
+       6.6.6.0/24  4.4.4.250 int
+================================================================================
+```
+
+## pas-k (INT)
+- vlan, 인터페이스
+```
+int_2# show vlan
+
+================================================================================
+VLAN Configuration
+--------------------------------------------------------------------------------
+          |         | ge                              |          |
+          |         |                   1 1 1 1 1 1 1 |          |
+VLAN Name | VLAN ID | 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 | TBM      | Description
+--------------------------------------------------------------------------------
+default   | 1       | u u u u u u u u u u u . u u u . | disable  |
+int       | 10      | . . . . . . . . . . . . . . . t | disable  |
+fw1       | 20      | . . . . . . . . . . . . . . . t | disable  |
+fw2       | 30      | . . . . . . . . . . . u . . . t | disable  |
+================================================================================
+
+int_2# show int
+
+================================================================================
+INTERFACE Configuration
+ ------------------------------------------------------------------------------
+  Name    Status MAC Address       IPv4 Address     Broadcast       RPF     Description
+  fw1     up     00:06:c4:84:10:27 4.4.4.2/24       4.4.4.255       default
+  fw2     up     00:06:c4:84:10:27 5.5.5.2/24       5.5.5.255       default
+  int     up     00:06:c4:84:10:27 6.6.6.2/24       6.6.6.255       default
+  default down   00:06:c4:84:10:27                                  default
+  mgmt    up     00:06:c4:84:10:26 192.168.100.1/24 192.168.100.255 default
+================================================================================
+```
+
+- 포트 바운더리
+```
+int_2# show port-boundary
+
+================================================================================
+PORT-BOUNDARY Configuration
+ ------------------------------------------------------------------------------
+  ID    Status Type    Boundary Promisc Include MAC Port List     Description
+  1     enable include all      off     none        ge9,ge12,ge16
+================================================================================
+```
+
+- 라우팅
+```
+int_2# show route
+
+================================================================================
+  ROUTE
+ ------------------------------------------------------------------------------
+    Default-Gateway      : 6.6.6.250
+
+    Network
+       Destination Gateway Interface HC-ID HC-Type HC-Result Description
+       4.4.4.0/24  0.0.0.0 fw1
+       5.5.5.0/24  0.0.0.0 fw2
+       6.6.6.0/24  0.0.0.0 int
+================================================================================
+```
+
+- real, H/C
+	- real 3은 SLB
+```
+int_2# show real
+
+================================================================================
+REAL Configuration
+ ------------------------------------------------------------------------------
+  ID    Name   RIP       Rport SSL-Rport Weight Backup SVC-IP Status Description
+  1            4.4.4.12                  1                    enable
+  2            5.5.5.12                  1                    enable
+  3     server 6.6.6.100 8080            1                    enable
+================================================================================
+
+int_2# show health-check
+
+================================================================================
+HEALTH-CHECK Configuration
+ ------------------------------------------------------------------------------
+  ID    Type  Timeout Interval Status Port  Description
+  1     icmp  3       5        enable 0
+  2     tcp   3       5        enable 8080
+================================================================================
+```
+
+- FWLB
