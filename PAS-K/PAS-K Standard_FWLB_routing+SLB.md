@@ -426,3 +426,178 @@ HEALTH-CHECK Configuration
 ```
 
 - FWLB
+```
+int_1# show info fwlb int
+
+================================================================================
+  FWLB: int
+ ------------------------------------------------------------------------------
+    Name                 : int
+    Status               : enable
+    Priority             : 100
+    LB Method            : rr
+    VPNLB                : disable
+    Multi Tunnel         : disable
+    Branch Relay         : disable
+    Position             : internal
+    Fail Skip            : none
+    Session Timeout Mode : global
+    Session Reset        : none
+    Session-sync         : none
+    H/C Condition        : all
+    Health Check         : 1
+    Passive Health Check :
+    Service Health       : ACT
+    Description          :
+
+    Filter
+       ID    Type    Protocol Src IP    Dst IP      Status Hit   Description
+       1     include all      0.0.0.0/0 1.1.1.0/24  enable 44
+       2     exclude all      0.0.0.0/0 4.4.4.11/32 enable 0
+       3     exclude all      0.0.0.0/0 5.5.5.11/32 enable 0
+
+    Sticky
+        Time             : 60
+        Src subnet       : 255.255.255.255
+        Dst subnet       : 255.255.255.255
+
+    Keep-Backup
+        Service          : disable
+        Real             : disable
+
+    Backup               :
+
+    Dynamic-Filter       :
+
+    Real
+       ID    Name  RIP      Rport Backup Status G-SHDN  Health Cause State-Time      Description
+       1           4.4.4.11              enable disable ACT          0 days 01:09:45
+       2           5.5.5.11              enable disable ACT          0 days 02:05:40
+
+    Health-Check-Info
+       ID    Type  Port  Status
+       1     icmp  0     enable
+
+    Health-Check-Result
+        ID Name Total Active: 1
+        1           O         O (1 ms)
+        2           O         O (1 ms)
+
+    Real Health-Check-Result
+        ID Total
+        1      D
+        2      D
+
+    Statistics
+        Real
+           ID    Name  Current sessions Total sessions
+           1           0                15
+           2           0                29
+
+        Current sessions : 0
+        Total sessions   : 44
+
+================================================================================
+```
+
+- SLB 서비스
+```
+int_1# show info slb test
+
+================================================================================
+  SLB: test
+ ------------------------------------------------------------------------------
+    Name                 : test
+    IP Version           : ipv4
+    Status               : enable
+    Priority             : 50
+    NAT Mode             : dnat
+    LB Method            : rr
+    Fail Skip            : none
+    Fail Action          : default
+    Session Timeout Mode : global
+    Session Reset        : none
+    Session-sync         : none
+    H/C Condition        : all
+    Health Check         : 2
+    Passive Health Check :
+    Service Health       : ACT
+
+    Vip
+       VIP       Protocol Vport
+       6.6.6.101 tcp      80
+
+    Description          :
+
+    Filter
+       ID    Type    Protocol Src IP    Dst IP       Status Hit   Description
+       1     include tcp      0.0.0.0/0 6.6.6.101/32 enable 18
+
+    Sticky
+        Time             : 60
+
+        --- Option -----------------------------------------------------------
+        Src Subnet       : 255.255.255.255
+
+    Keep-Backup
+        Service          : disable
+        Real             : disable
+
+    Backup               :
+
+    Dynamic-Filter       :
+
+    Real
+       ID    Name   RIP       Rport Backup Status G-SHDN  Health Cause State-Time      Description
+       3     server 6.6.6.100 8080         enable disable ACT          0 days 00:34:54
+
+    Health-Check-Info
+       ID    Type  Port  Status
+       2     tcp   8080  enable
+
+    Health-Check-Result
+        ID Name   Total Active: 2
+        3  server     O         O (0 ms)
+
+    Real Health-Check-Result
+        ID Name   Total 2
+        3  server     O O (1 ms)
+
+    Statistics
+        Real
+           ID    Name   Current sessions Total sessions
+           3     server 0                18
+
+        Current sessions : 0
+        Total sessions   : 18
+
+================================================================================
+```
+
+
+## 동작 확인
+- vip:vport인 6.6.6.100:80으로 접속
+- external
+```
+ext_2# show entry
+================================================================================
+Prot [Org]Sip:Sport Dip:Dport    - [Rep]Sip:Sport Dip:Dport      Svc:Real   [R]Svc:Real
+--------------------------------------------------------------------------------
+tcp  1.1.1.50:38412 6.6.6.101:80 - 6.6.6.101:80   1.1.1.50:38412 fwlb.ext:1
+tcp  1.1.1.50:48662 6.6.6.101:80 - 6.6.6.101:80   1.1.1.50:48662 fwlb.ext:1
+tcp  1.1.1.50:64907 6.6.6.101:80 - 6.6.6.101:80   1.1.1.50:64907 fwlb.ext:1
+tcp  1.1.1.50:4082  6.6.6.101:80 - 6.6.6.101:80   1.1.1.50:4082  fwlb.ext:1
+================================================================================
+```
+
+- internal
+```
+int_1# show entry
+================================================================================
+Prot [Org]Sip:Sport Dip:Dport    - [Rep]Sip:Sport Dip:Dport      Svc:Real   [R]Svc:Real
+--------------------------------------------------------------------------------
+tcp  1.1.1.50:41171 6.6.6.101:80 - 6.6.6.100:8080 1.1.1.50:41171 slb.test:3 [R]fwlb.int:1
+tcp  1.1.1.50:4082  6.6.6.101:80 - 6.6.6.100:8080 1.1.1.50:4082  slb.test:3 [R]fwlb.int:1
+tcp  1.1.1.50:64907 6.6.6.101:80 - 6.6.6.100:8080 1.1.1.50:64907 slb.test:3 [R]fwlb.int:1
+================================================================================
+```
