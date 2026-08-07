@@ -3,6 +3,18 @@
 	- 캐시 서버에서 5tuple 모두 동일한 세션이 오게 되면 정상적으로 처리되지 못함
 	- 만일 캐시 서버에서 오는 트래픽의 5tuple이 달라졌다면(즉 신규 세션으로 인식) priority대로 lb 서비스에 필터를 매칭해서 처리할 수 있음
 
+- pas-k는 패킷이 들어오면 reply 엔트리를 먼저 보고 처리한다
+```
+switch(config)# show entry
+================================================================================
+Prot [Org]Sip:Sport Dip:Dport    - [Rep]Sip:Sport Dip:Dport      Svc:Real    [R]Svc:Real     ND
+--------------------------------------------------------------------------------
+tcp  2.2.2.50:16000 2.2.2.100:80 - 2.2.2.100:80   2.2.2.50:16000 cslb.test:1                 1
+tcp  2.2.2.50:25227 2.2.2.100:80 - 2.2.2.100:80   2.2.2.50:25227 cslb.test:1                 1
+
+2.2.2.100:80 sip, 2.2.2.50 dip를 가진 세션이 들어온다면 해당 엔트리로 인식하고 처리
+```
+
 # pas-k에 nat 테이블 넣는 방법
 - nat 테이블을 넣어야 하는 이유
 	- cslb 포워드 엔트리까지만 생성됨
@@ -296,4 +308,25 @@ tcp  2.2.2.50:656   2.2.2.100:80 - 2.2.2.101:8080 2.2.2.50:656   slb.test:2  [R]
 ================================================================================
 ```
 
-- 덤
+- 덤프 확인
+	- 1c:0f : pask
+	- 1c:03: 캐시 서버
+	- 
+```
+switch(config)# tcpdump -nei test host 2.2.2.100
+tcpdump: verbose output suppressed, use -v or -vv for full protocol decode
+listening on test, link-type EN10MB (Ethernet), capture size 65535 bytes
+18:26:38.832972 8c:b0:e9:50:e0:c2 > 00:06:c4:94:1c:0f, ethertype IPv4 (0x0800), length 66: 2.2.2.50.51965 > 2.2.2.100.80: Flags [S], seq 2304988182, win 65535, options [mss 4034,nop,wscale 8,nop,nop,sackOK], length 0
+
+18:26:38.833022 00:06:c4:94:1c:0f > 00:06:c4:94:1c:03, ethertype IPv4 (0x0800), length 66: 2.2.2.50.51965 > 2.2.2.100.80: Flags [S], seq 2304988182, win 65535, options [mss 4034,nop,wscale 8,nop,nop,sackOK], length 0
+
+18:26:38.833102 00:06:c4:94:1c:03 > 00:06:c4:94:1c:0f, ethertype IPv4 (0x0800), length 66: 2.2.2.50.654 > 2.2.2.100.80: Flags [S], seq 2304988182, win 65535, options [mss 4034,nop,wscale 8,nop,nop,sackOK], length 0
+
+18:26:38.833189 8c:b0:e9:50:e0:c2 > 00:06:c4:94:1c:0f, ethertype IPv4 (0x0800), length 66: 2.2.2.50.49813 > 2.2.2.100.80: Flags [S], seq 1110747339, win 65535, options [mss 4034,nop,wscale 8,nop,nop,sackOK], length 0
+
+
+18:26:38.842805 00:06:c4:94:1c:0f > 00:06:c4:94:1c:03, ethertype IPv4 (0x0800), length 66: 2.2.2.100.80 > 2.2.2.50.654: Flags [S.], seq 843590771, ack 2304988183, win 5840, options [mss 1460,nop,nop,sackOK,nop,wscale 8], length 0
+
+18:26:38.842872 00:06:c4:94:1c:03 > 8c:b0:e9:50:e0:c2, ethertype IPv4 (0x0800), length 66: 2.2.2.100.80 > 2.2.2.50.51965: Flags [S.], seq 843590771, ack 2304988183, win 5840, options [mss 1460,nop,nop,sackOK,nop,wscale 8], length 0
+18:26:38.842878 00:06:c4:94:1c:0f > 8c:b0:e9:50:e0:c2, ethertype IPv4 (0x0800), length 66: 2.2.2.100.80 > 2.2.2.50.51965: Flags [S.], seq 843590771, ack 2304988183, win 5840, options [mss 1460,nop,nop,sackOK,nop,wscale 8], length 0
+```
