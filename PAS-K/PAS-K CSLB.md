@@ -1,5 +1,6 @@
-# 주의
-- slb vip로 구성하는 경우 real 
+# 참고
+- 동일한 필터를 가진 CSLB가 여러 개인 경우
+	- 캐시서버에서 무언가 바뀌어
 
 # pas-k에 nat 테이블 넣는 방법
 - nat 테이블을 넣어야 하는 이유
@@ -38,4 +39,13 @@ target     prot opt source               destination
 MASQUERADE  all  --  anywhere            !br0                  connmark match  0x726
 SNAT       tcp  --  anywhere             anywhere             to::600-700
 ```
+
+- pas-k fast proccessor 해제
+	- pask를 서버로 쓸 때는 fast proccessor를 해제해야 한다
+		- fast proccessor는 pask에서 속도를 빠르게 하기 위해 패킷을 튜닝하는 방식
+			- 해제하지 않으면 pas-k에서 cslb 처리를 정상적으로 못함
+	- `echo 0 >/proc/sys/net/ipv4/piolb/fast_process(init_net에서)`
+
+
+
 
