@@ -603,44 +603,50 @@ tcp  1.1.1.50:64907 6.6.6.101:80 - 6.6.6.100:8080 1.1.1.50:64907 slb.test:3 [R]f
 ```
 
 # trasparent 구성
-- fw1
+- int_1 (백업)
+	- 00:06:c4:84:10:23
+	- ext 장비가 직접 장비 mac으로 전송
 ```
-fw1# show mac
+int_1(config)# tcpdump -nei fw1 icmp
+tcpdump: verbose output suppressed, use -v or -vv for full protocol decode
+listening on fw1, link-type EN10MB (Ethernet), capture size 65535 bytes
+08:28:19.404294 00:06:c4:94:1c:0f > 00:06:c4:84:10:23, ethertype IPv4 (0x0800), length 234: 2.2.2.1 > 6.6.6.250: ICMP echo request, id 20727, seq 256, length 200
+08:28:19.649933 00:06:c4:84:10:23 > 00:06:c4:94:1c:0f, ethertype IPv4 (0x0800), length 234: 2.2.2.10 > 1.1.1.250: ICMP echo request, id 25981, seq 256, length 200
+```
+
+- 문제
+	- vrrp vip 대역이 같아서 (2.2.2.250,251) vmac에 대해서 2.2.2.251(internal)로 학습하고 있음
+	- failover 안됨
+```
+ext_1(config)# sho arp
 
 ================================================================================
-  MAC
+  ARP
  ------------------------------------------------------------------------------
-    Ageing Time          : 300
-    Ageing Dest MAC Hit  : disable
-    Flapping-Detection   : disable
+    Timeout (sec)               : 1200
+    Locktime (1/100 sec)        : 100
+    Proxy Arp Status            : disable
+    Proxy Arp Delay (1/100 sec) : 0
 
-    Static               :
+    Static
+       Ndomain IP Address MAC Address Interface Description
+       0
+       1
 
     Dynamic
-       Port  Mac-Addr          Vid   Type
-       ge11  00:00:5e:00:01:01 10    forward
-             00:06:c4:94:1c:03 10    forward
-             00:06:c4:94:1c:0f 10    forward
+       Ndomain IP Address MAC Address       Interface State
+       0
+       1       1.1.1.50   8c:b0:e9:50:e0:c2 ext       STALE
+               2.2.2.2    00:06:c4:94:1c:03 fw1       STALE
+               2.2.2.10   00:06:c4:84:10:23 fw1       REACHABLE
+               2.2.2.11   00:06:c4:84:09:b7 fw1       STALE
+               2.2.2.20   00:00:5e:00:01:01 fw1       REACHABLE
+               2.2.2.251  00:00:5e:00:01:01 fw1       STALE
+               3.3.3.2    00:06:c4:94:1c:03 fw2       STALE
+               3.3.3.10   00:06:c4:84:10:23 fw2       REACHABLE
+               3.3.3.11   00:06:c4:84:0a:63 fw2       STALE
+               3.3.3.20   00:06:c4:84:10:27 fw2       STALE
+               3.3.3.251  00:00:5e:00:01:01 fw2       STALE
 ================================================================================
 ```
 
-- fw2
-```
-fw2# show mac
-
-================================================================================
-  MAC
- ------------------------------------------------------------------------------
-    Ageing Time          : 300
-
-    Static               :
-
-    Dynamic
-       Port  Mac-Addr          Vid   Type
-       ge11  00:06:c4:94:1c:03 10    forward
-             00:06:c4:94:1c:0f 10    forward
-       ge12  00:00:5e:00:01:01 10    forward
-             00:06:c4:84:10:23 10    forward
-             00:06:c4:84:10:27 10    forward
-================================================================================
-```
