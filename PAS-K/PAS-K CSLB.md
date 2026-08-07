@@ -321,9 +321,6 @@ listening on test, link-type EN10MB (Ethernet), capture size 65535 bytes
 
 18:26:38.833102 00:06:c4:94:1c:03 > 00:06:c4:94:1c:0f, ethertype IPv4 (0x0800), length 66: 2.2.2.50.654 > 2.2.2.100.80: Flags [S], seq 2304988182, win 65535, options [mss 4034,nop,wscale 8,nop,nop,sackOK], length 0
 
-18:26:38.833189 8c:b0:e9:50:e0:c2 > 00:06:c4:94:1c:0f, ethertype IPv4 (0x0800), length 66: 2.2.2.50.49813 > 2.2.2.100.80: Flags [S], seq 1110747339, win 65535, options [mss 4034,nop,wscale 8,nop,nop,sackOK], length 0
-
-
 18:26:38.842805 00:06:c4:94:1c:0f > 00:06:c4:94:1c:03, ethertype IPv4 (0x0800), length 66: 2.2.2.100.80 > 2.2.2.50.654: Flags [S.], seq 843590771, ack 2304988183, win 5840, options [mss 1460,nop,nop,sackOK,nop,wscale 8], length 0
 
 18:26:38.842872 00:06:c4:94:1c:03 > 8c:b0:e9:50:e0:c2, ethertype IPv4 (0x0800), length 66: 2.2.2.100.80 > 2.2.2.50.51965: Flags [S.], seq 843590771, ack 2304988183, win 5840, options [mss 1460,nop,nop,sackOK,nop,wscale 8], length 0
@@ -340,5 +337,14 @@ cslb 필터에 매칭되어 설정된 real(캐시서버mac)으로 전송
 
 캐시서버에서는 설정한 iptlabe 규칙에 따라 sport를 654로 변경 후 다시 l4에게 전송
 00:06:c4:94:1c:03 > 00:06:c4:94:1c:0f, ethertype IPv4 (0x0800), length 66: 2.2.2.50.654 > 2.2.2.100.80
-=>이 때 pask는 entry를 
+=>이 때 pask는 entry를 보고 신규 세션으로 생각
+smac이 설정된 real mac과 동일하기 때문에 cslb reverse로 처리
+
+이후 pask의 lb서비스 우선순위에 따라 2.2.2.100:80이 slb 필터에 매칭되어
+slb 처리(dnat) =>이 시점에 reverse entry 생성
+
+서버로 처리된 후 다시 pask로 돌아오게 되면서 entry를 보고 SLB+cslb 리버스 트래픽인 것을 확인
+->nat해서 
+
+2.2.2.50:679   2.2.2.100:80 - 2.2.2.101:8080 2.2.2.50:679   slb.test:2  [R]cslb.test:1
 ```
