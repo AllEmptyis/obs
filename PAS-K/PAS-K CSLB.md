@@ -311,7 +311,6 @@ tcp  2.2.2.50:656   2.2.2.100:80 - 2.2.2.101:8080 2.2.2.50:656   slb.test:2  [R]
 - 덤프 확인
 	- 1c:0f : pask
 	- 1c:03: 캐시 서버
-	- 
 ```
 switch(config)# tcpdump -nei test host 2.2.2.100
 tcpdump: verbose output suppressed, use -v or -vv for full protocol decode
@@ -329,4 +328,17 @@ listening on test, link-type EN10MB (Ethernet), capture size 65535 bytes
 
 18:26:38.842872 00:06:c4:94:1c:03 > 8c:b0:e9:50:e0:c2, ethertype IPv4 (0x0800), length 66: 2.2.2.100.80 > 2.2.2.50.51965: Flags [S.], seq 843590771, ack 2304988183, win 5840, options [mss 1460,nop,nop,sackOK,nop,wscale 8], length 0
 18:26:38.842878 00:06:c4:94:1c:0f > 8c:b0:e9:50:e0:c2, ethertype IPv4 (0x0800), length 66: 2.2.2.100.80 > 2.2.2.50.51965: Flags [S.], seq 843590771, ack 2304988183, win 5840, options [mss 1460,nop,nop,sackOK,nop,wscale 8], length 0
+```
+
+- 동작 과정 요약
+```
+pask가 호스트로부터 요청 받음 > 
+
+cslb 필터에 매칭되어 설정된 real(캐시서버mac)으로 전송
+00:06:c4:94:1c:0f > 00:06:c4:94:1c:03, ethertype IPv4 (0x0800), length 66: 2.2.2.50.51965 > 2.2.2.100.80
+->2.2.2.100 목적지 mac을 real mac으로 변경
+
+캐시서버에서는 설정한 iptlabe 규칙에 따라 sport를 654로 변경 후 다시 l4에게 전송
+00:06:c4:94:1c:03 > 00:06:c4:94:1c:0f, ethertype IPv4 (0x0800), length 66: 2.2.2.50.654 > 2.2.2.100.80
+=>이 때 pask는 entry를 
 ```
