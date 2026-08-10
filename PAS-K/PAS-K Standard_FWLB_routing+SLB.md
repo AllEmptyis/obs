@@ -426,8 +426,9 @@ HEALTH-CHECK Configuration
 ```
 
 - FWLB
-	- internal 장비는 include 필터에 sip를 반드시 넣어야 함 - 왜 안넣었는데 정상 동작하는지는 추가 확인 필요
-		- 이유: internal 장비는 sip와 
+	- **internal 장비는 include 필터에 sip를 반드시 넣어야 함 - 왜 안넣었는데 정상 동작하는지는 추가 확인 필요**
+		- 이유: internal 장비는 필터의 sip 와 실제 패킷의 dip를 보고 매칭될 때 리버스 엔트리 생성, 그 후 엔트리를 보고 FW 경로 결정
+		  external 장비는 반대
 ```
 int_1# show info fwlb int
 
