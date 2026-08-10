@@ -426,6 +426,8 @@ HEALTH-CHECK Configuration
 ```
 
 - FWLB
+	- internal 장비는 include 필터에 sip를 반드시 넣어야 함 - 왜 안넣었는데 정상 동작하는지는 추가 확인 필요
+		- 이유: internal 장비는 sip와 
 ```
 int_1# show info fwlb int
 
