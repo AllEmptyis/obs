@@ -134,7 +134,7 @@
             }
           }
         ],
-        "currentTab": 8
+        "currentTab": 2
       }
     ],
     "direction": "vertical"
@@ -257,7 +257,7 @@
             "state": {
               "type": "outline",
               "state": {
-                "file": "Linux/nmcli 명령어.md",
+                "file": "2026_todo/2026-W33.md",
                 "followCursor": true,
                 "showSearch": true,
                 "searchQuery": ""
@@ -308,8 +308,9 @@
       "periodic-notes:Open this week": false
     }
   },
-  "active": "dde2bbbb9de8909f",
+  "active": "4538dc194fdcb014",
   "lastOpenFiles": [
+    "Linux/nmcli 명령어.md",
     "PAS-K/PAS-K Standard_FWLB_virtual bridge.md",
     "PAS-K/PAS-K Standard_SLB.md",
     "PAS-K/PAS-K Standard_FWLB_routing+SLB.md",
@@ -344,7 +345,6 @@
     "첨부파일/image.png",
     "tcpfragment.md",
     "PAS-K/PAS-K 서버 부하 분산 NAT 모드.md",
-    "PAS-K/Port Boundary.md",
     "image.png",
     "HCI",
     "무제.base",
