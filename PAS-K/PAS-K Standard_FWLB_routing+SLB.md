@@ -611,7 +611,7 @@ tcp  1.1.1.50:64907 6.6.6.101:80 - 6.6.6.100:8080 1.1.1.50:64907 slb.test:3 [R]f
 
 - 주의
 	- H/C TIP는 vrrp vip가 아닌 각 인터페이스 ip로 설정
-		- FWLB H/C은 H/C에 설정된 tip의 ip와 real의 mac으로 전송
+		- **FWLB H/C은 H/C에 설정된 tip의 ip와 real의 mac으로 전송**
 		- FW가 라우팅을 해주는 구성에서는 real의 mac이 FW이기 때문에 상관없지만, 
 		  브리지 구성에서는 dmac이 FW의 real mac으로 설정됨
 		  h/c는 라우팅 테이블을 보고 하는 것이 아니기 때문에 라우팅 테이블에는 vrrp vip의 mac이 vmac으로 잡혀있지만
@@ -622,3 +622,8 @@ tcp  1.1.1.50:64907 6.6.6.101:80 - 6.6.6.100:8080 1.1.1.50:64907 slb.test:3 [R]f
 
 - vrrp advertisement 광고 규칙
 	- advertisement 패킷은 마스터가 전송 (백업으로 패킷이 들어와도 vrrp 응답은 마스터가 응답)
+
+## 구성
+![[image-8.png|751]]
+
+
