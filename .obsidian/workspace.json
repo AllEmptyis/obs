@@ -50,18 +50,6 @@
             }
           },
           {
-            "id": "09a63196dcf501d1",
-            "type": "leaf",
-            "state": {
-              "type": "release-notes",
-              "state": {
-                "currentVersion": "1.13.6"
-              },
-              "icon": "lucide-book-up",
-              "title": "릴리즈 노트 1.13.6"
-            }
-          },
-          {
             "id": "d1f972bbeb654375",
             "type": "leaf",
             "state": {
@@ -132,7 +120,7 @@
             }
           }
         ],
-        "currentTab": 3
+        "currentTab": 2
       }
     ],
     "direction": "vertical"
@@ -255,6 +243,7 @@
             "state": {
               "type": "outline",
               "state": {
+                "file": "2026_todo/2026-W33.md",
                 "followCursor": true,
                 "showSearch": true,
                 "searchQuery": ""
@@ -305,11 +294,11 @@
       "periodic-notes:Open this week": false
     }
   },
-  "active": "09a63196dcf501d1",
+  "active": "4538dc194fdcb014",
   "lastOpenFiles": [
+    "PAS-K/PAS-K CSLB.md",
     "PAS-K/PAS-K Standard_FWLB_routing+SLB.md",
     "첨부파일/image-8.png",
-    "PAS-K/PAS-K CSLB.md",
     "PAS-K/PAS-K Standard_FWLB_virtual bridge.md",
     "기타/패스워드 초기화 방법 정리.md",
     "2026_todo/2026-W33.md",
