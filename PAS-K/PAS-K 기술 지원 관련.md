@@ -133,4 +133,10 @@ Aug 11 22:25:19 KST (none) kernel: [K2-M04/SYS:HISTORY] Switching port link UP!!
 - 범주- 사이트명 있는 경우 선택
 - 버전, S/N 기재
 - 템플릿에서 필요한 내용 위주 기재
+	- -단순 A/S 인 경우 템플릿 문의-H/W
+	- 그 외에는 S/W
 - 로그 설명을 쓸 필요 없음
+
+- SFR 이슈는 일감, case open 둘 다 장애로 처리
+	- 일감은 H/W 문의 말고 S/W 문의로 등록
+	- SFR 이슈는 증적 필요하여 이렇게 처리함
