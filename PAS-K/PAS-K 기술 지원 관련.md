@@ -38,6 +38,9 @@
 - `ipmitool`
 	- H/W 이상이 있는 경우 해당 경로에 로그가 기록됨 (안나올 수도 있음)
 
+- `ps`
+	- 기술지원도우미 취득 당시 OS에서 ps 찍은 것
+	- 참고: pask는 cpu 부하가 90% 이상인 경우 자동으로 RSS top 로그 찍음, 그 외에는 ps 로그를 참조.
 # 모델
 k3 :앞자리 홀수 (8620 예외)
 k2 : 앞자리 짝수
@@ -118,4 +121,16 @@ Aug 11 22:25:19 KST (none) kernel: [K2-M04/SYS:HISTORY] Switching port link UP!!
 2026/07/31 04:24:30 sfu (warning) ONMD[996]: Port up notification received for port sy2.(flags : up 1, running 1) 
 ```
 
-- SFU와 AEU가 따로 재부팅 발생할 수 ㅇ
+- SFU와 AEU가 따로 재부팅 발생할 수 있음
+	- SFU만 재기동 된 경우 - cli상으로는 정상이나 link가 다운됨
+	- aeu만 재기동 된 경우 - cli상 부팅 로그가 올라온다
+
+
+
+# 일감 작성
+- K2 사이트
+- 담당자- 커널1팀
+- 범주- 사이트명 있는 경우 선택
+- 버전, S/N 기재
+- 템플릿에서 필요한 내용 위주 기재
+- 로그 설명을 쓸 필요 없음
