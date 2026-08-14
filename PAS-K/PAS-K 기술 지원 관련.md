@@ -5,13 +5,17 @@
 	- SFU가 생성하는 로그
 	- 그 외 로그는 모두 aeu가 생성한 것
 
-- /opt/k2/var/log/syslog : system 동작에 대한 전반적인 이벤트가 포함되어 있는 로그, 로그 분석 시 1순위로 보게 됨
-	- 원래는 데몬별로 따로 로그 남김, syslog는 전부 합쳐서 출력
-
+- 로그 설명
 ```
+- /opt/k2/var/log/syslog : system 동작에 대한 전반적인 이벤트가 포함되어 있는 로그, 로그 분석 시 1순위로 보게 됨
+	- 원래는 데몬별로 따로 로그 남김, 
+	  syslog는 전부 합쳐서 출력
+	  
 - /opt/k2/var/log/messages : 실제 장비에서 show log로 확인이 되는 로그 정보, syslog에 비해 생략된 부분이 많음
 - /opt/k2/var/log/clicmds : 사용자가 CLI 에서 커맨드 실행한 내역이 기록된 로그, 로그뒤에 보이는 초단위 시간은 해당 명령어가 실행되기까지의 시간을 의미
 - /opt/k2/var/log/k2/amss.keepsfu.log : AEU -> SFU에 대한 H/C 상태 및 Fast Recovery 이벤트가 기록된 로그
+  - H/C fail 기준은 icmp 3회, 
+  
 - /opt/k2/var/log/k2/amss.statistics.log : 1분단위로 통계데몬 실행 결과가 기록된 로그, 해당 로그 확인으로 AEU 정상 동작 여부 확인 가능
 	- pask aeu 자체적으로 실행하는 통계 데몬. (게시판 통계 등)
 - /opt/k2/var/log/k2/amss.log : 설정 적용 시 설정 데몬에 대한 실행 결과가 기록된 로그, 설정 오류 등이 난다면 해당 로그에서 상세 확인이 가능
@@ -19,12 +23,20 @@
 - /opt/k2/var/log/k2/amss.firmware.log : OS 업데이트 이벤트에 대한 진행 사항이 기록된 로그, 보안적합성 모드라서 상세 OS 버전 확인이 불가할 경우 해당 로그에서 확인이 가능
 	- pask는 보안적합성모드, 일반모드 두 가지 지원
 ```
+
+- `/opt/k2/sfu.log`
+	- sfu 로그를 aeu가 받아오는 것
+	- 통신 상태 등에 따라 기록이 누락될 수 있음
+
+- `amss.statistics.log`
+	- AEU가 hang 걸렸는지 확인 가능
+
+- `ipmitool`
+	- H/W 이상이 있는 경우 해당 경로에 로그가 기록됨 (안나올 수도 있음)
+
 # 모델
-k3 :앞자리 홀수
-8620 예외
-
+k3 :앞자리 홀수 (8620 예외)
 k2 : 앞자리 짝수
-
 k4 :신모델
 
 # SFR(SFU Fast Recovery)
@@ -74,3 +86,6 @@ Aug 11 22:25:18 KST (none) kernel: [K2-M04/SYS:HISTORY] Switching port link UP!!
 Aug 11 22:25:18 KST (none) kernel: [K2-M04/SYS:HISTORY] Switching port link UP!! (port="ge19")
 Aug 11 22:25:19 KST (none) kernel: [K2-M04/SYS:HISTORY] Switching port link UP!! (port="ge24"
 ```
+
+- SFU는 재부팅 되면서 시간이 UTC로 변경, AEU는 KST 유지
+- 
