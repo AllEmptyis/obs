@@ -119,8 +119,7 @@
               "title": "패스워드 초기화 방법 정리"
             }
           }
-        ],
-        "currentTab": 1
+        ]
       }
     ],
     "direction": "vertical"
@@ -243,7 +242,7 @@
             "state": {
               "type": "outline",
               "state": {
-                "file": "2026_todo/2026-W33.md",
+                "file": "PAS-K/PAS-K 기술 지원 관련.md",
                 "followCursor": true,
                 "showSearch": true,
                 "searchQuery": ""
@@ -294,10 +293,10 @@
       "periodic-notes:Open this week": false
     }
   },
-  "active": "4538dc194fdcb014",
+  "active": "c5103d94997e0acf",
   "lastOpenFiles": [
-    "PAS-K/PAS-K 기술 지원 관련.md",
     "2026_todo/2026-W33.md",
+    "PAS-K/PAS-K 기술 지원 관련.md",
     "HCI/디스크 버스 관련.md",
     "HCI/HCI.md",
     "PAS-K/PAS-K CSLB.md",
