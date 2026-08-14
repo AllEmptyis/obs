@@ -12,12 +12,16 @@
 	  syslog는 전부 합쳐서 출력
 	  
 - /opt/k2/var/log/messages : 실제 장비에서 show log로 확인이 되는 로그 정보, syslog에 비해 생략된 부분이 많음
+
 - /opt/k2/var/log/clicmds : 사용자가 CLI 에서 커맨드 실행한 내역이 기록된 로그, 로그뒤에 보이는 초단위 시간은 해당 명령어가 실행되기까지의 시간을 의미
+
 - /opt/k2/var/log/k2/amss.keepsfu.log : AEU -> SFU에 대한 H/C 상태 및 Fast Recovery 이벤트가 기록된 로그
-  - H/C fail 기준은 icmp 3회, 
+  - H/C fail 기준은 icmp 3회, telnet 3회 그 이후 status bad로 변경
+    이러한 로그가 없는 경우 SFR 아님
   
 - /opt/k2/var/log/k2/amss.statistics.log : 1분단위로 통계데몬 실행 결과가 기록된 로그, 해당 로그 확인으로 AEU 정상 동작 여부 확인 가능
 	- pask aeu 자체적으로 실행하는 통계 데몬. (게시판 통계 등)
+
 - /opt/k2/var/log/k2/amss.log : 설정 적용 시 설정 데몬에 대한 실행 결과가 기록된 로그, 설정 오류 등이 난다면 해당 로그에서 상세 확인이 가능
 
 - /opt/k2/var/log/k2/amss.firmware.log : OS 업데이트 이벤트에 대한 진행 사항이 기록된 로그, 보안적합성 모드라서 상세 OS 버전 확인이 불가할 경우 해당 로그에서 확인이 가능
@@ -88,4 +92,30 @@ Aug 11 22:25:19 KST (none) kernel: [K2-M04/SYS:HISTORY] Switching port link UP!!
 ```
 
 - SFU는 재부팅 되면서 시간이 UTC로 변경, AEU는 KST 유지
-- 
+- SFU는 재부팅 후에 AEU에 NTP를 맞추게 되는데 재부팅 되는 동안 시간 오차가 생길 수 있음
+	- sfu.log 확인
+```
+2026/07/31 04:26:05 sfu (notice) keepaeu[1048]: [K3-K3L01ADC/SYS:HISTORY] Keepaeud port state (port="sy5(32)",state="FORWARDING")
+2026/07/31 04:26:05 sfu (notice) keepaeu[1048]: [K3-K3L01ADC/SYS:HISTORY] Keepaeud port state (port="sy6(33)",state="FORWARDING")
+2026/07/31 04:26:15 sfu (notice) login[2711]: [K3-K3L01ADC/USER:HISTORY] Log In (user="root", from="203.0.113.1")
+2026/07/31 04:26:15 sfu (warning) IMISH[2711]: [USER:root]Enabled privilege mode 
+2026/07/31 04:26:15 sfu (notice) IMISH[2711]: [K3-K3L01ADC/CONF:CONFIG] Enter Force configuration Mode (user="root",by="vty")
+2026/07/31 04:26:24 sfu (notice) ntp_client_daemon: [K3-K3L01ADC/SYS:HISTORY] NTP Client (msg="Time adjusted offset -1708.482671 sec ")
+//시간 보정 확인
+2026/07/31 04:26:40 sfu (debug) xinetd[1026]: [K3-K3L01ADC/SYS:HISTORY] Xinetd Debug (msg="[server_end] telnet server ends")
+2026/07/31 04:36:25 sfu (notice) ntp_client_daemon: [K3-K3L01ADC/SYS:HISTORY] NTP Client (msg="Time adjusted offset -0.046819 sec ")
+```
+
+- sy 인터페이스
+	- aeu와 sfu간 통신하는 인터페이스
+	- 해당 포트가 link up 될 때 sfu가 부팅 되어 연동이 다시 시작된 것
+```
+2026/07/31 04:11:40 sfu (notice) ntp_client_daemon: [K3-K3L01ADC/SYS:HISTORY] NTP Client (msg="Time adjusted offset -0.027462 sec ")
+2026/07/31 04:21:40 sfu (notice) ntp_client_daemon: [K3-K3L01ADC/SYS:HISTORY] NTP Client (msg="Time adjusted offset -0.027044 sec ")
+
+2026/07/31 04:24:30 sfu (err) kernel: [K3-K3L01ADC/SYS:HISTORY] Switching port link UP!! (port="sy2")
+2026/07/31 04:24:30 sfu (warning) RMON[965]: Port up notification received for port sy2 <---확인
+2026/07/31 04:24:30 sfu (warning) ONMD[996]: Port up notification received for port sy2.(flags : up 1, running 1) 
+```
+
+- SFU와 AEU가 따로 재부팅 발생할 수 ㅇ
