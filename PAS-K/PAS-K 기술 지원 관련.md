@@ -143,4 +143,5 @@ Aug 11 22:25:19 KST (none) kernel: [K2-M04/SYS:HISTORY] Switching port link UP!!
 
 - 기능 요구
 	- 기능 요구의 경우 일정 확인이 중요 (몇 분기까지 개발 완료되어야 하는지)
-	- 
+	- 최대한 자세하게 기록
+	- 사이트와 연구소 간 일정 조율 필요
