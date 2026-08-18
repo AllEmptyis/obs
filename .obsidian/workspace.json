@@ -105,8 +105,7 @@
               "title": "PAS-K Standard_FWLB_virtual bridge"
             }
           }
-        ],
-        "currentTab": 2
+        ]
       }
     ],
     "direction": "vertical"
@@ -229,7 +228,7 @@
             "state": {
               "type": "outline",
               "state": {
-                "file": "2026_todo/2026-W34.md",
+                "file": "PAS-K/PAS-K 기술 지원 관련.md",
                 "followCursor": true,
                 "showSearch": true,
                 "searchQuery": ""
@@ -280,10 +279,10 @@
       "periodic-notes:Open this week": false
     }
   },
-  "active": "5f028bbaacb34f42",
+  "active": "bd2ecff549304c32",
   "lastOpenFiles": [
-    "2026_todo/2026-W33.md",
     "2026_todo/2026-W34.md",
+    "2026_todo/2026-W33.md",
     "PAS-K/PAS-K CSLB.md",
     "HCI/스토리지.md",
     "PAS-K/PAS-K Standard_FWLB_virtual bridge.md",

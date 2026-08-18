@@ -140,3 +140,7 @@ Aug 11 22:25:19 KST (none) kernel: [K2-M04/SYS:HISTORY] Switching port link UP!!
 - SFR 이슈는 일감, case open 둘 다 장애로 처리
 	- 일감은 H/W 문의 말고 S/W 문의로 등록
 	- SFR 이슈는 증적 필요하여 이렇게 처리함
+
+- 기능 요구
+	- 기능 요구의 경우 일정 확인이 중요 (몇 분기까지 개발 완료되어야 하는지)
+	- 
