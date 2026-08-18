@@ -36,6 +36,18 @@
             }
           },
           {
+            "id": "24c170c6610aef07",
+            "type": "leaf",
+            "state": {
+              "type": "release-notes",
+              "state": {
+                "currentVersion": "1.13.7"
+              },
+              "icon": "lucide-book-up",
+              "title": "릴리즈 노트 1.13.7"
+            }
+          },
+          {
             "id": "a4ccbfd85549a823",
             "type": "leaf",
             "state": {
@@ -120,7 +132,7 @@
             }
           }
         ],
-        "currentTab": 1
+        "currentTab": 2
       }
     ],
     "direction": "vertical"
@@ -243,7 +255,6 @@
             "state": {
               "type": "outline",
               "state": {
-                "file": "2026_todo/2026-W33.md",
                 "followCursor": true,
                 "showSearch": true,
                 "searchQuery": ""
@@ -294,7 +305,7 @@
       "periodic-notes:Open this week": false
     }
   },
-  "active": "4538dc194fdcb014",
+  "active": "24c170c6610aef07",
   "lastOpenFiles": [
     "PAS-K/PAS-K 기술 지원 관련.md",
     "2026_todo/2026-W33.md",
