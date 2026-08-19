@@ -105,8 +105,7 @@
               "title": "PAS-K Standard_SLB"
             }
           }
-        ],
-        "currentTab": 5
+        ]
       }
     ],
     "direction": "vertical"
@@ -229,7 +228,7 @@
             "state": {
               "type": "outline",
               "state": {
-                "file": "PAS-K/PAS-K Standard_FWLB_routing+SLB.md",
+                "file": "PAS-K/PAS-K 기술 지원 관련.md",
                 "followCursor": true,
                 "showSearch": true,
                 "searchQuery": ""
@@ -280,11 +279,11 @@
       "periodic-notes:Open this week": false
     }
   },
-  "active": "bd2ecff549304c32",
+  "active": "c5103d94997e0acf",
   "lastOpenFiles": [
+    "PAS-K/PAS-K Standard_FWLB_routing+SLB.md",
     "PAS-K/PAS-K Standard_FWLB_virtual bridge.md",
     "PAS-K/PAS-K Standard_SLB.md",
-    "PAS-K/PAS-K Standard_FWLB_routing+SLB.md",
     "PAS-K/PAS-K 기술 지원 관련.md",
     "2026_todo/2026-W34.md",
     "2026_todo/2026-W33.md",

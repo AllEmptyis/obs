@@ -128,8 +128,66 @@ Aug 11 22:25:19 KST (none) kernel: [K2-M04/SYS:HISTORY] Switching port link UP!!
 	- SFU만 재기동 된 경우 - cli상으로는 정상이나 link가 다운됨
 	- aeu만 재기동 된 경우 - cli상 부팅 로그가 올라온다
 
+## mbc
+- AEU 재부팅 로그
+	- PI is unhealty: AEU와 SFU간 물리적인 통신 인터페이스 자체가 문제 생긴 것
+```
+2026/08/10 00:50:01 SABIIDLB4824B_08FM (info) rsyslogd: [origin software="rsyslogd" swVersion="4.6.4" x-pid="8491" x-info="http://www.rsyslog.com"] rsyslogd was HUPed, type 'lightweight'.
+2026/08/10 04:24:07 SABIIDLB4824B_08FM (err) hwmon: PI is unhealthy (ixg4(3) )
+2026/08/10 04:24:07 SABIIDLB4824B_08FM (notice) hwmon: state_check (AE, 1)
+2026/08/10 04:24:16 SABIIDLB4824B_08FM (err) hwmon: PI is unhealthy (ixg4(4) )
+2026/08/10 04:24:26 SABIIDLB4824B_08FM (err) hwmon: PI is unhealthy (ixg4(5) )
+2026/08/10 04:24:37 SABIIDLB4824B_08FM (err) hwmon: PI is unhealthy (ixg4(6) )
+2026/08/10 04:24:47 SABIIDLB4824B_08FM (err) hwmon: PI is unhealthy (ixg4(7) )
+2026/08/10 04:24:57 SABIIDLB4824B_08FM (err) hwmon: PI is unhealthy (ixg4(8) )
+2026/08/10 04:25:07 SABIIDLB4824B_08FM (err) hwmon: PI is unhealthy (ixg4(9) )
+2026/08/10 04:25:17 SABIIDLB4824B_08FM (err) hwmon: PI is unhealthy (ixg4(10) )
+2026/08/10 04:25:27 SABIIDLB4824B_08FM (err) hwmon: PI is unhealthy (ixg4(11) )
+2026/08/10 04:25:37 SABIIDLB4824B_08FM (err) hwmon: PI is unhealthy (ixg4(12) )
+```
 
+- AEU 커널 패닉으로 인해 SFU도 같이 재부팅 시킨 것
+```
+2026/08/10 04:28:40 SABIIDLB4824B_08FM (notice) [amss.driver.reboot_driver] reboot sfu
+2026/08/10 04:28:40 SABIIDLB4824B_08FM (err) hwmon: failed to read socket
+2026/08/10 04:28:40 SABIIDLB4824B_08FM (notice) [amss.driver.reboot_driver] reboot aeu
+2026/08/10 04:28:40 SABIIDLB4824B_08FM (notice) [amss.driver.reboot_driver] Soft reset booting!
+```
 
+- SFU 로그 확인
+	- S/W reboot rea
+```
+Aug 09 19:31:34 UTC (none) syslogd: sendto: Network is unreachable
+Aug 09 19:31:34 UTC (none) sfu: (Switch Log) Boot Time: 2026/08/ 9 19:31:34 UTC
+Aug 09 19:31:34 UTC (none) kernel: klogd started: BusyBox v1.2.1 (2011.06.17-01:36+0000)
+Aug 09 19:31:34 UTC (none) kernel: Linux version 2.6.27.39 (releaser@ss-comp-k2) (gcc version 4.3.2 (Wind River Linux Sourcery G++ 4.3-237) ) #PLOS-PASK-SFU-V30.9.5.0.0-rc0 Wed Oct 18 19:01:16 KST 2023
+Aug 09 19:31:34 UTC (none) kernel: Kernel command line: 
+Aug 09 19:31:34 UTC (none) kernel: RTC get time 2026.8.9 19:31.24.-2142787632
+Aug 09 19:31:34 UTC (none) kernel: registering PCI controller with io_map_base unset
+Aug 09 19:31:34 UTC (none) kernel: registering PCI controller with io_map_base unset
+Aug 09 19:31:34 UTC (none) kernel: Physically mapped flash: CFI does not contain boot bank location. Assuming top.
+Aug 09 19:31:34 UTC (none) kernel: number of CFI chips: 1
+Aug 09 19:31:34 UTC (none) kernel: cfi_cmdset_0002: Disabling erase-suspend-program due to code brokenness.
+Aug 09 19:31:34 UTC (none) kernel: Flash device: 0x4000000 at 0x20000000
+Aug 09 19:31:34 UTC (none) kernel: ically mapped flash":
+Aug 09 19:31:34 UTC (none) kernel: 0x00000000-0x000a0000 : "boot"
+Aug 09 19:31:34 UTC (none) kernel: 0x000a0000-0x028a0000 : "os"
+Aug 09 19:31:34 UTC (none) kernel: 0x028a0000-0x028c0000 : "nvram"
+Aug 09 19:31:34 UTC (none) kernel: 0x028c0000-0x028e0000 : "xqc_env"
+Aug 09 19:31:34 UTC (none) kernel: 0x028e0000-0x02920000 : "nmi_log"
+Aug 09 19:31:34 UTC (none) kernel: 0x02920000-0x03640000 : "cfg"
+Aug 09 19:31:34 UTC (none) kernel: 0x03640000-0x04000000 : "backup"
+Aug 09 19:31:34 UTC (none) kernel: slram: not enough parameters.
+
+Aug 09 19:31:34 UTC (none) kernel: (Switch Log) reboot reason: S/W Reboot Command
+
+Aug 09 19:31:34 UTC (none) kernel: CONFIG_NF_CT_ACCT is deprecated and will be removed soon. Plase use
+Aug 09 19:31:34 UTC (none) kernel: nf_conntrack.acct=1 kernel paramater, acct=1 nf_conntrack module option or
+Aug 09 19:31:34 UTC (none) kernel: sysctl net.netfilter.nf_conntrack_acct=1 to enable it.
+```
+- AEU-> SFU 헬스체크도 있듯이 SFU>AEU 헬스체크도 존재함
+	- 마찬가지로 일정 수치 이상 실패하면 AEU 복구 재부팅 가능
+	- 
 # 일감 작성
 - K2 사이트
 - 담당자- 커널1팀
