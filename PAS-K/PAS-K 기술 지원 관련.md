@@ -41,6 +41,9 @@
 - `ps`
 	- 기술지원도우미 취득 당시 OS에서 ps 찍은 것
 	- 참고: pask는 cpu 부하가 90% 이상인 경우 자동으로 RSS top 로그 찍음, 그 외에는 ps 로그를 참조.
+
+- `/tmp/tech-assist-system-info`
+	- running config 등 확인 전부 확인 가능
 # 모델
 k3 :앞자리 홀수 (8620 예외)
 k2 : 앞자리 짝수
