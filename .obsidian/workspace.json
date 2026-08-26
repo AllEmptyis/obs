@@ -56,7 +56,7 @@
               "type": "markdown",
               "state": {
                 "file": "PAS-K/PAS-K Standard_FWLB_virtual bridge.md",
-                "mode": "source",
+                "mode": "preview",
                 "source": false
               },
               "icon": "lucide-file",
@@ -120,7 +120,7 @@
             }
           }
         ],
-        "currentTab": 1
+        "currentTab": 3
       }
     ],
     "direction": "vertical"
@@ -243,7 +243,7 @@
             "state": {
               "type": "outline",
               "state": {
-                "file": "2026_todo/2026-W35.md",
+                "file": "PAS-K/PAS-K Standard_FWLB_virtual bridge.md",
                 "followCursor": true,
                 "showSearch": true,
                 "searchQuery": ""
@@ -294,10 +294,10 @@
       "periodic-notes:Open this week": false
     }
   },
-  "active": "5f028bbaacb34f42",
+  "active": "d1fa8b0744a54b64",
   "lastOpenFiles": [
-    "서버 원격 접속.md",
     "2026_todo/2026-W35.md",
+    "서버 원격 접속.md",
     "PAS-K/PAS-K Standard_SLB.md",
     "PAS-K/PAS-K CSLB.md",
     "테스트.md",
