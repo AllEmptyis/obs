@@ -588,14 +588,16 @@ tcp  1.1.1.50:11305 2.2.2.101:8080 - 2.2.2.101:8080 1.1.1.50:11305 [R]fwlb.int:2
 
 - H/C 패킷 확인
 - FW에서 캡쳐
-	- src: pask 인터페이스, mac
-	- dst: tip의 ip, real mac
+
 ```
-fw2(config)# tcpdump -nei ext
+fw2(config)# tcpdump -nei int icmp
 tcpdump: verbose output suppressed, use -v or -vv for full protocol decode
-listening on ext, link-type EN10MB (Ethernet), capture size 65535 bytes
-18:22:20.151895 00:06:c4:84:0c:4b > ff:ff:ff:ff:ff:ff, ethertype ARP (0x0806), length 42: Request who-has 192.168.212.250 tell 192.168.212.60, length 28
-18:22:20.634893 00:06:c4:84:10:27 > 00:06:c4:84:0c:4b, ethertype IPv4 (0x0800), length 234: 10.10.10.10 > 192.168.212.250: ICMP echo request, id 37758, seq 256, length 200
-18:22:23.176654 00:06:c4:84:09:b7 > 00:06:c4:84:0c:4b, ethertype IPv4 (0x0800), length 234: 10.10.10.20 > 192.168.212.250: ICMP echo request, id 50657, seq 256, length 200
+listening on int, link-type EN10MB (Ethernet), capture size 65535 bytes
+18:53:16.598081 00:06:c4:84:10:27 > 00:06:c4:84:0c:4b, ethertype IPv4 (0x0800), length 234: 10.10.10.10 > 192.168.212.250: ICMP echo request, id 37758, seq 256, length 200
+18:53:16.598313 00:06:c4:84:0c:4b > 00:06:c4:84:10:27, ethertype IPv4 (0x0800), length 234: 192.168.212.250 > 10.10.10.10: ICMP echo reply, id 37758, seq 256, length 200
+18:53:19.151987 00:06:c4:84:09:b7 > 00:06:c4:84:0c:4b, ethertype IPv4 (0x0800), length 234: 10.10.10.20 > 192.168.212.250: ICMP echo request, id 50657, seq 256, length 200
+18:53:19.152225 00:06:c4:84:0c:4b > 00:06:c4:84:09:b7, ethertype IPv4 (0x0800), length 234: 192.168.212.250 > 10.10.10.20: ICMP echo reply, id 50657, seq 256, length 200
+18:53:21.627534 00:06:c4:84:10:27 > 00:06:c4:84:0c:4b, ethertype IPv4 (0x0800), length 234: 10.10.10.10 > 192.168.212.250: ICMP echo request, id 37758, seq 256, length 200
+18:53:21.627767 00:06:c4:84:0c:4b > 00:06:c4:84:10:27, ethertype IPv4 (0x0800), length 234: 192.168.212.250 > 10.10.10.10: ICMP echo reply, id 37758, seq 256, length 200
 ```
 
