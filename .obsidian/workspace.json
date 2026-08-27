@@ -119,8 +119,7 @@
               "title": "테스트"
             }
           }
-        ],
-        "currentTab": 1
+        ]
       }
     ],
     "direction": "vertical"
@@ -243,7 +242,7 @@
             "state": {
               "type": "outline",
               "state": {
-                "file": "2026_todo/2026-W35.md",
+                "file": "PAS-K/PAS-K 기술 지원 관련.md",
                 "followCursor": true,
                 "showSearch": true,
                 "searchQuery": ""
@@ -294,11 +293,11 @@
       "periodic-notes:Open this week": false
     }
   },
-  "active": "5f028bbaacb34f42",
+  "active": "bd2ecff549304c32",
   "lastOpenFiles": [
+    "2026_todo/2026-W35.md",
     "PAS-K/PAS-K Standard_FWLB_virtual bridge.md",
     "PAS-K/PAS-K 기술 지원 관련.md",
-    "2026_todo/2026-W35.md",
     "PAS-K/PAS-K Standard_SLB.md",
     "PAS-K/PAS-K Standard_FWLB_routing+SLB.md",
     "서버 원격 접속.md",
