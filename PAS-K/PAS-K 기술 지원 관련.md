@@ -190,7 +190,7 @@ Aug 09 19:31:34 UTC (none) kernel: sysctl net.netfilter.nf_conntrack_acct=1 to e
 
 - 커널 크래시 로그
 	- 아래 로그가 있는 경우 하드웨어 문제
-	- 커널 크래시 로그 파일은 업타임 기준 마지막으로 부팅 된 날짜로 기록됨.
+	- 커널 크래시 로그 파일은 crash 발생한 시각으로 기록됨.
 ```
 <0>[29859259.818021] No human readable MCE decoding support on this CPU type.
 <0>[29859259.818366] Run the message through 'mcelog --ascii' to decode.
