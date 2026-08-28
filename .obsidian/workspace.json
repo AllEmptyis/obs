@@ -296,8 +296,9 @@
   },
   "active": "d1fa8b0744a54b64",
   "lastOpenFiles": [
-    "PAS-K/PAS-K CSLB.md",
+    "기능 검증/QoS.md",
     "PAS-K/PAS-K Standard_FWLB_virtual bridge.md",
+    "PAS-K/PAS-K CSLB.md",
     "PAS-K/PAS-K Standard_FWLB_routing+SLB.md",
     "2026_todo/2026-W35.md",
     "PAS-K/PAS-K Standard_SLB.md",
@@ -325,7 +326,6 @@
     "nmcli 명령어.md",
     "nmcli 명령어 정리.md",
     "libvirt 네트워크 설정.md",
-    "NAT모드-포트포워딩 설정.md",
     "첨부파일/image-4.png",
     "첨부파일/image-3.png",
     "첨부파일/image-2.png",
