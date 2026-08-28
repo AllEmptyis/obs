@@ -587,7 +587,9 @@ tcp  1.1.1.50:11305 2.2.2.101:8080 - 2.2.2.101:8080 1.1.1.50:11305 [R]fwlb.int:2
 ```
 
 ## H/C 동작 확인
-- 마스터 장비 (H/C 보낼 때)
+### H/C 요청
+- 마스터 장비
+- real 2에 대한 h/c
 	- 09:b7 : master pas k
 	- 0c:4b : fw2
 	- real mac으로 송수신
@@ -599,8 +601,18 @@ listening on fw2, link-type EN10MB (Ethernet), capture size 65535 bytes
 09:04:43.569154 00:06:c4:84:09:b7 > 00:06:c4:84:0c:4b, ethertype IPv4 (0x0800), length 234: 10.10.10.20 > 192.168.212.250: ICMP echo request, id 50657, seq 256, length 200
 09:04:43.569575 00:06:c4:84:0c:4b > 00:06:c4:84:09:b7, ethertype IPv4 (0x0800), length 234: 192.168.212.250 > 10.10.10.20: ICMP echo reply, id 50657, seq 256, length 200
 ```
+- real1에 대한 h/c
+```
+int_2# tcpdump -nei fw1 icmp
+tcpdump: verbose output suppressed, use -v or -vv for full protocol decode
+listening on fw1, link-type EN10MB (Ethernet), capture size 65535 bytes
 
-- 백업 장비 (h/c 전송)
+09:23:09.294284 00:06:c4:84:09:b7 > 00:06:c4:84:0a:63, ethertype IPv4 (0x0800), length 234: 10.10.10.20 > 192.168.212.250: ICMP echo request, id 65239, seq 256, length 200
+
+09:23:14.323751 00:06:c4:84:09:b7 > 00:06:c4:84:0a:63, ethertype IPv4 (0x0800), length 234: 10.10.10.20 > 192.168.212.250: ICMP echo request, id 65239, seq 256, length 200
+```
+
+- 백업 장비
 - real2에 대한 h/c
 	- 10:27 backup 
 	- 0c:4b: fw2
@@ -624,19 +636,31 @@ listening on fw1, link-type EN10MB (Ethernet), capture size 65535 bytes
 09:19:05.578434 00:06:c4:84:0a:63 > 00:06:c4:84:10:27, ethertype IPv4 (0x0800), length 234: 192.168.212.250 > 10.10.10.10: ICMP echo reply, id 2547, seq 256, length 200
 ```
 
+### H/C 응답
+- 마스터
+- 상단 마스터에서 보내는 h/c
+	- vrrp vip/vmac으로 응답
+```
+int_2# tcpdump -nei fw2 icmp
+tcpdump: verbose output suppressed, use -v or -vv for full protocol decode
+listening on fw2, link-type EN10MB (Ethernet), capture size 65535 bytes
 
-
-
-- 상단에서 오는 H/C
-	- fw1을 통해 백업과 연결
-	- 0a:63 : fw2
-	- vrrp vip로 체크, reply는 마스터가 전달
+09:29:53.408576 00:06:c4:84:0c:4b > 00:00:5e:00:01:02, ethertype IPv4 (0x0800), length 234: 192.168.212.20 > 10.10.10.250: 
+ICMP echo request, id 18542, seq 256, length 200
+09:29:53.408625 00:00:5e:00:01:02 > 00:06:c4:84:0c:4b, ethertype IPv4 (0x0800), length 234: 10.10.10.250 > 192.168.212.20: ICMP echo reply, id 18542, seq 256, length 200
+```
+- 상단 백업에서 보내는 h/c
 ```
 int_2# tcpdump -nei fw1 icmp
 tcpdump: verbose output suppressed, use -v or -vv for full protocol decode
 listening on fw1, link-type EN10MB (Ethernet), capture size 65535 bytes
+09:30:42.203245 00:06:c4:84:09:b7 > 00:06:c4:84:0a:63, ethertype IPv4 (0x0800), length 234: 10.10.10.20 > 192.168.212.250: ICMP echo request, id 65239, seq 256, length 200
+09:30:42.203629 00:06:c4:84:0a:63 > 00:06:c4:84:09:b7, ethertype IPv4 (0x0800), length 234: 192.168.212.250 > 10.10.10.20: ICMP echo reply, id 65239, seq 256, length 200
 
-09:07:36.991261 00:06:c4:84:0a:63 > 00:00:5e:00:01:02, ethertype IPv4 (0x0800), length 234: 192.168.212.20 > 10.10.10.250: ICMP echo request, id 23799, seq 256, length 200
-09:07:36.991324 00:00:5e:00:01:02 > 00:06:c4:84:0a:63, ethertype IPv4 (0x0800), length 234: 10.10.10.250 > 192.168.212.20: ICMP echo reply, id 23799, seq 256, length 200
+<확인>
+09:30:42.312700 00:06:c4:84:0a:63 > 00:00:5e:00:01:02, ethertype IPv4 (0x0800), length 234: 192.168.212.10 > 10.10.10.250: 
+ICMP echo request, id 58526, seq 256, length 200
+09:30:42.312750 00:00:5e:00:01:02 > 00:06:c4:84:0a:63, ethertype IPv4 (0x0800), length 234: 10.10.10.250 > 192.168.212.10: ICMP echo reply, id 58526, seq 256, length 200
 ```
+
 
