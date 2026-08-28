@@ -589,25 +589,53 @@ tcp  1.1.1.50:11305 2.2.2.101:8080 - 2.2.2.101:8080 1.1.1.50:11305 [R]fwlb.int:2
 ## H/C 동작 확인
 - 마스터 장비 (H/C 보낼 때)
 	- 09:b7 : master pas k
-	- 0c:4b : 상단 방화벽
+	- 0c:4b : fw2
 	- real mac으로 송수신
-	- 
 ```
 int_2# tcpdump -nei fw2 icmp
 tcpdump: verbose output suppressed, use -v or -vv for full protocol decode
 listening on fw2, link-type EN10MB (Ethernet), capture size 65535 bytes
+
 09:04:43.569154 00:06:c4:84:09:b7 > 00:06:c4:84:0c:4b, ethertype IPv4 (0x0800), length 234: 10.10.10.20 > 192.168.212.250: ICMP echo request, id 50657, seq 256, length 200
 09:04:43.569575 00:06:c4:84:0c:4b > 00:06:c4:84:09:b7, ethertype IPv4 (0x0800), length 234: 192.168.212.250 > 10.10.10.20: ICMP echo reply, id 50657, seq 256, length 200
 ```
 
+- 백업 장비 (h/c 전송)
+- real2에 대한 h/c
+	- 10:27 backup 
+	- 0c:4b: fw2
+```
+int_1# tcpdump -nei fw2 icmp
+tcpdump: verbose output suppressed, use -v or -vv for full protocol decode
+listening on fw2, link-type EN10MB (Ethernet), capture size 65535 bytes
+
+09:16:03.774594 00:06:c4:84:10:27 > 00:06:c4:84:0c:4b, ethertype IPv4 (0x0800), length 234: 10.10.10.10 > 192.168.212.250: ICMP echo request, id 37758, seq 256, length 200
+09:16:03.775014 00:06:c4:84:0c:4b > 00:06:c4:84:10:27, ethertype IPv4 (0x0800), length 234: 192.168.212.250 > 10.10.10.10: ICMP echo reply, id 37758, seq 256, length 200
+```
+
+- real 1에 대한 h/c
+	- 0a:63 : fw1
+```
+int_1# tcpdump -nei fw1 icmp
+tcpdump: verbose output suppressed, use -v or -vv for full protocol decode
+listening on fw1, link-type EN10MB (Ethernet), capture size 65535 bytes
+
+09:19:05.577964 00:06:c4:84:10:27 > 00:06:c4:84:0a:63, ethertype IPv4 (0x0800), length 234: 10.10.10.10 > 192.168.212.250: ICMP echo request, id 2547, seq 256, length 200
+09:19:05.578434 00:06:c4:84:0a:63 > 00:06:c4:84:10:27, ethertype IPv4 (0x0800), length 234: 192.168.212.250 > 10.10.10.10: ICMP echo reply, id 2547, seq 256, length 200
+```
+
+
+
+
 - 상단에서 오는 H/C
-	- fw1을 통해 마스터와 연결되어 있음
-	- 0a:63 : fw1 (상단 방화벽)
-	- vrrp vip로 체크, reply는 마스터가 주는 듯 하다.
+	- fw1을 통해 백업과 연결
+	- 0a:63 : fw2
+	- vrrp vip로 체크, reply는 마스터가 전달
 ```
 int_2# tcpdump -nei fw1 icmp
 tcpdump: verbose output suppressed, use -v or -vv for full protocol decode
 listening on fw1, link-type EN10MB (Ethernet), capture size 65535 bytes
+
 09:07:36.991261 00:06:c4:84:0a:63 > 00:00:5e:00:01:02, ethertype IPv4 (0x0800), length 234: 192.168.212.20 > 10.10.10.250: ICMP echo request, id 23799, seq 256, length 200
 09:07:36.991324 00:00:5e:00:01:02 > 00:06:c4:84:0a:63, ethertype IPv4 (0x0800), length 234: 10.10.10.250 > 192.168.212.20: ICMP echo reply, id 23799, seq 256, length 200
 ```
