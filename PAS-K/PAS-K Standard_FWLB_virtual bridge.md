@@ -650,6 +650,7 @@ ICMP echo request, id 18542, seq 256, length 200
 09:29:53.408625 00:00:5e:00:01:02 > 00:06:c4:84:0c:4b, ethertype IPv4 (0x0800), length 234: 10.10.10.250 > 192.168.212.20: ICMP echo reply, id 18542, seq 256, length 200
 ```
 - 상단 백업에서 보내는 h/c
+	- fw1 mac으로 전송. 즉 마스터가 vrrp vip/vmac으로 응답
 ```
 int_2# tcpdump -nei fw1 icmp
 tcpdump: verbose output suppressed, use -v or -vv for full protocol decode
