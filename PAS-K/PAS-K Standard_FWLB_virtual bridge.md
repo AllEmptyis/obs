@@ -767,3 +767,47 @@ INTERFACE Configuration
 ```
 
 
+-----------
+```
+root@ext_2(svc_net):~# arping -i fw1 192.168.212.20 -S 192.168.212.20
+ARPING 192.168.212.20
+60 bytes from 00:00:5e:00:01:01 (192.168.212.20): index=0 time=125.885 usec
+60 bytes from 00:00:5e:00:01:01 (192.168.212.20): index=1 time=137.091 usec
+60 bytes from 00:00:5e:00:01:01 (192.168.212.20): index=2 time=122.070 usec
+60 bytes from 00:00:5e:00:01:01 (192.168.212.20): index=3 time=127.077 usec
+
+ext_1(config-failover)# tcpdump -nei fw2 icmp
+Syntax error next to 'tcpdump'
+ext_1(config-failover)# tcpdump -nei fw2 icmp
+ext_1(config-failover)# exit
+ext_1(config)# tcpdump -nei fw2 net 192.168.212.20/32
+tcpdump: verbose output suppressed, use -v or -vv for full protocol decode
+listening on fw2, link-type EN10MB (Ethernet), capture size 65535 bytes
+^CExiting...
+Done
+
+0 packets captured
+0 packets received by filter
+0 packets dropped by kernel
+ext_1(config)# tcpdump -nei fw2 arp
+tcpdump: verbose output suppressed, use -v or -vv for full protocol decode
+listening on fw2, link-type EN10MB (Ethernet), capture size 65535 bytes
+^CExiting...
+Done
+
+0 packets captured
+0 packets received by filter
+0 packets dropped by kernel
+ext_1(config)# tcpdump -nei fw1 arp
+tcpdump: verbose output suppressed, use -v or -vv for full protocol decode
+listening on fw1, link-type EN10MB (Ethernet), capture size 65535 bytes
+11:31:12.199919 00:06:c4:94:1c:0f > ff:ff:ff:ff:ff:ff, ethertype ARP (0x0806), length 60: Request who-has 192.168.212.20 tell 192.168.212.20, length 46
+11:31:12.199959 00:00:5e:00:01:01 > 00:06:c4:94:1c:0f, ethertype ARP (0x0806), length 42: Reply 192.168.212.20 is-at 00:00:5e:00:01:01, length 28
+11:31:13.199919 00:06:c4:94:1c:0f > ff:ff:ff:ff:ff:ff, ethertype ARP (0x0806), length 60: Request who-has 192.168.212.20 tell 192.168.212.20, length 46
+11:31:13.199957 00:00:5e:00:01:01 > 00:06:c4:94:1c:0f, ethertype ARP (0x0806), length 42: Reply 192.168.212.20 is-at 00:00:5e:00:01:01, length 28
+11:31:14.199937 00:06:c4:94:1c:0f > ff:ff:ff:ff:ff:ff, ethertype ARP (0x0806), length 60: Request who-has 192.168.212.20 tell 192.168.212.20, length 46
+11:31:14.199976 00:00:5e:00:01:01 > 00:06:c4:94:1c:0f, ethertype ARP (0x0806), length 42: Reply 192.168.212.20 is-at 00:00:5e:00:01:01, length 28
+11:31:15.199974 00:06:c4:94:1c:0f > ff:ff:ff:ff:ff:ff, ethertype ARP (0x0806), length 60: Request who-has 192.168.212.20 tell 192.168.212.20, length 46
+11:31:15.200018 00:00:5e:00:01:01 > 00:06:c4:94:1c:0f, ethertype ARP (0x0806), length 42: Reply 192.168.212.20 is-at 00:00:5e:00:01:01, length 28
+^CExiting...
+```
