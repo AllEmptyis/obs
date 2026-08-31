@@ -664,6 +664,8 @@ ICMP echo request, id 58526, seq 256, length 200
 09:30:42.312750 00:00:5e:00:01:02 > 00:06:c4:84:0a:63, ethertype IPv4 (0x0800), length 234: 10.10.10.250 > 192.168.212.10: ICMP echo reply, id 58526, seq 256, length 200
 ```
 
+
+-----------
 root@ext_2(init_net):~# ns-svc
 root@ext_2(svc_net):~# arping -i fw2 192.168.212.21 -S 192.168.212.21
 ARPING 192.168.212.21
@@ -672,3 +674,96 @@ ARPING 192.168.212.21
 60 bytes from 00:00:5e:00:01:01 (192.168.212.21): index=2 time=134.945 usec
 60 bytes from 00:00:5e:00:01:01 (192.168.212.21): index=3 time=138.044 usec
 60 bytes from 00:00:5e:00:01:01 (192.168.212.21): index=4 time=118.971 usec
+
+
+
+
+ext_2(config)# tcpdump -nei fw1 net 192.168.212.11/32
+tcpdump: verbose output suppressed, use -v or -vv for full protocol decode
+listening on fw1, link-type EN10MB (Ethernet), capture size 65535 bytes
+10:49:01.761023 00:06:c4:94:1c:03 > ff:ff:ff:ff:ff:ff, ethertype ARP (0x0806), length 60: Request who-has 192.168.212.11 tell 192.168.212.11, length 46
+10:49:01.761055 00:06:c4:94:1c:0f > 00:06:c4:94:1c:03, ethertype ARP (0x0806), length 42: Reply 192.168.212.11 is-at 00:00:5e:00:01:01, length 28
+10:49:02.761029 00:06:c4:94:1c:03 > ff:ff:ff:ff:ff:ff, ethertype ARP (0x0806), length 60: Request who-has 192.168.212.11 tell 192.168.212.11, length 46
+10:49:02.761065 00:06:c4:94:1c:0f > 00:06:c4:94:1c:03, ethertype ARP (0x0806), length 42: Reply 192.168.212.11 is-at 00:00:5e:00:01:01, length 28
+10:49:03.761038 00:06:c4:94:1c:03 > ff:ff:ff:ff:ff:ff, ethertype ARP (0x0806), length 60: Request who-has 192.168.212.11 tell 192.168.212.11, length 46
+10:49:03.761077 00:06:c4:94:1c:0f > 00:06:c4:94:1c:03, ethertype ARP (0x0806), length 42: Reply 192.168.212.11 is-at 00:00:5e:00:01:01, length 28
+10:49:04.761008 00:06:c4:94:1c:03 > ff:ff:ff:ff:ff:ff, ethertype^CExiting...
+Done
+
+8 packets captured
+8 packets received by filter
+0 packets dropped by kernel
+ext_2(config)# show arp-filter
+
+================================================================================
+  ARP-FILTER
+ ------------------------------------------------------------------------------
+    Input
+       ID    Action Src IP    Dest IP           Interface ND    Description
+       1     accept 0.0.0.0/0 192.168.212.11/32 fw1       1
+
+    Output               :
+================================================================================
+
+ext_2(config)#
+ext_2(config)# arp-filter
+ext_2(config-arp-filter)# input 1
+ext_2(config-arp-filter-input[1])# action drop
+ext_2(config-arp-filter-input[1])# apply
+Input '1' is applied to system.
+ext_2(config-arp-filter)#
+ext_2(config-arp-filter)#
+ext_2(config-arp-filter)# exit
+ext_2(config)# tcpdump -nei fw1 net 192.168.212.11/32
+tcpdump: verbose output suppressed, use -v or -vv for full protocol decode
+listening on fw1, link-type EN10MB (Ethernet), capture size 65535 bytes
+10:50:38.761141 00:06:c4:94:1c:03 > ff:ff:ff:ff:ff:ff, ethertype ARP (0x0806), length 60: Request who-has 192.168.212.11 tell 192.168.212.11, length 46
+10:50:39.761144 00:06:c4:94:1c:03 > ff:ff:ff:ff:ff:ff, ethertype ARP (0x0806), length 60: Request who-has 192.168.212.11 tell 192.168.212.11, length 46
+10:50:40.761144 00:06:c4:94:1c:03 > ff:ff:ff:ff:ff:ff, ethertype ARP (0x0806), length 60: Request who-has 192.168.212.11 tell 192.168.212.11, length 46
+^CExiting...
+Done
+
+
+
+```
+ext_1# show arp
+
+================================================================================
+  ARP
+ ------------------------------------------------------------------------------
+    Timeout (sec)               : 1200
+    Locktime (1/100 sec)        : 100
+    Proxy Arp Status            : enable
+    Proxy Arp Delay (1/100 sec) : 0
+    Proxy Arp Running           : enable
+
+    Static                      :
+
+    Dynamic
+       IP Address      MAC Address       Interface State
+       192.168.212.20  00:06:c4:94:1c:0f ext       STALE
+       192.168.212.21  00:06:c4:94:1c:0f fw2       STALE
+       192.168.212.50  00:06:c4:84:0a:63 fw1       REACHABLE
+       192.168.212.51  00:00:5e:00:01:01 fw1       STALE
+       192.168.212.52  00:00:5e:00:01:01 fw2       STALE
+       192.168.212.60  8c:b0:e9:50:e0:c2 fw2       REACHABLE
+       192.168.212.61  00:0c:29:4e:b9:69 fw2       STALE
+       192.168.212.80  c4:c6:e6:fc:e2:48 ext       REACHABLE
+       192.168.212.250 00:00:5e:00:01:01 ext       STALE
+================================================================================
+
+ext_1# show int
+
+================================================================================
+INTERFACE Configuration
+ ------------------------------------------------------------------------------
+  Name    Status MAC Address       IPv4 Address      Broadcast       RPF     Description
+  ext     up     00:06:c4:94:1c:03 192.168.212.10/24 192.168.212.255 default
+  fw1     up     00:06:c4:94:1c:03 192.168.212.10/32 192.168.212.10  default
+  fw2     up     00:06:c4:94:1c:03 192.168.212.11/32 192.168.212.11  default
+  default down   00:06:c4:94:1c:03                                   default
+  mgmt    up     00:06:c4:94:1c:02 192.168.100.1/24  192.168.100.255 default
+================================================================================
+```
+
+
