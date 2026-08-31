@@ -664,4 +664,11 @@ ICMP echo request, id 58526, seq 256, length 200
 09:30:42.312750 00:00:5e:00:01:02 > 00:06:c4:84:0a:63, ethertype IPv4 (0x0800), length 234: 10.10.10.250 > 192.168.212.10: ICMP echo reply, id 58526, seq 256, length 200
 ```
 
-
+root@ext_2(init_net):~# ns-svc
+root@ext_2(svc_net):~# arping -i fw2 192.168.212.21 -S 192.168.212.21
+ARPING 192.168.212.21
+60 bytes from 00:00:5e:00:01:01 (192.168.212.21): index=0 time=136.137 usec
+60 bytes from 00:00:5e:00:01:01 (192.168.212.21): index=1 time=144.005 usec
+60 bytes from 00:00:5e:00:01:01 (192.168.212.21): index=2 time=134.945 usec
+60 bytes from 00:00:5e:00:01:01 (192.168.212.21): index=3 time=138.044 usec
+60 bytes from 00:00:5e:00:01:01 (192.168.212.21): index=4 time=118.971 usec
