@@ -811,3 +811,93 @@ listening on fw1, link-type EN10MB (Ethernet), capture size 65535 bytes
 11:31:15.200018 00:00:5e:00:01:01 > 00:06:c4:94:1c:0f, ethertype ARP (0x0806), length 42: Reply 192.168.212.20 is-at 00:00:5e:00:01:01, length 28
 ^CExiting...
 ```
+
+--------
+재현테스트 결과 (하단 리얼에서 arping 백업했을 때 마스터에서 proxy arp로 응답이 오는지)
+```
+fw1# arping -b -i ext 192.168.212.10
+ARPING 192.168.212.10
+
+ext_2(config)# tcpdump -nei fw1 arp
+tcpdump: verbose output suppressed, use -v or -vv for full protocol decode
+listening on fw1, link-type EN10MB (Ethernet), capture size 65535 bytes
+12:42:23.815597 00:06:c4:84:0a:63 > 00:00:5e:00:01:01, ethertype ARP (0x0806), length 60: Request who-has 192.168.212.20 tell 192.168.212.50, length 46
+
+12:42:23.815636 00:06:c4:94:1c:0f > 00:06:c4:84:0a:63, ethertype ARP (0x0806), length 42: Reply 192.168.212.20 is-at 00:00:5e:00:01:01, length 28 
+
+12:42:24.084395 00:00:5e:00:01:01 > ff:ff:ff:ff:ff:ff, ethertype ARP (0x0806), length 42: Request who-has 192.168.212.250 tell 192.168.212.250, length 28
+12:42:24.285618 00:06:c4:84:0a:63 > ff:ff:ff:ff:ff:ff, ethertype ARP (0x0806), length 60: Request who-has 192.168.212.10 tell 255.255.255.255, length 46
+12:42:25.295637 00:06:c4:84:0a:63 > ff:ff:ff:ff:ff:ff, ethertype ARP (0x0806), length 60: Request who-has 192.168.212.10 tell 255.255.255.255, length 46
+12:42:26.305660 00:06:c4:84:0a:63 > ff:ff:ff:ff:ff:ff, ethertype ARP (0x0806), length 60: Reques^CExiting...
+```
+ext1 (백업)
+```
+ext_1(config)# show arp
+
+================================================================================
+  ARP
+ ------------------------------------------------------------------------------
+    Timeout (sec)               : 1200
+    Locktime (1/100 sec)        : 100
+    Proxy Arp Status            : enable
+    Proxy Arp Delay (1/100 sec) : 0
+    Proxy Arp Running           : disable
+
+    Static                      :
+
+    Dynamic
+       IP Address      MAC Address       Interface State
+       192.168.212.10  00:06:c4:94:1c:0f fw1       STALE  <---확인
+       192.168.212.20  00:06:c4:94:1c:0f ext       STALE
+       192.168.212.50  00:06:c4:84:0a:63 fw1       REACHABLE
+       192.168.212.51  00:00:5e:00:01:01 fw1       STALE
+       192.168.212.60  8c:b0:e9:50:e0:c2 fw2       REACHABLE
+       192.168.212.61  00:0c:29:4e:b9:69 fw2       STALE
+       192.168.212.80  c4:c6:e6:fc:e2:48 ext       REACHABLE
+       192.168.212.250 00:00:5e:00:01:01 ext       STALE
+================================================================================
+
+ext_1(config)#
+ext_1(config)# show int
+
+================================================================================
+INTERFACE Configuration
+ ------------------------------------------------------------------------------
+  Name    Status MAC Address       IPv4 Address      Broadcast       RPF     Description
+  ext     up     00:06:c4:94:1c:03 192.168.212.10/24 192.168.212.255 default
+  fw1     up     00:06:c4:94:1c:03 192.168.212.10/32 192.168.212.10  default
+  fw2     up     00:06:c4:94:1c:03 192.168.212.10/32 192.168.212.10  default
+  default down   00:06:c4:94:1c:03                                   default
+  mgmt    up     00:06:c4:94:1c:02 192.168.100.1/24  192.168.100.255 default
+================================================================================
+```
+fw1
+```
+fw1# show arp
+
+================================================================================
+  ARP
+ ------------------------------------------------------------------------------
+    Timeout (sec)               : 30
+    Locktime (1/100 sec)        : 100
+    Proxy Arp Status            : disable
+    Proxy Arp Delay (1/100 sec) : 0
+    Proxy Arp Running           : disable
+
+    Static                      :
+
+    Dynamic
+       IP Address      MAC Address       Interface State
+       10.10.10.10     00:06:c4:84:10:27 int       REACHABLE
+       10.10.10.20     00:06:c4:84:09:b7 int       REACHABLE
+       10.10.10.250    00:00:5e:00:01:02 int       REACHABLE
+       192.168.212.1   00:00:5e:00:01:01 ext       STALE
+       192.168.212.10  00:06:c4:94:1c:03 ext       DELAY     <- 정상 학습
+       192.168.212.20  00:00:5e:00:01:01 ext       REACHABLE  
+       192.168.212.80  00:00:5e:00:01:01 ext       STALE
+       192.168.212.250 00:00:5e:00:01:01 ext       REACHABLE
+================================================================================
+```
+
+
+재현테스트2 (백업에서 arping)
