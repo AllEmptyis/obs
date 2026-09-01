@@ -589,7 +589,75 @@ tcp  1.1.1.50:11305 2.2.2.101:8080 - 2.2.2.101:8080 1.1.1.50:11305 [R]fwlb.int:2
 ## H/C 동작 확인
 - 요청할 때는 h/c tip (보통 vip로) 전송
 	- 마스터/백업 모두 자기 인터페이스 ip/mac 사용
-	- 목적지 tip는 
+	- 목적지는 설정된 tip, mac은 arp 테이블 참고
+		- 헬스체크 할 real에 설정된 인터페이스로 보내는 것, 라우팅 동작X
+	-  real에서는 라우팅(또는 스위칭) 해서 목적지로 도착
+	- 상대편에서는 마스터 장비가 vip/vmac으로 
+```
+ext_2# show real 1
+
+================================================================================
+  REAL: 1
+ ------------------------------------------------------------------------------
+    ID                       : 1
+    Name                     : fw1
+    Ndomain                  : 1
+    RIP                      : 192.168.212.50
+    Rport                    :
+    SSL Rport                :
+    Priority                 : 0
+    Weight                   : 1
+    Interface                : fw1     <---real에 인터페이스 지정되어 있음
+    Site                     :
+    MAC Address              :
+    Backup                   :
+    Graceful Shutdown        : disable
+    Manual-Resume            : disable
+    SP Filter                :
+    SP Filter Group          :
+    Domain Filter            :
+    Max Connection           : 0
+    Max upload-bandwidth     : 0
+    Max download-bandwidth   : 0
+    Pool Size                : 10000
+    Pool Age                 : 3600
+    Pool Reuse               : 100
+    Pool Src MASK            : 32
+    Surge Base Threshold     : 0
+    Surge Upper Limit        : 0
+    Src NAT IP               :
+    Service-IP               :
+    Status                   : enable
+    Description              :
+
+    Health Check             :
+================================================================================
+
+ext_2#
+ext_2# show arp
+
+================================================================================
+  ARP
+ ------------------------------------------------------------------------------
+    Timeout (sec)               : 1200
+    Locktime (1/100 sec)        : 100
+    Proxy Arp Status            : enable
+    Proxy Arp Delay (1/100 sec) : 0
+
+    Static
+       Ndomain IP Address MAC Address Interface Description
+       0
+       1
+
+    Dynamic
+       Ndomain IP Address     MAC Address       Interface State
+       0
+       1       192.168.212.10 00:06:c4:94:1c:03 ext       STALE
+               192.168.212.50 00:06:c4:84:0a:63 fw1       REACHABLE   <---- 확인
+               192.168.212.60 00:06:c4:84:0c:4b ext       STALE
+               192.168.212.61 00:0c:29:4e:b9:69 fw2       STALE
+================================================================================
+```
 ### H/C 요청
 - 마스터 장비
 - real 2에 대한 h/c
