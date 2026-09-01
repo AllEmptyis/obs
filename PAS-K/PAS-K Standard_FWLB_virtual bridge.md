@@ -668,8 +668,8 @@ ICMP echo request, id 58526, seq 256, length 200
 -----------
 # proxy arp , arp filter 테스트
 ## case-행정공제회
-- 자기자신으로 arping 테스트
-- k1800 이상은 management랑 무언가 분리되어서 아래와 같이 shell 들어가서 명령어 실행
+- 백업에서 자기자신으로 arping 테스트 -> 마스터가 proxy arp로 응답
+- k1800 이상은 아래와 같이 shell 들어가서 명령어 실행
 ```
 root@ext_2(init_net):~# ns-svc
 root@ext_2(svc_net):~# arping -i fw2 192.168.212.21 -S 192.168.212.21
@@ -682,6 +682,9 @@ ARPING 192.168.212.21
 ```
 
 - arp filter 동작 확인
+	- arp filter는 mp에만 적용됨, 스위칭은 정상 동작
+		- 인터페이스 ip로 오는 트래픽만 차단하고, 
+	- input drop: 설정한 ip에 대한 arp request 요청을 pas-k가 드롭 (cpu에서)
 ```
 ext_2(config)# tcpdump -nei fw1 net 192.168.212.11/32
 tcpdump: verbose output suppressed, use -v or -vv for full protocol decode
@@ -698,6 +701,8 @@ Done
 8 packets captured
 8 packets received by filter
 0 packets dropped by kernel
+
+//arp filter 설정 후
 ext_2(config)# show arp-filter
 
 ================================================================================
@@ -721,227 +726,6 @@ listening on fw1, link-type EN10MB (Ethernet), capture size 65535 bytes
 Done
 ```
 
-
-
-
-
-
-```
-ext_1# show arp
-
-================================================================================
-  ARP
- ------------------------------------------------------------------------------
-    Timeout (sec)               : 1200
-    Locktime (1/100 sec)        : 100
-    Proxy Arp Status            : enable
-    Proxy Arp Delay (1/100 sec) : 0
-    Proxy Arp Running           : enable
-
-    Static                      :
-
-    Dynamic
-       IP Address      MAC Address       Interface State
-       192.168.212.20  00:06:c4:94:1c:0f ext       STALE
-       192.168.212.21  00:06:c4:94:1c:0f fw2       STALE
-       192.168.212.50  00:06:c4:84:0a:63 fw1       REACHABLE
-       192.168.212.51  00:00:5e:00:01:01 fw1       STALE
-       192.168.212.52  00:00:5e:00:01:01 fw2       STALE
-       192.168.212.60  8c:b0:e9:50:e0:c2 fw2       REACHABLE
-       192.168.212.61  00:0c:29:4e:b9:69 fw2       STALE
-       192.168.212.80  c4:c6:e6:fc:e2:48 ext       REACHABLE
-       192.168.212.250 00:00:5e:00:01:01 ext       STALE
-================================================================================
-
-ext_1# show int
-
-================================================================================
-INTERFACE Configuration
- ------------------------------------------------------------------------------
-  Name    Status MAC Address       IPv4 Address      Broadcast       RPF     Description
-  ext     up     00:06:c4:94:1c:03 192.168.212.10/24 192.168.212.255 default
-  fw1     up     00:06:c4:94:1c:03 192.168.212.10/32 192.168.212.10  default
-  fw2     up     00:06:c4:94:1c:03 192.168.212.11/32 192.168.212.11  default
-  default down   00:06:c4:94:1c:03                                   default
-  mgmt    up     00:06:c4:94:1c:02 192.168.100.1/24  192.168.100.255 default
-================================================================================
-```
-
-
------------
-```
-root@ext_2(svc_net):~# arping -i fw1 192.168.212.20 -S 192.168.212.20
-ARPING 192.168.212.20
-60 bytes from 00:00:5e:00:01:01 (192.168.212.20): index=0 time=125.885 usec
-60 bytes from 00:00:5e:00:01:01 (192.168.212.20): index=1 time=137.091 usec
-60 bytes from 00:00:5e:00:01:01 (192.168.212.20): index=2 time=122.070 usec
-60 bytes from 00:00:5e:00:01:01 (192.168.212.20): index=3 time=127.077 usec
-
-ext_1(config-failover)# tcpdump -nei fw2 icmp
-Syntax error next to 'tcpdump'
-ext_1(config-failover)# tcpdump -nei fw2 icmp
-ext_1(config-failover)# exit
-ext_1(config)# tcpdump -nei fw2 net 192.168.212.20/32
-tcpdump: verbose output suppressed, use -v or -vv for full protocol decode
-listening on fw2, link-type EN10MB (Ethernet), capture size 65535 bytes
-^CExiting...
-Done
-
-0 packets captured
-0 packets received by filter
-0 packets dropped by kernel
-ext_1(config)# tcpdump -nei fw2 arp
-tcpdump: verbose output suppressed, use -v or -vv for full protocol decode
-listening on fw2, link-type EN10MB (Ethernet), capture size 65535 bytes
-^CExiting...
-Done
-
-0 packets captured
-0 packets received by filter
-0 packets dropped by kernel
-ext_1(config)# tcpdump -nei fw1 arp
-tcpdump: verbose output suppressed, use -v or -vv for full protocol decode
-listening on fw1, link-type EN10MB (Ethernet), capture size 65535 bytes
-11:31:12.199919 00:06:c4:94:1c:0f > ff:ff:ff:ff:ff:ff, ethertype ARP (0x0806), length 60: Request who-has 192.168.212.20 tell 192.168.212.20, length 46
-11:31:12.199959 00:00:5e:00:01:01 > 00:06:c4:94:1c:0f, ethertype ARP (0x0806), length 42: Reply 192.168.212.20 is-at 00:00:5e:00:01:01, length 28
-11:31:13.199919 00:06:c4:94:1c:0f > ff:ff:ff:ff:ff:ff, ethertype ARP (0x0806), length 60: Request who-has 192.168.212.20 tell 192.168.212.20, length 46
-11:31:13.199957 00:00:5e:00:01:01 > 00:06:c4:94:1c:0f, ethertype ARP (0x0806), length 42: Reply 192.168.212.20 is-at 00:00:5e:00:01:01, length 28
-11:31:14.199937 00:06:c4:94:1c:0f > ff:ff:ff:ff:ff:ff, ethertype ARP (0x0806), length 60: Request who-has 192.168.212.20 tell 192.168.212.20, length 46
-11:31:14.199976 00:00:5e:00:01:01 > 00:06:c4:94:1c:0f, ethertype ARP (0x0806), length 42: Reply 192.168.212.20 is-at 00:00:5e:00:01:01, length 28
-11:31:15.199974 00:06:c4:94:1c:0f > ff:ff:ff:ff:ff:ff, ethertype ARP (0x0806), length 60: Request who-has 192.168.212.20 tell 192.168.212.20, length 46
-11:31:15.200018 00:00:5e:00:01:01 > 00:06:c4:94:1c:0f, ethertype ARP (0x0806), length 42: Reply 192.168.212.20 is-at 00:00:5e:00:01:01, length 28
-^CExiting...
-```
-
---------
-재현테스트 결과 (하단 리얼에서 arping 백업했을 때 마스터에서 proxy arp로 응답이 오는지)
-```
-fw1# arping -b -i ext 192.168.212.10
-ARPING 192.168.212.10
-
-ext_2(config)# tcpdump -nei fw1 arp
-tcpdump: verbose output suppressed, use -v or -vv for full protocol decode
-listening on fw1, link-type EN10MB (Ethernet), capture size 65535 bytes
-12:42:23.815597 00:06:c4:84:0a:63 > 00:00:5e:00:01:01, ethertype ARP (0x0806), length 60: Request who-has 192.168.212.20 tell 192.168.212.50, length 46
-
-12:42:23.815636 00:06:c4:94:1c:0f > 00:06:c4:84:0a:63, ethertype ARP (0x0806), length 42: Reply 192.168.212.20 is-at 00:00:5e:00:01:01, length 28 
-
-12:42:24.084395 00:00:5e:00:01:01 > ff:ff:ff:ff:ff:ff, ethertype ARP (0x0806), length 42: Request who-has 192.168.212.250 tell 192.168.212.250, length 28
-12:42:24.285618 00:06:c4:84:0a:63 > ff:ff:ff:ff:ff:ff, ethertype ARP (0x0806), length 60: Request who-has 192.168.212.10 tell 255.255.255.255, length 46
-12:42:25.295637 00:06:c4:84:0a:63 > ff:ff:ff:ff:ff:ff, ethertype ARP (0x0806), length 60: Request who-has 192.168.212.10 tell 255.255.255.255, length 46
-12:42:26.305660 00:06:c4:84:0a:63 > ff:ff:ff:ff:ff:ff, ethertype ARP (0x0806), length 60: Reques^CExiting...
-```
-ext1 (백업)
-```
-ext_1(config)# show arp
-
-================================================================================
-  ARP
- ------------------------------------------------------------------------------
-    Timeout (sec)               : 1200
-    Locktime (1/100 sec)        : 100
-    Proxy Arp Status            : enable
-    Proxy Arp Delay (1/100 sec) : 0
-    Proxy Arp Running           : disable
-
-    Static                      :
-
-    Dynamic
-       IP Address      MAC Address       Interface State
-       192.168.212.10  00:06:c4:94:1c:0f fw1       STALE  <---확인
-       192.168.212.20  00:06:c4:94:1c:0f ext       STALE
-       192.168.212.50  00:06:c4:84:0a:63 fw1       REACHABLE
-       192.168.212.51  00:00:5e:00:01:01 fw1       STALE
-       192.168.212.60  8c:b0:e9:50:e0:c2 fw2       REACHABLE
-       192.168.212.61  00:0c:29:4e:b9:69 fw2       STALE
-       192.168.212.80  c4:c6:e6:fc:e2:48 ext       REACHABLE
-       192.168.212.250 00:00:5e:00:01:01 ext       STALE
-================================================================================
-
-ext_1(config)#
-ext_1(config)# show int
-
-================================================================================
-INTERFACE Configuration
- ------------------------------------------------------------------------------
-  Name    Status MAC Address       IPv4 Address      Broadcast       RPF     Description
-  ext     up     00:06:c4:94:1c:03 192.168.212.10/24 192.168.212.255 default
-  fw1     up     00:06:c4:94:1c:03 192.168.212.10/32 192.168.212.10  default
-  fw2     up     00:06:c4:94:1c:03 192.168.212.10/32 192.168.212.10  default
-  default down   00:06:c4:94:1c:03                                   default
-  mgmt    up     00:06:c4:94:1c:02 192.168.100.1/24  192.168.100.255 default
-================================================================================
-```
-fw1
-```
-fw1# show arp
-
-================================================================================
-  ARP
- ------------------------------------------------------------------------------
-    Timeout (sec)               : 30
-    Locktime (1/100 sec)        : 100
-    Proxy Arp Status            : disable
-    Proxy Arp Delay (1/100 sec) : 0
-    Proxy Arp Running           : disable
-
-    Static                      :
-
-    Dynamic
-       IP Address      MAC Address       Interface State
-       10.10.10.10     00:06:c4:84:10:27 int       REACHABLE
-       10.10.10.20     00:06:c4:84:09:b7 int       REACHABLE
-       10.10.10.250    00:00:5e:00:01:02 int       REACHABLE
-       192.168.212.1   00:00:5e:00:01:01 ext       STALE
-       192.168.212.10  00:06:c4:94:1c:03 ext       DELAY     <- 정상 학습
-       192.168.212.20  00:00:5e:00:01:01 ext       REACHABLE  
-       192.168.212.80  00:00:5e:00:01:01 ext       STALE
-       192.168.212.250 00:00:5e:00:01:01 ext       REACHABLE
-================================================================================
-```
-
-
-재현테스트2 (백업에서 arping)
-- ext1 마스터
-```
-root@ext_2(svc_net):~# arping -i fw1 192.168.212.20 -S 192.168.212.20
-ARPING 192.168.212.20
-60 bytes from 00:00:5e:00:01:01 (192.168.212.20): index=0 time=125.885 usec
-60 bytes from 00:00:5e:00:01:01 (192.168.212.20): index=1 time=137.091 usec
-60 bytes from 00:00:5e:00:01:01 (192.168.212.20): index=2 time=122.070 usec
-60 bytes from 00:00:5e:00:01:01 (192.168.212.20): index=3 time=127.077 usec
-
-ext_1(config-failover)# tcpdump -nei fw2 icmp
-Syntax error next to 'tcpdump'
-ext_1(config-failover)# tcpdump -nei fw2 icmp
-ext_1(config-failover)# exit
-ext_1(config)# tcpdump -nei fw2 net 192.168.212.20/32
-tcpdump: verbose output suppressed, use -v or -vv for full protocol decode
-listening on fw2, link-type EN10MB (Ethernet), capture size 65535 bytes
-^CExiting...
-Done
-
-0 packets captured
-0 packets received by filter
-0 packets dropped by kernel
-ext_1(config)# tcpdump -nei fw2 arp
-tcpdump: verbose output suppressed, use -v or -vv for full protocol decode
-listening on fw2, link-type EN10MB (Ethernet), capture size 65535 bytes
-^CExiting...
-Done
-
-0 packets captured
-0 packets received by filter
-0 packets dropped by kernel
-ext_1(config)# tcpdump -nei fw1 arp
-tcpdump: verbose output suppressed, use -v or -vv for full protocol decode
-listening on fw1, link-type EN10MB (Ethernet), capture size 65535 bytes
-11:31:12.199919 00:06:c4:94:1c:0f > ff:ff:ff:ff:ff:ff, ethertype ARP (0x0806), length 60: Request who-has 192.168.212.20 tell 192.168.212.20, length 46
-11:31:12.199959 00:00:5e:00:01:01 > 00:06:c4:94:1c:0f, ethertype ARP (0x0806), length 42: Reply 192.168.212.20 is-at 00:00:5e:00:01:01, length 28
-11:31:13.199919 00:06:c4:94:1c:0f > ff:ff:ff:ff:ff:ff, ethertype ARP (0x0806), length 60: Request who-has 192.168.212.20 tell 192.168.212.20, length 46
-11:31:13.199957 00:00:5e:00:01:01 > 00:06:c4:94:1c:0f, ethertype ARP (0x0806), length 42: Reply 192.168.212.20 is-at 00:00:5e:00:01:01, length 28
-11:31:14.199937 00:06:c4:94:1c:0f > ff:ff:ff:ff:ff:ff, ethertype ARP (0x0806), length 60: Request who-has 192.168.212.20 tell 192.168.212.20, length 46
-11:31:14.199976 00:00:5e:00:01:01 > 00:06:c4:94:1c:0f, ethertype ARP (0x0806), length 42: Reply 192.168.212.20 is-at 00:00:5e:00:01:01, length 28
-11:31:15.199974 00:06:c4:94:1c:0f > ff:ff:ff:ff:ff:ff, ethertype ARP (0x0806), length 60: Request who-has 192.168.212.20 tell 192.168.212.20, length 46
-11:31:15.200018 00:00:5e:00:01:01 > 00:06:c4:94:1c:0f, ethertype ARP (0x0806), length 42: Reply 192.168.212.20 is-at 00:00:5e:00:01:01, length 28
-```
+- 동작 정리
+	- proxy arp가 켜져 있고, 라우팅 테이블에 해당 ip에 대한 경로를 가지고 있을 경우 pas-k가 자신의 mac으로 대신 응답한다
+	- 단, 백업 장비는 proxy arp 응답 안함 (자기 자신 ip인 경우 제외)
