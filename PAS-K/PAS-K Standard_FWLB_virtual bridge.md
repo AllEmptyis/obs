@@ -881,9 +881,13 @@ fw1# show arp
        192.168.212.20  00:00:5e:00:01:01 ext       REACHABLE
        192.168.212.250 00:00:5e:00:01:01 ext       REACHABLE
 ================================================================================
+
+212.10으로 헬스체크 reply를 보낼 때 엉뚱하게 줄 수 있을걸로 보임 (실패)
 ```
 - 마스터에서 확인 결과 vmac으로 자신이 대신 응답 중
 	- 의문: 왜 자기 mac이 아니라 vmac으로 주는지?
+		- 정상 동작으로 확인
+			- 관련일감: env mangle_arp_source_mac (#27997) — Ethernet L2 SMAC만 VMAC/real 선택, #17537
 ```
 ext_2# tcpdump -nei fw1 arp
 tcpdump: verbose output suppressed, use -v or -vv for full protocol decode
