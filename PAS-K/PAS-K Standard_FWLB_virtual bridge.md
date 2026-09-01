@@ -737,6 +737,39 @@ Done
 
 //백업은 H/C 요청에 대해서는 응답하지 않는 걸로 보임
 L2구간은 tcpdump에 안잡힘, 하단 fw1에서 올라오는 트래픽을 백업이 스위칭해서 마스터한테 주는 걸로 파악됨
+
+하단 real에서 확인
+fw1# tcpdump -nei ext host 192.168.212.250
+tcpdump: verbose output suppressed, use -v or -vv for full protocol decode
+listening on ext, link-type EN10MB (Ethernet), capture size 65535 bytes
+13:47:46.413970 00:06:c4:84:0a:63 > 00:00:5e:00:01:01, ethertype IPv4 (0x0800), length 234: 10.10.10.20 > 192.168.212.250: ICMP echo request, id 65239, seq 256, length 200
+13:47:46.414182 00:00:5e:00:01:01 > 00:06:c4:84:0a:63, ethertype IPv4 (0x0800), length 234: 192.168.212.250 > 10.10.10.20: ICMP echo reply, id 65239, seq 256, length 200
+13:47:48.963396 00:06:c4:84:0a:63 > 00:00:5e:00:01:01, ethertype IPv4 (0x0800), length 234: 10.10.10.10 > 192.168.212.250: ICMP echo request, id 2547, seq 256, length 200
+13:47:48.963575 00:00:5e:00:01:01 > 00:06:c4:84:0a:63, ethertype IPv4 (0x0800), length 234: 192.168.212.250 > 10.10.10.10: ICMP echo reply, id 2547, seq 256, length 200
+
+arp 테이블 확인
+fw1# show arp
+
+================================================================================
+  ARP
+ ------------------------------------------------------------------------------
+    Timeout (sec)               : 30
+    Locktime (1/100 sec)        : 100
+    Proxy Arp Status            : disable
+    Proxy Arp Delay (1/100 sec) : 0
+    Proxy Arp Running           : disable
+
+    Static                      :
+
+    Dynamic
+       IP Address      MAC Address       Interface State
+       10.10.10.10     00:06:c4:84:10:27 int       REACHABLE
+       10.10.10.20     00:06:c4:84:09:b7 int       REACHABLE
+       10.10.10.250    00:00:5e:00:01:02 int       REACHABLE
+       192.168.212.10  00:06:c4:94:1c:03 ext       DELAY
+       192.168.212.20  00:00:5e:00:01:01 ext       DELAY
+       192.168.212.250 00:00:5e:00:01:01 ext       REACHABLE
+================================================================================
 ```
 
 -----------
@@ -751,7 +784,7 @@ L2구간은 tcpdump에 안잡힘, 하단 fw1에서 올라오는 트래픽을 백
 	- 인터링크, real과 연결되는 구간 인터페이스
 	- 조치 후 확인 결과 백업 하단 real에서 arping 백업ip 했을 때 마스터로 arp request는 전송되지만 응답하지 않는 걸로 확인됨
 		- 필터 없을 경우 백업, 마스터 둘 다 응답. 마스터가 더 늦게 오기 때문에 마스터 mac으로 잘못 학습될 수 있음
-### 테스트
+### 테스트1
 - 백업에서 자기자신으로 arping 테스트 -> 마스터가 proxy arp로 응답
 - k1800 이상은 아래와 같이 shell 들어가서 명령어 실행
 ```
@@ -814,4 +847,39 @@ Done
 		- 요청을 보낸 장비에게 arp reply를 하고 그 이후로는 자신의 라우팅 테이블에 지정된 경로로 트래픽을 전송함
 	- **백업 장비는 proxy arp 응답 안함 (자기 자신 ip인 경우 제외)**
 
+### 테스트2
+- 백업 하단 real에서 백업ip로 arping 결과
+	- 동일 broadcast 구간
+```
+fw1# arping -i ext 192.168.212.10
+ARPING 192.168.212.10
+60 bytes from 00:06:c4:94:1c:0f (192.168.212.10): index=0 time=231.981 usec
+60 bytes from 00:06:c4:94:1c:03 (192.168.212.10): index=1 time=273.943 usec
+^C
+--- 192.168.212.10 statistics ---
+1 packets transmitted, 2 packets received,   0% unanswered (1 extra)
+Done
+fw1#
+fw1# show arp
 
+================================================================================
+  ARP
+ ------------------------------------------------------------------------------
+    Timeout (sec)               : 30
+    Locktime (1/100 sec)        : 100
+    Proxy Arp Status            : disable
+    Proxy Arp Delay (1/100 sec) : 0
+    Proxy Arp Running           : disable
+
+    Static                      :
+
+    Dynamic
+       IP Address      MAC Address       Interface State
+       10.10.10.10     00:06:c4:84:10:27 int       REACHABLE
+       10.10.10.20     00:06:c4:84:09:b7 int       REACHABLE
+       10.10.10.250    00:00:5e:00:01:02 int       DELAY
+       192.168.212.10  00:00:5e:00:01:01 ext       REACHABLE   <------오염
+       192.168.212.20  00:00:5e:00:01:01 ext       REACHABLE
+       192.168.212.250 00:00:5e:00:01:01 ext       REACHABLE
+================================================================================
+```
