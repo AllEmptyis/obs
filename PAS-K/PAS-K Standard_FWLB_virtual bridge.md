@@ -660,6 +660,8 @@ ext_2# show arp
 ```
 ### H/C 요청
 - 마스터
+	- 192.168.212.20
+	- 0c:4b: fw
 ```
 ext_2# tcpdump -nei fw1 host 10.10.10.250
 tcpdump: verbose output suppressed, use -v or -vv for full protocol decode
@@ -688,39 +690,19 @@ tcpdump: verbose output suppressed, use -v or -vv for full protocol decode
 listening on fw1, link-type EN10MB (Ethernet), capture size 65535 bytes
 
 13:18:17.525120 00:06:c4:84:0a:63 > 00:00:5e:00:01:01, ethertype IPv4 (0x0800), length 234: 10.10.10.20 > 192.168.212.250: ICMP echo request, id 65239, seq 256, length 200
-13:18:17.525157 00:00:5e:00:01:01 > 00:06:c4:84:0a:63, ethertype IPv4 (0x0800), length 234: 192.168.212.250 > 10.10.10.20: ICMP echo reply, id 65239, seq 256, length 200
+13:18:17.525157 00:00:5e:00:01:01 > 00:06:c4:84:0a:63, ethertype IPv4 (0x0800), length 234: 192.168.212.250 > 10.10.10.20: ICMP echo reply, id 65239, seq 256, length 200 //h/c에 대한 응답은 vmac/vip로 전송
 
-//
-```
+// 마찬가지로 fw1 하단 방화벽에서 맥러닝이 vmac으로 되어 있어서 vmac을 dst로 전송하는 걸로 보임
 
-### H/C 응답
-- 마스터
-- 상단 마스터에서 보내는 h/c
-	- vrrp vip/vmac으로 응답
-```
-int_2# tcpdump -nei fw2 icmp
+ext_2# tcpdump -nei fw2 host 192.168.212.250
 tcpdump: verbose output suppressed, use -v or -vv for full protocol decode
 listening on fw2, link-type EN10MB (Ethernet), capture size 65535 bytes
-
-09:29:53.408576 00:06:c4:84:0c:4b > 00:00:5e:00:01:02, ethertype IPv4 (0x0800), length 234: 192.168.212.20 > 10.10.10.250: 
-ICMP echo request, id 18542, seq 256, length 200
-09:29:53.408625 00:00:5e:00:01:02 > 00:06:c4:84:0c:4b, ethertype IPv4 (0x0800), length 234: 10.10.10.250 > 192.168.212.20: ICMP echo reply, id 18542, seq 256, length 200
+13:55:17.367003 00:06:c4:84:0c:4b > 00:00:5e:00:01:01, ethertype IPv4 (0x0800), length 234: 10.10.10.10 > 192.168.212.250: ICMP echo request, id 37758, seq 256, length 200
+13:55:17.367049 00:00:5e:00:01:01 > 00:06:c4:84:0c:4b, ethertype IPv4 (0x0800), length 234: 192.168.212.250 > 10.10.10.10: ICMP echo reply, id 37758, seq 256, length 200
 ```
-- 상단 백업에서 보내는 h/c
-	- fw1 mac으로 전송. 즉 마스터가 vrrp vip/vmac으로 응답
-```
-int_2# tcpdump -nei fw1 icmp
-tcpdump: verbose output suppressed, use -v or -vv for full protocol decode
-listening on fw1, link-type EN10MB (Ethernet), capture size 65535 bytes
 
-09:30:42.203245 00:06:c4:84:09:b7 > 00:06:c4:84:0a:63, ethertype IPv4 (0x0800), length 234: 10.10.10.20 > 192.168.212.250: ICMP echo request, id 65239, seq 256, length 200
-09:30:42.203629 00:06:c4:84:0a:63 > 00:06:c4:84:09:b7, ethertype IPv4 (0x0800), length 234: 192.168.212.250 > 10.10.10.20: ICMP echo reply, id 65239, seq 256, length 200
-
-<확인>
-09:30:42.312700 00:06:c4:84:0a:63 > 00:00:5e:00:01:02, ethertype IPv4 (0x0800), length 234: 192.168.212.10 > 10.10.10.250: 
-ICMP echo request, id 58526, seq 256, length 200
-09:30:42.312750 00:00:5e:00:01:02 > 00:06:c4:84:0a:63, ethertype IPv4 (0x0800), length 234: 10.10.10.250 > 192.168.212.10: ICMP echo reply, id 58526, seq 256, length 200
-```
+- 백업
+- 
 
 -----------
 # proxy arp , arp filter 테스트
