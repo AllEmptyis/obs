@@ -655,6 +655,7 @@ ICMP echo request, id 18542, seq 256, length 200
 int_2# tcpdump -nei fw1 icmp
 tcpdump: verbose output suppressed, use -v or -vv for full protocol decode
 listening on fw1, link-type EN10MB (Ethernet), capture size 65535 bytes
+
 09:30:42.203245 00:06:c4:84:09:b7 > 00:06:c4:84:0a:63, ethertype IPv4 (0x0800), length 234: 10.10.10.20 > 192.168.212.250: ICMP echo request, id 65239, seq 256, length 200
 09:30:42.203629 00:06:c4:84:0a:63 > 00:06:c4:84:09:b7, ethertype IPv4 (0x0800), length 234: 192.168.212.250 > 10.10.10.20: ICMP echo reply, id 65239, seq 256, length 200
 
