@@ -696,6 +696,29 @@ listening on fw2, link-type EN10MB (Ethernet), capture size 65535 bytes
 09:16:03.775014 00:06:c4:84:0c:4b > 00:06:c4:84:10:27, ethertype IPv4 (0x0800), length 234: 192.168.212.250 > 10.10.10.10: ICMP echo reply, id 37758, seq 256, length 200
 ```
 
+- 마스터
+```
+ext_2# tcpdump -nei fw1 host 10.10.10.250
+tcpdump: verbose output suppressed, use -v or -vv for full protocol decode
+listening on fw1, link-type EN10MB (Ethernet), capture size 65535 bytes
+
+13:07:54.151237 00:06:c4:94:1c:0f > 00:06:c4:84:0a:63, ethertype IPv4 (0x0800), length 234: 192.168.212.20 > 10.10.10.250: 
+ICMP echo request, id 23799, seq 256, length 200
+13:07:54.151634 00:06:c4:84:0a:63 > 00:00:5e:00:01:01, ethertype IPv4 (0x0800), length 234: 10.10.10.250 > 192.168.212.20: ICMP echo reply, id 23799, seq 256, length 200 
+
+//같은 l2 도메인이기 때문에
+10.10.10.250 fw1(백업 하단) mac으로 보내고, fw1에서 arp 테이블을 보고 vmac으로 전송
+
+
+ext_2# tcpdump -nei fw2 host 10.10.10.250
+tcpdump: verbose output suppressed, use -v or -vv for full protocol decode
+listening on fw2, link-type EN10MB (Ethernet), capture size 65535 bytes
+
+12:52:02.878346 00:06:c4:94:1c:0f > 00:06:c4:84:0c:4b, ethertype IPv4 (0x0800), length 234: 192.168.212.20 > 10.10.10.250: ICMP echo request, id 18542, seq 256, length 200
+12:52:02.878746 00:06:c4:84:0c:4b > 00:06:c4:94:1c:0f, ethertype IPv4 (0x0800), length 234: 10.10.10.250 > 192.168.212.20: ICMP echo reply, id 18542, seq 256, length 200
+
+// 바로 하단에 있는 real
+```
 - real 1에 대한 h/c
 	- 0a:63 : fw1
 ```
