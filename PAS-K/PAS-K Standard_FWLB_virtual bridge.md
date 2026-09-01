@@ -849,12 +849,11 @@ Done
 
 ### 테스트2
 - 백업 하단 real에서 백업ip로 arping 결과
-	- 동일 broadcast 구간
 ```
 fw1# arping -i ext 192.168.212.10
 ARPING 192.168.212.10
 60 bytes from 00:06:c4:94:1c:0f (192.168.212.10): index=0 time=231.981 usec
-60 bytes from 00:06:c4:94:1c:03 (192.168.212.10): index=1 time=273.943 usec
+60 bytes from 00:06:c4:94:1c:03 (192.168.212.10): index=1 time=273.943 usec   <--마스터/백업이 번갈아가며 응답
 ^C
 --- 192.168.212.10 statistics ---
 1 packets transmitted, 2 packets received,   0% unanswered (1 extra)
@@ -882,4 +881,13 @@ fw1# show arp
        192.168.212.20  00:00:5e:00:01:01 ext       REACHABLE
        192.168.212.250 00:00:5e:00:01:01 ext       REACHABLE
 ================================================================================
+```
+- 마스터에서 확인 결과 vmac으로 자신이 대신 응답 중
+	- 의문: 왜 자기 mac이 아니라 vmac으로 주는지?
+```
+ext_2# tcpdump -nei fw1 arp
+tcpdump: verbose output suppressed, use -v or -vv for full protocol decode
+listening on fw1, link-type EN10MB (Ethernet), capture size 65535 bytes
+14:29:26.848627 00:06:c4:84:0a:63 > ff:ff:ff:ff:ff:ff, ethertype ARP (0x0806), length 60: Request who-has 192.168.212.10 tell 192.168.212.50, length 46
+14:29:26.848666 00:06:c4:94:1c:0f > 00:06:c4:84:0a:63, ethertype ARP (0x0806), length 42: Reply 192.168.212.10 is-at 00:00:5e:00:01:01, length 28
 ```
