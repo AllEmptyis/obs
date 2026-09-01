@@ -710,7 +710,33 @@ listening on fw1, link-type EN10MB (Ethernet), capture size 65535 bytes
 13:03:00.345277 00:06:c4:94:1c:03 > 00:06:c4:84:0a:63, ethertype IPv4 (0x0800), length 234: 192.168.212.10 > 10.10.10.250: ICMP echo request, id 58526, seq 256, length 200
 13:03:00.345758 00:06:c4:84:0a:63 > 00:06:c4:94:1c:03, ethertype IPv4 (0x0800), length 234: 10.10.10.250 > 192.168.212.10: ICMP echo reply, id 58526, seq 256, 
 
+ext_1# tcpdump -nei fw2 host 10.10.10.250
+tcpdump: verbose output suppressed, use -v or -vv for full protocol decode
+listening on fw2, link-type EN10MB (Ethernet), capture size 65535 bytes
+13:06:35.633315 00:06:c4:94:1c:03 > 00:06:c4:84:0c:4b, ethertype IPv4 (0x0800), length 234: 192.168.212.10 > 10.10.10.250: ICMP echo request, id 47774, seq 256, length 200
+13:06:35.633737 00:06:c4:84:0c:4b > 00:06:c4:94:1c:03, ethertype IPv4 (0x0800), length 234: 10.10.10.250 > 192.168.212.10: ICMP echo reply, id 47774, seq 256, length 200
 
+-----------------
+ext_1# tcpdump -nei fw1 host 192.168.212.250
+tcpdump: verbose output suppressed, use -v or -vv for full protocol decode
+listening on fw1, link-type EN10MB (Ethernet), capture size 65535 bytes
+13:07:29.348453 00:00:5e:00:01:01 > ff:ff:ff:ff:ff:ff, ethertype ARP (0x0806), length 60: Request who-has 192.168.212.250 tell 192.168.212.250, length 46
+^CExiting...
+Done
+
+1 packets captured
+1 packets received by filter
+0 packets dropped by kernel
+ext_1#
+ext_1# tcpdump -nei fw2 host 192.168.212.250
+tcpdump: verbose output suppressed, use -v or -vv for full protocol decode
+listening on fw2, link-type EN10MB (Ethernet), capture size 65535 bytes
+13:07:59.348574 00:00:5e:00:01:01 > ff:ff:ff:ff:ff:ff, ethertype ARP (0x0806), length 60: Request who-has 192.168.212.250 tell 192.168.212.250, length 46
+^CExiting...
+Done
+
+//백업은 H/C 요청에 대해서는 응답하지 않는 걸로 보임
+L2구간은 tcpdump에 안잡힘, 하단 fw1에서 올라오는 트래픽을 백업이 스위칭해서 마스터한테 주는 걸로 파악됨
 ```
 
 -----------
@@ -723,6 +749,8 @@ listening on fw1, link-type EN10MB (Ethernet), capture size 65535 bytes
 - 조치
 	- 상/하단 마스터, 백업 모두 arp filter 설정 (input drop)
 	- 인터링크, real과 연결되는 구간 인터페이스
+	- 조치 후 확인 결과 백업 하단 real에서 arping 백업ip 했을 때 마스터로 arp request는 전송되지만 응답하지 않는 걸로 확인됨
+		- 필터 없을 경우 백업, 마스터 둘 다 응답. 마스터가 더 늦게 오기 때문에 마스터 mac으로 잘못 학습될 수 있음
 ### 테스트
 - 백업에서 자기자신으로 arping 테스트 -> 마스터가 proxy arp로 응답
 - k1800 이상은 아래와 같이 shell 들어가서 명령어 실행
