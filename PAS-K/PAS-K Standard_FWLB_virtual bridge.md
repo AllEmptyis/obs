@@ -665,8 +665,12 @@ ICMP echo request, id 58526, seq 256, length 200
 09:30:42.312750 00:00:5e:00:01:02 > 00:06:c4:84:0a:63, ethertype IPv4 (0x0800), length 234: 10.10.10.250 > 192.168.212.10: ICMP echo reply, id 58526, seq 256, length 200
 ```
 
-
 -----------
+# proxy arp , arp filter 테스트
+## case-행정공제회
+- 자기자신으로 arping 테스트
+- k1800 이상은 management랑 무언가 분리되어서 아래와 같이 shell 들어가서 명령어 실행
+```
 root@ext_2(init_net):~# ns-svc
 root@ext_2(svc_net):~# arping -i fw2 192.168.212.21 -S 192.168.212.21
 ARPING 192.168.212.21
@@ -675,15 +679,15 @@ ARPING 192.168.212.21
 60 bytes from 00:00:5e:00:01:01 (192.168.212.21): index=2 time=134.945 usec
 60 bytes from 00:00:5e:00:01:01 (192.168.212.21): index=3 time=138.044 usec
 60 bytes from 00:00:5e:00:01:01 (192.168.212.21): index=4 time=118.971 usec
+```
 
-
-
-
+- arp filter 동작 확인
+```
 ext_2(config)# tcpdump -nei fw1 net 192.168.212.11/32
 tcpdump: verbose output suppressed, use -v or -vv for full protocol decode
 listening on fw1, link-type EN10MB (Ethernet), capture size 65535 bytes
 10:49:01.761023 00:06:c4:94:1c:03 > ff:ff:ff:ff:ff:ff, ethertype ARP (0x0806), length 60: Request who-has 192.168.212.11 tell 192.168.212.11, length 46
-10:49:01.761055 00:06:c4:94:1c:0f > 00:06:c4:94:1c:03, ethertype ARP (0x0806), length 42: Reply 192.168.212.11 is-at 00:00:5e:00:01:01, length 28
+10:49:01.761055 00:06:c4:94:1c:0f > 00:06:c4:94:1c:03, ethertype ARP (0x0806), length 42: Reply 192.168.212.11 is-at 00:00:5e:00:01:01, length 28   <--- 마스터가 vmac을 사용해서 자신이 응답
 10:49:02.761029 00:06:c4:94:1c:03 > ff:ff:ff:ff:ff:ff, ethertype ARP (0x0806), length 60: Request who-has 192.168.212.11 tell 192.168.212.11, length 46
 10:49:02.761065 00:06:c4:94:1c:0f > 00:06:c4:94:1c:03, ethertype ARP (0x0806), length 42: Reply 192.168.212.11 is-at 00:00:5e:00:01:01, length 28
 10:49:03.761038 00:06:c4:94:1c:03 > ff:ff:ff:ff:ff:ff, ethertype ARP (0x0806), length 60: Request who-has 192.168.212.11 tell 192.168.212.11, length 46
@@ -701,20 +705,12 @@ ext_2(config)# show arp-filter
  ------------------------------------------------------------------------------
     Input
        ID    Action Src IP    Dest IP           Interface ND    Description
-       1     accept 0.0.0.0/0 192.168.212.11/32 fw1       1
+       1     drop  0.0.0.0/0 192.168.212.11/32 fw1       1
 
     Output               :
 ================================================================================
 
-ext_2(config)#
-ext_2(config)# arp-filter
-ext_2(config-arp-filter)# input 1
-ext_2(config-arp-filter-input[1])# action drop
-ext_2(config-arp-filter-input[1])# apply
-Input '1' is applied to system.
-ext_2(config-arp-filter)#
-ext_2(config-arp-filter)#
-ext_2(config-arp-filter)# exit
+
 ext_2(config)# tcpdump -nei fw1 net 192.168.212.11/32
 tcpdump: verbose output suppressed, use -v or -vv for full protocol decode
 listening on fw1, link-type EN10MB (Ethernet), capture size 65535 bytes
@@ -723,6 +719,10 @@ listening on fw1, link-type EN10MB (Ethernet), capture size 65535 bytes
 10:50:40.761144 00:06:c4:94:1c:03 > ff:ff:ff:ff:ff:ff, ethertype ARP (0x0806), length 60: Request who-has 192.168.212.11 tell 192.168.212.11, length 46
 ^CExiting...
 Done
+```
+
+
+
 
 
 
