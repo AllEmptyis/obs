@@ -683,7 +683,6 @@ ARPING 192.168.212.21
 
 - arp filter 동작 확인
 	- arp filter는 mp에만 적용됨, 스위칭은 정상 동작
-		- 인터페이스 ip로 오는 트래픽만 차단하고, 
 	- input drop: 설정한 ip에 대한 arp request 요청을 pas-k가 드롭 (cpu에서)
 ```
 ext_2(config)# tcpdump -nei fw1 net 192.168.212.11/32
