@@ -587,6 +587,9 @@ tcp  1.1.1.50:11305 2.2.2.101:8080 - 2.2.2.101:8080 1.1.1.50:11305 [R]fwlb.int:2
 ```
 
 ## H/C 동작 확인
+- 요청할 때는 h/c tip (보통 vip로) 전송
+	- 마스터/백업 모두 자기 인터페이스 ip/mac 사용
+	- 목적지 tip는 
 ### H/C 요청
 - 마스터 장비
 - real 2에 대한 h/c
@@ -668,6 +671,14 @@ ICMP echo request, id 58526, seq 256, length 200
 -----------
 # proxy arp , arp filter 테스트
 ## case-행정공제회
+- 증상
+	- 2호기 장비에서 상/하단 모두 real2만 h/c inact
+- 원인
+	- 마스터의 proxy arp 동작으로 인해 real 2 서버가 arp를 잘못 학습한 것으로 추정
+- 조치
+	- 상/하단 마스터, 백업 모두 arp filter 설정 (input drop)
+	- 인터링크, real과 연결되는 구간 인터페이스
+### 테스트
 - 백업에서 자기자신으로 arping 테스트 -> 마스터가 proxy arp로 응답
 - k1800 이상은 아래와 같이 shell 들어가서 명령어 실행
 ```
