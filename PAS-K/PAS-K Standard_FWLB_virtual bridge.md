@@ -661,7 +661,8 @@ ext_2# show arp
 ### H/C 요청
 - 마스터
 	- 192.168.212.20
-	- 0c:4b: fw
+	- 0c:4b: fw2
+	- 0a:63: fw1
 ```
 ext_2# tcpdump -nei fw1 host 10.10.10.250
 tcpdump: verbose output suppressed, use -v or -vv for full protocol decode
@@ -702,7 +703,15 @@ listening on fw2, link-type EN10MB (Ethernet), capture size 65535 bytes
 ```
 
 - 백업
-- 
+```
+ext_1# tcpdump -nei fw1 host 10.10.10.250
+tcpdump: verbose output suppressed, use -v or -vv for full protocol decode
+listening on fw1, link-type EN10MB (Ethernet), capture size 65535 bytes
+13:03:00.345277 00:06:c4:94:1c:03 > 00:06:c4:84:0a:63, ethertype IPv4 (0x0800), length 234: 192.168.212.10 > 10.10.10.250: ICMP echo request, id 58526, seq 256, length 200
+13:03:00.345758 00:06:c4:84:0a:63 > 00:06:c4:94:1c:03, ethertype IPv4 (0x0800), length 234: 10.10.10.250 > 192.168.212.10: ICMP echo reply, id 58526, seq 256, 
+
+
+```
 
 -----------
 # proxy arp , arp filter 테스트
