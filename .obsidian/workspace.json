@@ -120,7 +120,7 @@
             }
           }
         ],
-        "currentTab": 1
+        "currentTab": 6
       }
     ],
     "direction": "vertical"
@@ -243,7 +243,7 @@
             "state": {
               "type": "outline",
               "state": {
-                "file": "2026_todo/2026-W36.md",
+                "file": "서버 원격 접속.md",
                 "followCursor": true,
                 "showSearch": true,
                 "searchQuery": ""
@@ -294,11 +294,11 @@
       "periodic-notes:Open this week": false
     }
   },
-  "active": "5f028bbaacb34f42",
+  "active": "ed29d0e14355e40e",
   "lastOpenFiles": [
+    "2026_todo/2026-W36.md",
     "PAS-K/PAS-K Standard_FWLB_routing+SLB.md",
     "PAS-K/PAS-K Standard_FWLB_virtual bridge.md",
-    "2026_todo/2026-W36.md",
     "PAS-K/PAS-K 기술 지원 관련.md",
     "PAS-K/PAS-K CSLB.md",
     "2026_todo/2026-W35.md",
