@@ -134,7 +134,7 @@
             }
           }
         ],
-        "currentTab": 8
+        "currentTab": 1
       }
     ],
     "direction": "vertical"
@@ -257,7 +257,7 @@
             "state": {
               "type": "outline",
               "state": {
-                "file": "기능 검증/TiController Rocky Linux 마이그레이션.md",
+                "file": "2026_todo/2026-W37.md",
                 "followCursor": true,
                 "showSearch": true,
                 "searchQuery": ""
@@ -308,8 +308,9 @@
       "periodic-notes:Open this week": false
     }
   },
-  "active": "37f0db959eecf008",
+  "active": "5f028bbaacb34f42",
   "lastOpenFiles": [
+    "기능 검증/TiController Rocky Linux 마이그레이션.md",
     "2026_todo/2026-W37.md",
     "서버 원격 접속.md",
     "PAS-K/PAS-K 기술 지원 관련.md",
@@ -339,7 +340,6 @@
     "첨부파일/image-5.png",
     "conflict-files-obsidian-git.md",
     "2026_todo/2026-W18.md",
-    "obs 활용/git.md",
     "첨부파일/image-4.png",
     "첨부파일/image-3.png",
     "첨부파일/image-2.png",
