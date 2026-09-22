@@ -147,8 +147,7 @@
               "title": "패스워드 초기화 방법 정리"
             }
           }
-        ],
-        "currentTab": 6
+        ]
       }
     ],
     "direction": "vertical"
@@ -271,7 +270,7 @@
             "state": {
               "type": "outline",
               "state": {
-                "file": "서버 원격 접속.md",
+                "file": "PAS-K/PAS-K 기술 지원 관련.md",
                 "followCursor": true,
                 "showSearch": true,
                 "searchQuery": ""
@@ -322,13 +321,13 @@
       "periodic-notes:Open this week": false
     }
   },
-  "active": "ed29d0e14355e40e",
+  "active": "c5103d94997e0acf",
   "lastOpenFiles": [
+    "서버 원격 접속.md",
     "2026_todo/2026-W39.md",
     "2026_todo/2026-W38.md",
     "PAS-K/PAS-K Standard_FWLB_virtual bridge.md",
     "PAS-K/PAS-K CSLB.md",
-    "서버 원격 접속.md",
     "기타/패스워드 초기화 방법 정리.md",
     "명령어/R플랫폼 명령어.md",
     "Linux/nmcli 명령어.md",
