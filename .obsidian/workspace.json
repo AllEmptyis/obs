@@ -134,7 +134,7 @@
             }
           }
         ],
-        "currentTab": 5
+        "currentTab": 1
       }
     ],
     "direction": "vertical"
@@ -257,7 +257,7 @@
             "state": {
               "type": "outline",
               "state": {
-                "file": "서버 원격 접속.md",
+                "file": "2026_todo/2026-W41.md",
                 "followCursor": true,
                 "showSearch": true,
                 "searchQuery": ""
@@ -308,15 +308,15 @@
       "periodic-notes:Open this week": false
     }
   },
-  "active": "ed29d0e14355e40e",
+  "active": "5f028bbaacb34f42",
   "lastOpenFiles": [
+    "서버 원격 접속.md",
     "2026_todo/2026-W41.md",
     "PAS-K/PAS-K 기술 지원 관련.md",
     "2026_todo/2026-W40.md",
     "PAS-K/PAS-K Standard_FWLB_virtual bridge.md",
     "2026_todo/2026-W38.md",
     "기타/패스워드 초기화 방법 정리.md",
-    "서버 원격 접속.md",
     "Linux/nmcli 명령어.md",
     "기능 검증/TiController Rocky Linux 마이그레이션.md",
     "2026_todo/2026-W39.md",
