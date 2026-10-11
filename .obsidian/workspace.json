@@ -36,6 +36,18 @@
             }
           },
           {
+            "id": "09a3a3b54c1e4dd7",
+            "type": "leaf",
+            "state": {
+              "type": "release-notes",
+              "state": {
+                "currentVersion": "1.14.4"
+              },
+              "icon": "lucide-book-up",
+              "title": "릴리즈 노트 1.14.4"
+            }
+          },
+          {
             "id": "d1fa8b0744a54b64",
             "type": "leaf",
             "state": {
@@ -134,7 +146,7 @@
             }
           }
         ],
-        "currentTab": 1
+        "currentTab": 2
       }
     ],
     "direction": "vertical"
@@ -257,7 +269,6 @@
             "state": {
               "type": "outline",
               "state": {
-                "file": "2026_todo/2026-W41.md",
                 "followCursor": true,
                 "showSearch": true,
                 "searchQuery": ""
@@ -308,7 +319,7 @@
       "periodic-notes:Open this week": false
     }
   },
-  "active": "5f028bbaacb34f42",
+  "active": "09a3a3b54c1e4dd7",
   "lastOpenFiles": [
     "서버 원격 접속.md",
     "2026_todo/2026-W41.md",
