@@ -36,6 +36,18 @@
             }
           },
           {
+            "id": "f3bd5c7116cad693",
+            "type": "leaf",
+            "state": {
+              "type": "release-notes",
+              "state": {
+                "currentVersion": "1.14.5"
+              },
+              "icon": "lucide-book-up",
+              "title": "릴리즈 노트 1.14.5"
+            }
+          },
+          {
             "id": "d1fa8b0744a54b64",
             "type": "leaf",
             "state": {
@@ -134,7 +146,7 @@
             }
           }
         ],
-        "currentTab": 1
+        "currentTab": 2
       }
     ],
     "direction": "vertical"
@@ -258,7 +270,6 @@
             "state": {
               "type": "outline",
               "state": {
-                "file": "2026_todo/2026-W43.md",
                 "followCursor": true,
                 "showSearch": true,
                 "searchQuery": ""
@@ -309,7 +320,7 @@
       "periodic-notes:Open this week": false
     }
   },
-  "active": "5f028bbaacb34f42",
+  "active": "f3bd5c7116cad693",
   "lastOpenFiles": [
     "PAS-K/PAS-K 기술 지원 관련.md",
     "KVM-Bridge 모드.md",
