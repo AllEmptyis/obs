@@ -132,7 +132,7 @@
             }
           }
         ],
-        "currentTab": 5
+        "currentTab": 8
       }
     ],
     "direction": "vertical"
@@ -255,7 +255,7 @@
             "state": {
               "type": "outline",
               "state": {
-                "file": "서버 원격 접속.md",
+                "file": "기타/패스워드 초기화 방법 정리.md",
                 "followCursor": true,
                 "showSearch": true,
                 "searchQuery": ""
@@ -306,8 +306,9 @@
       "periodic-notes:Open this week": false
     }
   },
-  "active": "bd2ecff549304c32",
+  "active": "9625ce2d5f9e9174",
   "lastOpenFiles": [
+    "서버 원격 접속.md",
     "PAS-K/PAS-K 기술 지원 관련.md",
     "2026_todo/2026-W44.md",
     "2026_todo/2026-W37.md",
@@ -317,7 +318,6 @@
     "2026_todo/2026-W41.md",
     "2026_todo/2026-W42.md",
     "2026_todo/2026-W43.md",
-    "서버 원격 접속.md",
     "PAS-K/PAS-K Standard_SLB.md",
     "기능 검증/TiController Rocky Linux 마이그레이션.md",
     "기타/패스워드 초기화 방법 정리.md",
