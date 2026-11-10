@@ -106,7 +106,7 @@
             }
           }
         ],
-        "currentTab": 2
+        "currentTab": 1
       }
     ],
     "direction": "vertical"
@@ -229,7 +229,7 @@
             "state": {
               "type": "outline",
               "state": {
-                "file": "서버 원격 접속.md",
+                "file": "2026_todo/2026-W46.md",
                 "followCursor": true,
                 "showSearch": true,
                 "searchQuery": ""
@@ -280,11 +280,11 @@
       "periodic-notes:Open this week": false
     }
   },
-  "active": "ed29d0e14355e40e",
+  "active": "0b100946f3bd56a5",
   "lastOpenFiles": [
+    "서버 원격 접속.md",
     "2026_todo/2026-W46.md",
     "2026_todo/2026-W45.md",
-    "서버 원격 접속.md",
     "2026_todo/2026-W16.md",
     "기능 검증/TiController Rocky Linux 마이그레이션.md",
     "Linux/nmcli 명령어.md",
