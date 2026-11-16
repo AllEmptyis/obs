@@ -5,5 +5,6 @@
   "baseFontSize": 17,
   "cssTheme": "GitHub Theme",
   "monospaceFontFamily": "Consolas,Cascadia Code",
-  "baseFontSizeAction": true
+  "baseFontSizeAction": true,
+  "showRibbon": true
 }

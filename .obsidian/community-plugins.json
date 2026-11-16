@@ -1,10 +1,8 @@
 [
   "calendar",
-  "remotely-save",
   "obsidian-plugin-toc",
   "periodic-notes",
   "mousewheel-image-zoom",
-  "image-converter",
   "omnisearch",
   "obsidian-git"
 ]
