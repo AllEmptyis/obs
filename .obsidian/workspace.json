@@ -91,8 +91,7 @@
               "title": "PAS-K 기술 지원 관련"
             }
           }
-        ],
-        "currentTab": 5
+        ]
       }
     ],
     "direction": "vertical"
@@ -215,7 +214,7 @@
             "state": {
               "type": "outline",
               "state": {
-                "file": "PAS-K/PAS-K 기술 지원 관련.md",
+                "file": "2026_todo/2026-W47.md",
                 "followCursor": true,
                 "showSearch": true,
                 "searchQuery": ""
@@ -265,11 +264,11 @@
       "periodic-notes:Open this week": false
     }
   },
-  "active": "8f52e80410620345",
+  "active": "5f028bbaacb34f42",
   "lastOpenFiles": [
+    "PAS-K/PAS-K 기술 지원 관련.md",
     "Linux/nmcli 명령어.md",
     "2026_todo/2026-W47.md",
-    "PAS-K/PAS-K 기술 지원 관련.md",
     "서버 원격 접속.md",
     "2026_todo/2026-W46.md",
     "2026_todo/2026-W45.md",
