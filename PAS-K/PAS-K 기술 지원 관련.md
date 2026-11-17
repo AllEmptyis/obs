@@ -297,3 +297,9 @@ Mon Aug 10 04:29:58 UTC-9 2026
 	- 문의 - 기능문의
 	- S/W - 소프트웨어 버그 등, 장애 , 분석요청
 	- 요구 - 요구 사항
+
+# 리눅스 명령어
+- grep -rl "keepaeu" 경로
+	- 키워드로 찾기
+- tar -xzvf sfu_backup.tar.gz --one-top-level
+	- 생성된 파일에 압축 풀기
