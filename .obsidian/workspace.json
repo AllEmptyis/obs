@@ -101,7 +101,8 @@
               "title": "새 탭"
             }
           }
-        ]
+        ],
+        "currentTab": 5
       }
     ],
     "direction": "vertical"
@@ -224,7 +225,7 @@
             "state": {
               "type": "outline",
               "state": {
-                "file": "2026_todo/2026-W47.md",
+                "file": "PAS-K/PAS-K 기술 지원 관련.md",
                 "followCursor": true,
                 "showSearch": true,
                 "searchQuery": ""
@@ -274,11 +275,11 @@
       "periodic-notes:Open this week": false
     }
   },
-  "active": "5f028bbaacb34f42",
+  "active": "8f52e80410620345",
   "lastOpenFiles": [
+    "2026_todo/2026-W47.md",
     "기타/패스워드 초기화 방법 정리.md",
     "기능 검증/TiController Rocky Linux 마이그레이션.md",
-    "2026_todo/2026-W47.md",
     "서버 원격 접속.md",
     "PAS-K/PAS-K 기술 지원 관련.md",
     "Linux/nmcli 명령어.md",
